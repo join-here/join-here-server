@@ -1,12 +1,12 @@
 package com.hongik.joinhere.service;
 
 import com.hongik.joinhere.domain.Member;
+import com.hongik.joinhere.dto.CreateMemberRequest;
+import com.hongik.joinhere.dto.CreateMemberResponse;
 import com.hongik.joinhere.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -19,8 +19,8 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public String join(Member member) {
-        memberRepository.save(member);
-        return member.getId();
+    public CreateMemberResponse join(CreateMemberRequest request) {
+        Member member = request.toEntity();
+        return CreateMemberResponse.from(memberRepository.save(member));
     }
 }

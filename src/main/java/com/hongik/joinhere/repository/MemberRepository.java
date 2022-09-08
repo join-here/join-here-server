@@ -1,7 +1,6 @@
 package com.hongik.joinhere.repository;
 
 import com.hongik.joinhere.domain.Member;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -12,11 +11,6 @@ public class MemberRepository {
 
     @PersistenceContext
     private EntityManager em;
-
-//    @Autowired
-//    public MemberRepository(EntityManager em) {
-//        this.em = em;
-//    }
 
     public Member save(Member member) {
         em.persist(member);
