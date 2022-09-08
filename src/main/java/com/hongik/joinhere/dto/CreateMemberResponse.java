@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import java.sql.Date;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 public class CreateMemberResponse {
 

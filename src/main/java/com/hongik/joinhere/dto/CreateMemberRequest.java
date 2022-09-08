@@ -7,7 +7,6 @@ import java.sql.Date;
 
 @Getter
 @Setter
-@NoArgsConstructor
 public class CreateMemberRequest {
 
     private String id;
