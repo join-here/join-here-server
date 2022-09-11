@@ -1,10 +1,8 @@
-package com.hongik.joinhere.dto;
+package com.hongik.joinhere.dto.member;
 
 import com.hongik.joinhere.domain.Member;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 

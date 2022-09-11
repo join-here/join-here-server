@@ -1,4 +1,4 @@
-package com.hongik.joinhere.dto;
+package com.hongik.joinhere.dto.member;
 
 import com.hongik.joinhere.domain.Member;
 import lombok.*;
