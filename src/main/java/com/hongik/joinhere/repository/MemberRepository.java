@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Optional;
 
 @Repository
 public class MemberRepository {
@@ -16,4 +17,10 @@ public class MemberRepository {
         em.persist(member);
         return member;
     }
+
+    public Member findById(String id) {
+        Member member = em.find(Member.class, id);
+        return member;
+    }
+
 }
