@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 
 @RestController
 @RequestMapping("/members")
@@ -38,6 +39,8 @@ public class MemberController {
 
         Cookie idCookie = new Cookie("id", loginMemberResponse.getId());
         Cookie nameCookie = new Cookie("name", loginMemberResponse.getName());
+        idCookie.setPath("/");
+        nameCookie.setPath("/");
         response.addCookie(idCookie);
         response.addCookie(nameCookie);
         return ResponseEntity.status(HttpStatus.OK).body(loginMemberResponse);
