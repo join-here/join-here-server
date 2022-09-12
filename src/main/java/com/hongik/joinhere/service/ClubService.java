@@ -2,11 +2,15 @@ package com.hongik.joinhere.service;
 
 import com.hongik.joinhere.dto.club.CreateClubRequest;
 import com.hongik.joinhere.dto.club.CreateClubResponse;
+import com.hongik.joinhere.dto.club.ShowClubResponse;
 import com.hongik.joinhere.entity.Club;
 import com.hongik.joinhere.repository.ClubRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -22,5 +26,17 @@ public class ClubService {
     public CreateClubResponse register(CreateClubRequest request, String memberId) {
         Club club = request.toEntity();
         return CreateClubResponse.from(clubRepository.save(club));
+    }
+
+    public List<ShowClubResponse> findClubs() {
+        List<Club> clubs = clubRepository.findAll();
+        List<ShowClubResponse> responses = new ArrayList<>();
+
+        if (clubs == null)
+            return null;
+
+        for (Club club : clubs)
+            responses.add(ShowClubResponse.from(club));
+        return responses;
     }
 }
