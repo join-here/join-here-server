@@ -21,7 +21,7 @@ CREATE TABLE club
     `name`          VARCHAR(50)      NOT NULL,
     `category`      CHAR(3)          NOT NULL,
     `area`          CHAR(2)          NOT NULL,
-    `logo`          BLOB             NULL,
+    `image`         BLOB            NULL,
     `introduction`  VARCHAR(1000)    NOT NULL,
     `view`          BIGINT           NOT NULL,
     `scrap`         BIGINT           NOT NULL,
