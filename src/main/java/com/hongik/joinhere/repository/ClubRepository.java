@@ -19,7 +19,13 @@ public class ClubRepository {
     }
 
     public List<Club> findAll() {
-        return em.createQuery("select m from Club m", Club.class)
+        return em.createQuery("select c from Club c", Club.class)
+                .getResultList();
+    }
+
+    public List<Club> findByCategory(String category) {
+        return em.createQuery("select c from Club c where c.category = :category", Club.class)
+                .setParameter("category", category)
                 .getResultList();
     }
 }

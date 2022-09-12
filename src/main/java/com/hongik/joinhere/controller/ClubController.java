@@ -26,8 +26,6 @@ public class ClubController {
     @GetMapping
     public ResponseEntity<List<ShowClubResponse>> showAll() {
         List<ShowClubResponse> responses = clubService.findClubs();
-        if (responses == null)
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
 
@@ -35,5 +33,11 @@ public class ClubController {
     public ResponseEntity<CreateClubResponse> create(@RequestBody CreateClubRequest request, @CookieValue("id") String memberId) {
         CreateClubResponse response = clubService.register(request, memberId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("/categories/{category}")
+    public ResponseEntity<List<ShowClubResponse>> showClubsByCategory(@PathVariable String category) {
+        List<ShowClubResponse> responses = clubService.findClubsByCategory(category);
+        return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
 }

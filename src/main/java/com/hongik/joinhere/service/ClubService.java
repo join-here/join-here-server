@@ -32,9 +32,15 @@ public class ClubService {
         List<Club> clubs = clubRepository.findAll();
         List<ShowClubResponse> responses = new ArrayList<>();
 
-        if (clubs == null)
-            return null;
+        for (Club club : clubs)
+            responses.add(ShowClubResponse.from(club));
+        return responses;
+    }
 
+    public List<ShowClubResponse> findClubsByCategory(String category) {
+        List<Club> clubs = clubRepository.findByCategory(category);
+        List<ShowClubResponse> responses = new ArrayList<>();
+            
         for (Club club : clubs)
             responses.add(ShowClubResponse.from(club));
         return responses;
