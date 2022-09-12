@@ -1,6 +1,6 @@
 package com.hongik.joinhere.dto.member;
 
-import com.hongik.joinhere.domain.Member;
+import com.hongik.joinhere.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

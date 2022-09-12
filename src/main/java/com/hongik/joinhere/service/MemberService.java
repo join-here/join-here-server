@@ -1,6 +1,6 @@
 package com.hongik.joinhere.service;
 
-import com.hongik.joinhere.domain.Member;
+import com.hongik.joinhere.entity.Member;
 import com.hongik.joinhere.dto.member.CreateMemberRequest;
 import com.hongik.joinhere.dto.member.CreateMemberResponse;
 import com.hongik.joinhere.dto.member.LoginMemberRequest;
@@ -9,8 +9,6 @@ import com.hongik.joinhere.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @Transactional

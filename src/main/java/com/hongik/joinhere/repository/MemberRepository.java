@@ -1,11 +1,10 @@
 package com.hongik.joinhere.repository;
 
-import com.hongik.joinhere.domain.Member;
+import com.hongik.joinhere.entity.Member;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.Optional;
 
 @Repository
 public class MemberRepository {
@@ -22,5 +21,4 @@ public class MemberRepository {
         Member member = em.find(Member.class, id);
         return member;
     }
-
 }

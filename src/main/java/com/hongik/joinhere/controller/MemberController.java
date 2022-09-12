@@ -30,17 +30,17 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public void login(@RequestBody LoginMemberRequest request, HttpServletResponse response) {
+    public ResponseEntity<LoginMemberResponse> login(@RequestBody LoginMemberRequest request, HttpServletResponse response) {
         LoginMemberResponse loginMemberResponse= memberService.login(request);
 
-        if (loginMemberResponse == null) {
-            return;
-        }
+        if (loginMemberResponse == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
         Cookie idCookie = new Cookie("id", loginMemberResponse.getId());
         Cookie nameCookie = new Cookie("name", loginMemberResponse.getName());
         response.addCookie(idCookie);
         response.addCookie(nameCookie);
+        return ResponseEntity.status(HttpStatus.OK).body(loginMemberResponse);
     }
 
     @PostMapping("/logout")
