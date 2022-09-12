@@ -40,7 +40,7 @@ public class ClubService {
     public List<ShowClubResponse> findClubsByCategory(String category) {
         List<Club> clubs = clubRepository.findByCategory(category);
         List<ShowClubResponse> responses = new ArrayList<>();
-            
+
         for (Club club : clubs)
             responses.add(ShowClubResponse.from(club));
         return responses;
