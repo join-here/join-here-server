@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/clubs")
 public class ClubController {
@@ -29,7 +30,9 @@ public class ClubController {
     }
 
     @PostMapping
-    public ResponseEntity<CreateClubResponse> create(@RequestBody CreateClubRequest request, @CookieValue("id") String memberId) {
+//    public ResponseEntity<CreateClubResponse> create(@RequestBody CreateClubRequest request, @CookieValue("id") String memberId) {
+    public ResponseEntity<CreateClubResponse> create(@RequestBody CreateClubRequest request) {
+        String memberId = "";
         CreateClubResponse response = clubService.register(request, memberId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
