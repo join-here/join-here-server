@@ -2,7 +2,6 @@ create database join_here;
 use join_here;
 
 -- Create member Table
-drop table member if exists member;
 CREATE TABLE member
 (
     `id`        VARCHAR(20)    NOT NULL,
@@ -14,7 +13,6 @@ CREATE TABLE member
 );
 
 -- Create club Table
-drop table  if exists club;
 CREATE TABLE club
 (
     `id`            BIGINT           NOT NULL    AUTO_INCREMENT,
