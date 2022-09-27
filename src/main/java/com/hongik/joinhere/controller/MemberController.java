@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/members")
@@ -31,19 +32,12 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginMemberResponse> login(@RequestBody LoginMemberRequest request, HttpServletResponse response) {
-        LoginMemberResponse loginMemberResponse= memberService.login(request);
+    public ResponseEntity<LoginMemberResponse> login(@RequestBody LoginMemberRequest request) {
+        LoginMemberResponse response = memberService.login(request);
 
-        if (loginMemberResponse == null)
+        if (response == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-
-        Cookie idCookie = new Cookie("id", loginMemberResponse.getId());
-        Cookie nameCookie = new Cookie("name", loginMemberResponse.getName());
-        idCookie.setPath("/");
-        nameCookie.setPath("/");
-        response.addCookie(idCookie);
-        response.addCookie(nameCookie);
-        return ResponseEntity.status(HttpStatus.OK).body(loginMemberResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PostMapping("/logout")
