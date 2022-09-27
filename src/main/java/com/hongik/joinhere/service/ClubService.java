@@ -36,9 +36,9 @@ public class ClubService {
         this.belongRepository = belongRepository;
     }
 
-    public CreateClubResponse register(CreateClubRequest request, String memberId) {
+    public CreateClubResponse register(CreateClubRequest request) {
         Club club = request.toEntity();
-        Member member = memberRepository.findById(memberId);
+        Member member = memberRepository.findById(request.getId());
         CreateClubResponse response = CreateClubResponse.from(clubRepository.save(club));
         Belong belong = new Belong(null, "pre", member, club);
         belongRepository.save(belong);
@@ -49,8 +49,13 @@ public class ClubService {
         List<Club> clubs = clubRepository.findAll();
         List<ShowClubResponse> responses = new ArrayList<>();
 
-        for (Club club : clubs)
-            responses.add(ShowClubResponse.from(club));
+        for (Club club : clubs) {
+            List<Announcement> announcements = announcementRepository.findByClubId(club);
+            if (announcements.size() == 0)
+                responses.add(ShowClubResponse.from(club, null));
+            else
+                responses.add(ShowClubResponse.from(club, announcements.get(announcements.size() - 1).getEndDate()));
+        }
         return responses;
     }
 
@@ -58,17 +63,22 @@ public class ClubService {
         List<Club> clubs = clubRepository.findByCategory(category);
         List<ShowClubResponse> responses = new ArrayList<>();
 
-        for (Club club : clubs)
-            responses.add(ShowClubResponse.from(club));
+        for (Club club : clubs) {
+            List<Announcement> announcements = announcementRepository.findByClubId(club);
+            if (announcements.size() == 0)
+                responses.add(ShowClubResponse.from(club, null));
+            else
+                responses.add(ShowClubResponse.from(club, announcements.get(announcements.size() - 1).getEndDate()));
+        }
         return responses;
     }
 
     public ShowClubInfoResponse findClubInfo(Long id) {
         Club club = clubRepository.findById(id);
-        List<Announcement> announcements = announcementRepository.findByClubId(id);
-        if (announcements == null)
+        List<Announcement> announcements = announcementRepository.findByClubId(club);
+        if (announcements.size() == 0)
             return ShowClubInfoResponse.from(club, null, null, null);
         else
-            return ShowClubInfoResponse.from(club, announcements.get(0), null, null);
+            return ShowClubInfoResponse.from(club, announcements.get(announcements.size() - 1), null, null);
     }
 }

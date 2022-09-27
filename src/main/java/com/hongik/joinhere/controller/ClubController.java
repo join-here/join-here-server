@@ -6,6 +6,7 @@ import com.hongik.joinhere.dto.club.*;
 import com.hongik.joinhere.entity.Announcement;
 import com.hongik.joinhere.service.AnnouncementService;
 import com.hongik.joinhere.service.ClubService;
+import org.aspectj.weaver.ast.Instanceof;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,8 +36,7 @@ public class ClubController {
 
     @PostMapping
     public ResponseEntity<CreateClubResponse> create(@RequestBody CreateClubRequest request) {
-        String memberId = request.getId();
-        CreateClubResponse response = clubService.register(request, memberId);
+        CreateClubResponse response = clubService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -54,10 +54,7 @@ public class ClubController {
 
     @PostMapping("/{club-id}/announcements")
     public ResponseEntity<CreateAnnouncementResponse> createAnnouncement(@RequestBody CreateAnnouncementRequest request, @PathVariable("club-id") Long id) {
-        System.out.println(request);
         CreateAnnouncementResponse response = announcementService.register(request, id);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-
-
 }

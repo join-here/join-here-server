@@ -17,6 +17,12 @@ public class ShowClubInfoResponse {
     private Qna qna;
 
     public static ShowClubInfoResponse from(Club club, Announcement announcement, Comment comment, Qna qna) {
-        return new ShowClubInfoResponse(club, announcement, comment, qna);
+        return new ShowClubInfoResponse(club, transfer(announcement), comment, qna);
+    }
+
+    private static Announcement transfer(Announcement announcement) {
+        if (announcement == null)
+            return null;
+        return new Announcement(announcement.getId(), announcement.getTitle(), announcement.getDescription(), announcement.getPoster(), announcement.getStartDate(), announcement.getEndDate(), null);
     }
 }

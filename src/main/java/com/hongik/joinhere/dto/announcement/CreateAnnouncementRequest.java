@@ -22,28 +22,9 @@ public class CreateAnnouncementRequest {
     private Byte[] poster;
     private Date startDate;
     private Date endDate;
-    //    private List<QuestionContent> question;
-    private String[] question;
+    private List<String> question;
 
     public Announcement toAnnouncement(Club club) {
         return new Announcement(null, title, description, poster, startDate, endDate, club);
-    }
-
-    public static class QuestionContent {
-
-        private String content;
-    }
-
-    @Override
-    public String toString() {
-        return "CreateAnnouncementRequest{" +
-                "id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", poster=" + Arrays.toString(poster) +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", question=" + question +
-                '}';
     }
 }

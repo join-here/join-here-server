@@ -20,7 +20,7 @@ public class ShowClubResponse {
     private Long scrap;
     private Date endDate;
 
-    public static ShowClubResponse from(Club club) {
-        return new ShowClubResponse(club.getId(), club.getName(), club.getCategory(), club.getArea(), club.getImage(), club.getIntroduction(), club.getView(), club.getScrap(), null);
+    public static ShowClubResponse from(Club club, Date endDate) {
+        return new ShowClubResponse(club.getId(), club.getName(), club.getCategory(), club.getArea(), club.getImage(), club.getIntroduction(), club.getView(), club.getScrap(), endDate);
     }
 }
