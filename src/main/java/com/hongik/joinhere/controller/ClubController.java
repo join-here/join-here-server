@@ -33,12 +33,12 @@ public class ClubController {
         return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
 
-//    @PostMapping
-//    public ResponseEntity<CreateClubResponse> create(@RequestBody CreateClubRequest request) {
-//        String memberId = request.getId();
-//        CreateClubResponse response = clubService.register(request, memberId);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-//    }
+    @PostMapping
+    public ResponseEntity<CreateClubResponse> create(@RequestBody CreateClubRequest request) {
+        String memberId = request.getId();
+        CreateClubResponse response = clubService.register(request, memberId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
 
     @GetMapping("/{club-id}")
     public ResponseEntity<ShowClubInfoResponse> showClubInfo(@PathVariable("club-id") Long id) {

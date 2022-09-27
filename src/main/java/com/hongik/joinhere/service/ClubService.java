@@ -36,14 +36,14 @@ public class ClubService {
         this.belongRepository = belongRepository;
     }
 
-//    public CreateClubResponse register(CreateClubRequest request, String memberId) {
-//        Club club = request.toEntity();
-//        Member member = memberRepository.findById(memberId);
-//        CreateClubResponse response = CreateClubResponse.from(clubRepository.save(club));
-//        Belong belong = new Belong(null, "pre", member, club);
-//        belongRepository.save(belong);
-//        return response;
-//    }
+    public CreateClubResponse register(CreateClubRequest request, String memberId) {
+        Club club = request.toEntity();
+        Member member = memberRepository.findById(memberId);
+        CreateClubResponse response = CreateClubResponse.from(clubRepository.save(club));
+        Belong belong = new Belong(null, "pre", member, club);
+        belongRepository.save(belong);
+        return response;
+    }
 
     public List<ShowClubResponse> findClubs() {
         List<Club> clubs = clubRepository.findAll();

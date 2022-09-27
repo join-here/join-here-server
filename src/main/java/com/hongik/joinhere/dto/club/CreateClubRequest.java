@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 public class CreateClubRequest {
 
+    private String id;
     private String name;
     private String category;
     private String area;
