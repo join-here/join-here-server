@@ -41,3 +41,15 @@ CREATE TABLE announcement
     PRIMARY KEY (id),
     FOREIGN KEY (club_id) references club(id)
 );
+
+-- belong Table Create SQL
+CREATE TABLE belong
+(
+    `id`         BIGINT         NOT NULL,
+    `position`   VARCHAR(3)     NOT NULL,
+    `member_id`  VARCHAR(20)    NOT NULL,
+    `club_id`    BIGINT         NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (member_id) references member(id),
+    FOREIGN KEY (club_id) references club(id)
+);
