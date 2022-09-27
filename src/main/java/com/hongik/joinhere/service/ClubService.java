@@ -5,9 +5,13 @@ import com.hongik.joinhere.dto.club.CreateClubResponse;
 import com.hongik.joinhere.dto.club.ShowClubInfoResponse;
 import com.hongik.joinhere.dto.club.ShowClubResponse;
 import com.hongik.joinhere.entity.Announcement;
+import com.hongik.joinhere.entity.Belong;
 import com.hongik.joinhere.entity.Club;
+import com.hongik.joinhere.entity.Member;
 import com.hongik.joinhere.repository.AnnouncementRepository;
+import com.hongik.joinhere.repository.BelongRepository;
 import com.hongik.joinhere.repository.ClubRepository;
+import com.hongik.joinhere.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,18 +24,26 @@ import java.util.List;
 public class ClubService {
 
     private final ClubRepository clubRepository;
+    private final MemberRepository memberRepository;
     private final AnnouncementRepository announcementRepository;
+    private final BelongRepository belongRepository;
 
     @Autowired
-    public ClubService(ClubRepository clubRepository, AnnouncementRepository announcementRepository) {
+    public ClubService(ClubRepository clubRepository, MemberRepository memberRepository, AnnouncementRepository announcementRepository, BelongRepository belongRepository) {
         this.clubRepository = clubRepository;
+        this.memberRepository = memberRepository;
         this.announcementRepository = announcementRepository;
+        this.belongRepository = belongRepository;
     }
 
-    public CreateClubResponse register(CreateClubRequest request, String memberId) {
-        Club club = request.toEntity();
-        return CreateClubResponse.from(clubRepository.save(club));
-    }
+//    public CreateClubResponse register(CreateClubRequest request, String memberId) {
+//        Club club = request.toEntity();
+//        Member member = memberRepository.findById(memberId);
+//        CreateClubResponse response = CreateClubResponse.from(clubRepository.save(club));
+//        Belong belong = new Belong(null, "pre", member, club);
+//        belongRepository.save(belong);
+//        return response;
+//    }
 
     public List<ShowClubResponse> findClubs() {
         List<Club> clubs = clubRepository.findAll();

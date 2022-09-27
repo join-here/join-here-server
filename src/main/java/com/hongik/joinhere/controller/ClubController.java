@@ -1,9 +1,10 @@
 package com.hongik.joinhere.controller;
 
-import com.hongik.joinhere.dto.club.CreateClubRequest;
-import com.hongik.joinhere.dto.club.CreateClubResponse;
-import com.hongik.joinhere.dto.club.ShowClubInfoResponse;
-import com.hongik.joinhere.dto.club.ShowClubResponse;
+import com.hongik.joinhere.dto.announcement.CreateAnnouncementRequest;
+import com.hongik.joinhere.dto.announcement.CreateAnnouncementResponse;
+import com.hongik.joinhere.dto.club.*;
+import com.hongik.joinhere.entity.Announcement;
+import com.hongik.joinhere.service.AnnouncementService;
 import com.hongik.joinhere.service.ClubService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,10 +19,12 @@ import java.util.List;
 public class ClubController {
 
     private final ClubService clubService;
+    private final AnnouncementService announcementService;
 
     @Autowired
-    public ClubController(ClubService clubService) {
+    public ClubController(ClubService clubService, AnnouncementService announcementService) {
         this.clubService = clubService;
+        this.announcementService = announcementService;
     }
 
     @GetMapping
@@ -30,12 +33,17 @@ public class ClubController {
         return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
 
-    @PostMapping
-    public ResponseEntity<CreateClubResponse> create(@RequestBody CreateClubRequest request) {
-        String memberId = request.getId();
-        System.out.println(memberId);
-        CreateClubResponse response = clubService.register(request, memberId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+//    @PostMapping
+//    public ResponseEntity<CreateClubResponse> create(@RequestBody CreateClubRequest request) {
+//        String memberId = request.getId();
+//        CreateClubResponse response = clubService.register(request, memberId);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+//    }
+
+    @GetMapping("/{club-id}")
+    public ResponseEntity<ShowClubInfoResponse> showClubInfo(@PathVariable("club-id") Long id) {
+        ShowClubInfoResponse response = clubService.findClubInfo(id);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/categories/{category}")
@@ -44,9 +52,12 @@ public class ClubController {
         return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
 
-    @GetMapping("/{club-id}")
-    public ResponseEntity<ShowClubInfoResponse> showClubInfo(@PathVariable("club-id") Long id) {
-        ShowClubInfoResponse response = clubService.findClubInfo(id);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+    @PostMapping("/{club-id}/announcements")
+    public ResponseEntity<CreateAnnouncementResponse> createAnnouncement(@RequestBody CreateAnnouncementRequest request, @PathVariable("club-id") Long id) {
+        System.out.println(request);
+        CreateAnnouncementResponse response = announcementService.register(request, id);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+
 }
