@@ -2,6 +2,7 @@ package com.hongik.joinhere.controller;
 
 import com.hongik.joinhere.dto.club.CreateClubRequest;
 import com.hongik.joinhere.dto.club.CreateClubResponse;
+import com.hongik.joinhere.dto.club.ShowClubInfoResponse;
 import com.hongik.joinhere.dto.club.ShowClubResponse;
 import com.hongik.joinhere.service.ClubService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +31,9 @@ public class ClubController {
     }
 
     @PostMapping
-//    public ResponseEntity<CreateClubResponse> create(@RequestBody CreateClubRequest request, @CookieValue("id") String memberId) {
     public ResponseEntity<CreateClubResponse> create(@RequestBody CreateClubRequest request) {
-        String memberId = "";
+        String memberId = request.getId();
+        System.out.println(memberId);
         CreateClubResponse response = clubService.register(request, memberId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -41,5 +42,11 @@ public class ClubController {
     public ResponseEntity<List<ShowClubResponse>> showClubsByCategory(@PathVariable String category) {
         List<ShowClubResponse> responses = clubService.findClubsByCategory(category);
         return ResponseEntity.status(HttpStatus.OK).body(responses);
+    }
+
+    @GetMapping("/{club-id}")
+    public ResponseEntity<ShowClubInfoResponse> showClubInfo(@PathVariable("club-id") Long id) {
+        ShowClubInfoResponse response = clubService.findClubInfo(id);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

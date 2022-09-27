@@ -23,6 +23,10 @@ public class ClubRepository {
                 .getResultList();
     }
 
+    public Club findById(Long id) {
+        return em.find(Club.class, id);
+    }
+
     public List<Club> findByCategory(String category) {
         return em.createQuery("select c from Club c where c.category = :category", Club.class)
                 .setParameter("category", category)
