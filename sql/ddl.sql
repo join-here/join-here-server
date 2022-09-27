@@ -27,3 +27,17 @@ CREATE TABLE club
     `scrap`         BIGINT           NOT NULL,
     PRIMARY KEY (id)
 );
+
+-- Create announcement Table
+CREATE TABLE announcement
+(
+    `id`           BIGINT           NOT NULL    AUTO_INCREMENT,
+    `title`        VARCHAR(50)      NOT NULL,
+    `description`  VARCHAR(1000)    NOT NULL,
+    `poster`       BLOB             NULL,
+    `start_date`   DATE             NOT NULL,
+    `end_date`     DATE             NOT NULL,
+    `club_id`      BIGINT           NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (club_id) references club(id)
+);
