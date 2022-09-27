@@ -42,10 +42,10 @@ CREATE TABLE announcement
     FOREIGN KEY (club_id) references club(id)
 );
 
--- belong Table Create SQL
+-- Create belong Table
 CREATE TABLE belong
 (
-    `id`         BIGINT         NOT NULL,
+    `id`         BIGINT         NOT NULL    AUTO_INCREMENT,
     `position`   VARCHAR(3)     NOT NULL,
     `member_id`  VARCHAR(20)    NOT NULL,
     `club_id`    BIGINT         NOT NULL,
