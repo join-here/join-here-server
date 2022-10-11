@@ -20,6 +20,10 @@ public class BelongRepository {
         return belong;
     }
 
+    public Belong findById(Long id) {
+        return em.find(Belong.class, id);
+    }
+
     public List<Belong> findByMemberId(Member member) {
         return em.createQuery("select b from Belong b where b.member = :member", Belong.class)
                 .setParameter("member", member)
@@ -30,5 +34,9 @@ public class BelongRepository {
         return em.createQuery("select b from Belong b where b.club.id = :club", Belong.class)
                 .setParameter("club", clubId)
                 .getResultList();
+    }
+
+    public void delete(Belong belong) {
+        em.remove(belong);
     }
 }
