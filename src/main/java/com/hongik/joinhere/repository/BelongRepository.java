@@ -25,4 +25,10 @@ public class BelongRepository {
                 .setParameter("member", member)
                 .getResultList();
     }
+
+    public List<Belong> findByClubId(Long clubId) {
+        return em.createQuery("select b from Belong b where b.club.id = :club", Belong.class)
+                .setParameter("club", clubId)
+                .getResultList();
+    }
 }
