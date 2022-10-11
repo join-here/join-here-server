@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -13,7 +12,11 @@ import javax.persistence.Id;
 @AllArgsConstructor
 public class Question{
 
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String content;
+
+    @ManyToOne
+    @JoinColumn(name = "announcement_id")
+    private Announcement announcement;
 }
