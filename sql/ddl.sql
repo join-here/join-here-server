@@ -51,3 +51,13 @@ CREATE TABLE belong
     FOREIGN KEY (member_id) references member(id),
     FOREIGN KEY (club_id) references club(id)
 );
+
+-- Create question Table
+CREATE TABLE question
+(
+    `id`               BIGINT          NOT NULL    AUTO_INCREMENT,
+    `announcement_id`  BIGINT          NOT NULL,
+    `content`          VARCHAR(500)    NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (announcement_id) references announcement(id)
+);
