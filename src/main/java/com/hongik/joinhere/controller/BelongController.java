@@ -22,7 +22,7 @@ public class BelongController {
     }
 
     @GetMapping("clubs/{club-id}/belong")
-    List<ShowBelongResponse> showBelongByClub(@PathVariable("club-id") Long clubId) {
+    List<ShowBelongResponse> showBelongsByClub(@PathVariable("club-id") Long clubId) {
         return belongService.findBelongByClubId(clubId);
     }
 
