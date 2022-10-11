@@ -1,9 +1,8 @@
 package com.hongik.joinhere.service;
 
-import com.hongik.joinhere.dto.belong.ShowClubBelongResponse;
+import com.hongik.joinhere.dto.belong.ShowBelongResponse;
 import com.hongik.joinhere.dto.club.ShowMyClubResponse;
 import com.hongik.joinhere.entity.Belong;
-import com.hongik.joinhere.entity.Club;
 import com.hongik.joinhere.entity.Member;
 import com.hongik.joinhere.repository.BelongRepository;
 import com.hongik.joinhere.repository.MemberRepository;
@@ -37,14 +36,14 @@ public class BelongService {
         return responses;
     }
 
-    public List<ShowClubBelongResponse> findBelongByClubId(Long clubId) {
+    public List<ShowBelongResponse> findBelongByClubId(Long clubId) {
         List<Belong> belongs = belongRepository.findByClubId(clubId);
-        List<ShowClubBelongResponse> responses = new ArrayList<>();
+        List<ShowBelongResponse> responses = new ArrayList<>();
 
         if (belongs.size() == 0)
             return null;
         for (Belong belong: belongs)
-            responses.add(ShowClubBelongResponse.from(belong));
+            responses.add(ShowBelongResponse.from(belong));
         return responses;
     }
 }

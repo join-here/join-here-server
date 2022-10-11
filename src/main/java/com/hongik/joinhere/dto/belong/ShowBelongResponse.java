@@ -6,14 +6,14 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ShowClubBelongResponse {
+public class ShowBelongResponse {
 
     private Long belongId;
     private String memberId;
     private String memberName;
     private String position;
 
-    public static ShowClubBelongResponse from(Belong belong) {
-        return new ShowClubBelongResponse(belong.getId(), belong.getMember().getId(), belong.getMember().getName(), belong.getPosition());
+    public static ShowBelongResponse from(Belong belong) {
+        return new ShowBelongResponse(belong.getId(), belong.getMember().getId(), belong.getMember().getName(), belong.getPosition());
     }
 }
