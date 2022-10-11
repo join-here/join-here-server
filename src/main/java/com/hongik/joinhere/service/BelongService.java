@@ -1,10 +1,13 @@
 package com.hongik.joinhere.service;
 
+import com.hongik.joinhere.dto.belong.CreateBelongRequest;
 import com.hongik.joinhere.dto.belong.ShowBelongResponse;
 import com.hongik.joinhere.dto.club.ShowMyClubResponse;
 import com.hongik.joinhere.entity.Belong;
+import com.hongik.joinhere.entity.Club;
 import com.hongik.joinhere.entity.Member;
 import com.hongik.joinhere.repository.BelongRepository;
+import com.hongik.joinhere.repository.ClubRepository;
 import com.hongik.joinhere.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,10 +21,12 @@ public class BelongService {
 
     private final BelongRepository belongRepository;
     private final MemberRepository memberRepository;
+    private final ClubRepository clubRepository;
 
-    public BelongService(BelongRepository belongRepository, MemberRepository memberRepository) {
+    public BelongService(BelongRepository belongRepository, MemberRepository memberRepository, ClubRepository clubRepository) {
         this.belongRepository = belongRepository;
         this.memberRepository = memberRepository;
+        this.clubRepository = clubRepository;
     }
 
     public List<ShowMyClubResponse> findBelongByMemberId(String memberId) {
@@ -38,6 +43,19 @@ public class BelongService {
 
     public List<ShowBelongResponse> findBelongByClubId(Long clubId) {
         List<Belong> belongs = belongRepository.findByClubId(clubId);
+        return mappingResponse(belongs);
+    }
+
+    public List<ShowBelongResponse> register(CreateBelongRequest request, Long clubId) {
+        Member member = memberRepository.findById(request.getMemberId());
+        Club club = clubRepository.findById(clubId);
+        Belong belong = new Belong(null, "nor", member, club);
+        belongRepository.save(belong);
+        List<Belong> belongs = belongRepository.findByClubId(clubId);
+        return mappingResponse(belongs);
+    }
+
+    private List<ShowBelongResponse> mappingResponse(List<Belong> belongs) {
         List<ShowBelongResponse> responses = new ArrayList<>();
 
         if (belongs.size() == 0)
