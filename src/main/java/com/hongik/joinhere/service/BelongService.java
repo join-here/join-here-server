@@ -57,9 +57,12 @@ public class BelongService {
         return mappingResponse(belongs);
     }
 
-//    public List<ShowBelongResponse> updatePosition(UpdateBelongRequest request, Long clubId) {
-//
-//    }
+    public List<ShowBelongResponse> updatePosition(UpdateBelongRequest request, Long clubId) {
+        Belong belong = belongRepository.findById(request.getBelongId());
+        belong.setPosition(request.getPosition());
+        List<Belong> belongs = belongRepository.findByClubId(clubId);
+        return mappingResponse(belongs);
+    }
 
     public List<ShowBelongResponse> delete(DeleteBelongRequest request, Long clubId) {
         Belong belong = belongRepository.findById(request.getBelongId());

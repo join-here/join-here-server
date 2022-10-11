@@ -33,10 +33,10 @@ public class BelongController {
         return ResponseEntity.status(HttpStatus.CREATED).body(belongService.register(request, clubId));
     }
 
-//    @PatchMapping("clubs/{club-id}/belong")
-//    List<ShowBelongResponse> update(@RequestBody UpdateBelongRequest request, @PathVariable("club-id") Long clubId) {
-//
-//    }
+    @PatchMapping("clubs/{club-id}/belong")
+    List<ShowBelongResponse> update(@RequestBody UpdateBelongRequest request, @PathVariable("club-id") Long clubId) {
+        return belongService.updatePosition(request, clubId);
+    }
 
     @DeleteMapping("clubs/{club-id}/belong")
     List<ShowBelongResponse> delete(@RequestBody DeleteBelongRequest request, @PathVariable("club-id") Long clubId) {
