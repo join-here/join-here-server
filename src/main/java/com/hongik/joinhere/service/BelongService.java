@@ -41,7 +41,7 @@ public class BelongService {
         return responses;
     }
 
-    public List<ShowBelongResponse> findBelongByClubId(Long clubId) {
+    public List<ShowBelongResponse> findBelongByClub(Long clubId) {
         List<Belong> belongs = belongRepository.findByClubId(clubId);
         return mappingResponse(belongs);
     }
