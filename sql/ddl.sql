@@ -69,5 +69,7 @@ CREATE TABLE answer
     `content`      VARCHAR(2000)    NOT NULL    DEFAULT 'wait',
     `member_id`    VARCHAR(20)      NOT NULL,
     `question_id`  BIGINT           NOT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (member_id) references member(id),
+    FOREIGN KEY (question_id) references question(id)
 );
