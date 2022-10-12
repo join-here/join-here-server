@@ -61,3 +61,13 @@ CREATE TABLE question
     PRIMARY KEY (id),
     FOREIGN KEY (announcement_id) references announcement(id)
 );
+
+-- Create answer Table
+CREATE TABLE answer
+(
+    `id`           BIGINT           NOT NULL    AUTO_INCREMENT,
+    `content`      VARCHAR(2000)    NOT NULL    DEFAULT 'wait',
+    `member_id`    VARCHAR(20)      NOT NULL,
+    `question_id`  BIGINT           NOT NULL,
+    PRIMARY KEY (id)
+);
