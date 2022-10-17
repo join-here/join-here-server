@@ -11,6 +11,7 @@ import com.hongik.joinhere.entity.Member;
 import com.hongik.joinhere.repository.BelongRepository;
 import com.hongik.joinhere.repository.ClubRepository;
 import com.hongik.joinhere.repository.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,7 @@ public class BelongService {
     private final MemberRepository memberRepository;
     private final ClubRepository clubRepository;
 
+    @Autowired
     public BelongService(BelongRepository belongRepository, MemberRepository memberRepository, ClubRepository clubRepository) {
         this.belongRepository = belongRepository;
         this.memberRepository = memberRepository;

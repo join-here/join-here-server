@@ -20,16 +20,4 @@ public class CreateClubRequest {
     public Club toEntity() {
         return new Club(null, name, category, area, image, introduction, 0L, 0L);
     }
-
-    @Override
-    public String toString() {
-        return "CreateClubRequest{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", category='" + category + '\'' +
-                ", area='" + area + '\'' +
-                ", image=" + Arrays.toString(image) +
-                ", introduction='" + introduction + '\'' +
-                '}';
-    }
 }

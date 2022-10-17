@@ -20,12 +20,10 @@ import java.util.List;
 public class ClubController {
 
     private final ClubService clubService;
-    private final AnnouncementService announcementService;
 
     @Autowired
-    public ClubController(ClubService clubService, AnnouncementService announcementService) {
+    public ClubController(ClubService clubService) {
         this.clubService = clubService;
-        this.announcementService = announcementService;
     }
 
     @GetMapping
@@ -50,11 +48,5 @@ public class ClubController {
     public ResponseEntity<List<ShowClubResponse>> showClubsByCategory(@PathVariable String category) {
         List<ShowClubResponse> responses = clubService.findClubsByCategory(category);
         return ResponseEntity.status(HttpStatus.OK).body(responses);
-    }
-
-    @PostMapping("/{club-id}/announcements")
-    public ResponseEntity<CreateAnnouncementResponse> createAnnouncement(@RequestBody CreateAnnouncementRequest request, @PathVariable("club-id") Long id) {
-        CreateAnnouncementResponse response = announcementService.register(request, id);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

@@ -17,6 +17,8 @@ public class Announcement {
     private Long id;
     private String title;
     private String description;
+
+    @Lob
     private Byte[] poster;
 
     @Column(name = "start_date")
