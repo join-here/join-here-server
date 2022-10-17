@@ -19,6 +19,10 @@ public class AnnouncementRepository {
         return announcement;
     }
 
+    public Announcement findById(Long id) {
+        return em.find(Announcement.class, id);
+    }
+
     public List<Announcement> findByClubId(Club club) {
         return em.createQuery("select a from Announcement a where a.club = :club", Announcement.class)
                 .setParameter("club", club)

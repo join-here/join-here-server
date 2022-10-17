@@ -20,7 +20,7 @@ public class AnswerController {
 
     @PostMapping("/announcements/{announcement-id}/answers")
     ResponseEntity<?> create(@RequestBody List<CreateAnswerRequest> requests, @PathVariable("announcement-id") Long announcementId) {
-        answerService.register(requests);
+        answerService.register(requests, announcementId);
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
 }

@@ -17,6 +17,10 @@ public class QuestionRepository {
         em.persist(question);
     }
 
+    public Question findById(Long id) {
+        return em.find(Question.class, id);
+    }
+
     public List<Question> findByAnnouncementId(Long announcementId) {
         return em.createQuery("select q from Question q where q.announcement.id = :announcement", Question.class)
                 .setParameter("announcement", announcementId)
