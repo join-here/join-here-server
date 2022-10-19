@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -31,7 +33,8 @@ public class AnswerService {
     public void register(List<CreateAnswerRequest> requests, Long announcementId) {
         Member member = memberRepository.findById(requests.get(0).getMemberId());
         Announcement announcement = announcementRepository.findById(announcementId);
-        Application application = new Application(null, "hold", "n", member, announcement);
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        Application application = new Application(null, "hold", "n", now ,member, announcement);
         applicationRepository.save(application);
         for (CreateAnswerRequest request : requests) {
             Question question = questionRepository.findById(request.getQuestionId());
