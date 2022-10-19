@@ -80,6 +80,7 @@ CREATE TABLE application
     `id`               BIGINT         NOT NULL    AUTO_INCREMENT,
     `pass_state`       VARCHAR(4)     NOT NULL    DEFAULT 'hold',
     `inform_state`     VARCHAR(1)     NOT NULL    DEFAULT 'n',
+    `time`             DATETIME       NOT NULL,
     `member_id`        VARCHAR(20)    NOT NULL,
     `announcement_id`  BIGINT         NOT NULL,
     PRIMARY KEY (id),
