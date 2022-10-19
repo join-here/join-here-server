@@ -50,7 +50,7 @@ public class ClubService {
         List<ShowClubResponse> responses = new ArrayList<>();
 
         for (Club club : clubs) {
-            List<Announcement> announcements = announcementRepository.findByClubId(club);
+            List<Announcement> announcements = announcementRepository.findByClubId(club.getId());
             if (announcements.size() == 0)
                 responses.add(ShowClubResponse.from(club, null));
             else
@@ -64,7 +64,7 @@ public class ClubService {
         List<ShowClubResponse> responses = new ArrayList<>();
 
         for (Club club : clubs) {
-            List<Announcement> announcements = announcementRepository.findByClubId(club);
+            List<Announcement> announcements = announcementRepository.findByClubId(club.getId());
             if (announcements.size() == 0)
                 responses.add(ShowClubResponse.from(club, null));
             else
@@ -75,7 +75,7 @@ public class ClubService {
 
     public ShowClubInfoResponse findClubInfo(Long id) {
         Club club = clubRepository.findById(id);
-        List<Announcement> announcements = announcementRepository.findByClubId(club);
+        List<Announcement> announcements = announcementRepository.findByClubId(club.getId());
         if (announcements.size() == 0)
             return ShowClubInfoResponse.from(club, null, null, null);
         else
