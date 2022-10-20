@@ -1,6 +1,6 @@
 package com.hongik.joinhere.controller;
 
-import com.hongik.joinhere.dto.application.ShowApplicationResponse;
+import com.hongik.joinhere.dto.application.ShowApplicantResponse;
 import com.hongik.joinhere.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,7 +22,10 @@ public class ApplicationController {
     }
 
     @GetMapping("/clubs/{club-id}/applications")
-    public List<ShowApplicationResponse> showApplicationsInfo(@PathVariable(name = "club-id") Long clubId) {
+    public List<ShowApplicantResponse> showApplicantsInfo(@PathVariable(name = "club-id") Long clubId) {
         return applicationService.findApplications(clubId);
     }
+
+//    @GetMapping("/members/{member-id}/applications/{application-id}")
+    
 }

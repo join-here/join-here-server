@@ -1,12 +1,10 @@
 package com.hongik.joinhere.service;
 
-import com.hongik.joinhere.dto.application.ShowApplicationResponse;
+import com.hongik.joinhere.dto.application.ShowApplicantResponse;
 import com.hongik.joinhere.entity.Announcement;
 import com.hongik.joinhere.entity.Application;
-import com.hongik.joinhere.entity.Club;
 import com.hongik.joinhere.repository.AnnouncementRepository;
 import com.hongik.joinhere.repository.ApplicationRepository;
-import com.hongik.joinhere.repository.ClubRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,13 +25,13 @@ public class ApplicationService {
         this.applicationRepository = applicationRepository;
     }
 
-    public List<ShowApplicationResponse> findApplications(Long clubId) {
+    public List<ShowApplicantResponse> findApplications(Long clubId) {
         List<Announcement> announcements = announcementRepository.findByClubId(clubId);
         Announcement announcement = announcements.get(announcements.size() - 1);
         List<Application> applications = applicationRepository.findByAnnouncementId(announcement.getId());
-        List<ShowApplicationResponse> responses = new ArrayList<>();
+        List<ShowApplicantResponse> responses = new ArrayList<>();
         for (Application application : applications)
-            responses.add(ShowApplicationResponse.from(application));
+            responses.add(ShowApplicantResponse.from(application));
         return responses;
     }
 }

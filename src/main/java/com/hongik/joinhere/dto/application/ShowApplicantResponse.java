@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
-public class ShowApplicationResponse {
+public class ShowApplicantResponse {
 
     private String memberId;
     private String memberName;
@@ -16,7 +16,7 @@ public class ShowApplicationResponse {
     private LocalDateTime applicationTime;
     private String passState;
 
-    public static ShowApplicationResponse from(Application application) {
-        return new ShowApplicationResponse(application.getMember().getId(), application.getMember().getName(), application.getId(), application.getTime(), application.getPassState());
+    public static ShowApplicantResponse from(Application application) {
+        return new ShowApplicantResponse(application.getMember().getId(), application.getMember().getName(), application.getId(), application.getTime(), application.getPassState());
     }
 }
