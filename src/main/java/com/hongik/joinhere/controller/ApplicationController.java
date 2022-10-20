@@ -22,7 +22,7 @@ public class ApplicationController {
     }
 
     @GetMapping("/clubs/{club-id}/applications")
-    List<ShowApplicationResponse> showApplicationsInfo(@PathVariable(name = "club-id") Long clubId) {
+    public List<ShowApplicationResponse> showApplicationsInfo(@PathVariable(name = "club-id") Long clubId) {
         return applicationService.findApplications(clubId);
     }
 }

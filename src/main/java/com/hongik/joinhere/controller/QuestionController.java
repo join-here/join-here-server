@@ -22,7 +22,7 @@ public class QuestionController {
     }
 
     @GetMapping("/announcements/{announcement-id}/questions")
-    List<ShowQuestionResponse> showQuestions(@PathVariable("announcement-id") Long announcementId) {
+    public List<ShowQuestionResponse> showQuestions(@PathVariable("announcement-id") Long announcementId) {
         return questionService.findQuestionsByAnnouncement(announcementId);
     }
 }
