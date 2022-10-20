@@ -17,6 +17,10 @@ public class ApplicationRepository {
         em.persist(application);
     }
 
+    public Application findById(Long id) {
+        return em.find(Application.class, id);
+    }
+
     public List<Application> findByAnnouncementId(Long announcementId) {
         return em.createQuery("select a from Application a where a.announcement.id = :announcement", Application.class)
                 .setParameter("announcement", announcementId)
