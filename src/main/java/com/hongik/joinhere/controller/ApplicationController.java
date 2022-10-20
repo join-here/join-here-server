@@ -21,7 +21,7 @@ public class ApplicationController {
         this.applicationService = applicationService;
     }
 
-    @GetMapping("clubs/{club-id}/applications")
+    @GetMapping("/clubs/{club-id}/applications")
     List<ShowApplicationResponse> showApplicationsInfo(@PathVariable(name = "club-id") Long clubId) {
         return applicationService.findApplications(clubId);
     }

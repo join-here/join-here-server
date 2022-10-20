@@ -20,7 +20,7 @@ public class AnnouncementController {
         this.announcementService = announcementService;
     }
 
-    @PostMapping("clubs/{club-id}/announcements")
+    @PostMapping("/clubs/{club-id}/announcements")
     public ResponseEntity<CreateAnnouncementResponse> createAnnouncement(@RequestBody CreateAnnouncementRequest request, @PathVariable("club-id") Long id) {
         CreateAnnouncementResponse response = announcementService.register(request, id);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

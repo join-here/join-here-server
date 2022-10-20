@@ -23,22 +23,22 @@ public class BelongController {
         this.belongService = belongService;
     }
 
-    @GetMapping("clubs/{club-id}/belongs")
+    @GetMapping("/clubs/{club-id}/belongs")
     List<ShowBelongResponse> showBelongsByClub(@PathVariable("club-id") Long clubId) {
         return belongService.findBelongByClub(clubId);
     }
 
-    @PostMapping("clubs/{club-id}/belongs")
+    @PostMapping("/clubs/{club-id}/belongs")
     ResponseEntity<List<ShowBelongResponse>> create(@RequestBody  CreateBelongRequest request, @PathVariable("club-id") Long clubId) {
         return ResponseEntity.status(HttpStatus.CREATED).body(belongService.register(request, clubId));
     }
 
-    @PatchMapping("clubs/{club-id}/belongs")
+    @PatchMapping("/clubs/{club-id}/belongs")
     List<ShowBelongResponse> update(@RequestBody UpdateBelongRequest request, @PathVariable("club-id") Long clubId) {
         return belongService.updatePosition(request, clubId);
     }
 
-    @DeleteMapping("clubs/{club-id}/belongs")
+    @DeleteMapping("/clubs/{club-id}/belongs")
     List<ShowBelongResponse> delete(@RequestBody DeleteBelongRequest request, @PathVariable("club-id") Long clubId) {
         return belongService.delete(request, clubId);
     }
