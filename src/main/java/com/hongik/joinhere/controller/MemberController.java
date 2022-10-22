@@ -1,11 +1,10 @@
 package com.hongik.joinhere.controller;
 
 import com.hongik.joinhere.dto.club.ShowMyClubResponse;
-import com.hongik.joinhere.dto.member.CreateMemberRequest;
-import com.hongik.joinhere.dto.member.CreateMemberResponse;
+import com.hongik.joinhere.dto.member.MemberRequest;
+import com.hongik.joinhere.dto.member.MemberResponse;
 import com.hongik.joinhere.dto.member.LoginMemberRequest;
 import com.hongik.joinhere.dto.member.LoginMemberResponse;
-import com.hongik.joinhere.entity.Belong;
 import com.hongik.joinhere.service.BelongService;
 import com.hongik.joinhere.service.ClubService;
 import com.hongik.joinhere.service.MemberService;
@@ -25,19 +24,22 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
-    private final ClubService clubService;
     private final BelongService belongService;
 
     @Autowired
-    public MemberController(MemberService memberService, ClubService clubService, BelongService belongService) {
+    public MemberController(MemberService memberService, BelongService belongService) {
         this.memberService = memberService;
-        this.clubService = clubService;
         this.belongService = belongService;
     }
 
     @PostMapping
-    public ResponseEntity<CreateMemberResponse> create(@RequestBody CreateMemberRequest request) {
+    public ResponseEntity<MemberResponse> create(@RequestBody MemberRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(memberService.join(request));
+    }
+
+    @PatchMapping
+    public void update(@RequestBody MemberRequest request) {
+
     }
 
     @PostMapping("/login")
@@ -57,6 +59,11 @@ public class MemberController {
         nameCookie.setMaxAge(0);
         response.addCookie(idCookie);
         response.addCookie(nameCookie);
+    }
+
+    @GetMapping("/{member-id}")
+    public MemberResponse showMemberInfo(@PathVariable(name = "member-id") String memberId) {
+        return memberService.findMember(memberId);
     }
 
     @GetMapping("/{member-id}/clubs")

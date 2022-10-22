@@ -8,7 +8,7 @@ import java.sql.Date;
 
 @Getter
 @AllArgsConstructor
-public class CreateMemberResponse {
+public class MemberResponse {
 
     private String id;
     private String name;
@@ -16,7 +16,7 @@ public class CreateMemberResponse {
     private Date birthday;
     private String phone;
 
-    public static CreateMemberResponse from(Member member) {
-        return new CreateMemberResponse(member.getId(), member.getName(), member.getPassword(), member.getBirthday(), member.getPhone());
+    public static MemberResponse from(Member member) {
+        return new MemberResponse(member.getId(), member.getName(), member.getPassword(), member.getBirthday(), member.getPhone());
     }
 }

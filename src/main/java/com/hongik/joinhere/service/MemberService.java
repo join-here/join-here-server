@@ -1,8 +1,8 @@
 package com.hongik.joinhere.service;
 
 import com.hongik.joinhere.entity.Member;
-import com.hongik.joinhere.dto.member.CreateMemberRequest;
-import com.hongik.joinhere.dto.member.CreateMemberResponse;
+import com.hongik.joinhere.dto.member.MemberRequest;
+import com.hongik.joinhere.dto.member.MemberResponse;
 import com.hongik.joinhere.dto.member.LoginMemberRequest;
 import com.hongik.joinhere.dto.member.LoginMemberResponse;
 import com.hongik.joinhere.repository.MemberRepository;
@@ -21,9 +21,14 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public CreateMemberResponse join(CreateMemberRequest request) {
+    public MemberResponse join(MemberRequest request) {
         Member member = request.toEntity();
-        return CreateMemberResponse.from(memberRepository.save(member));
+        return MemberResponse.from(memberRepository.save(member));
+    }
+
+    public MemberResponse findMember(String memberId) {
+        Member member = memberRepository.findById(memberId);
+        return MemberResponse.from(member);
     }
 
     public LoginMemberResponse login(LoginMemberRequest request) {
