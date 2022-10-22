@@ -26,4 +26,10 @@ public class ApplicationRepository {
                 .setParameter("announcement", announcementId)
                 .getResultList();
     }
+
+    public List<Application> findByMemberId(String memberId) {
+        return em.createQuery("select a from Application a where a.member.id = :member", Application.class)
+                .setParameter("member", memberId)
+                .getResultList();
+    }
 }

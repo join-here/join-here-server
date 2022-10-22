@@ -1,9 +1,6 @@
 package com.hongik.joinhere.service;
 
-import com.hongik.joinhere.dto.application.PublishApplicationRequest;
-import com.hongik.joinhere.dto.application.ShowApplicantResponse;
-import com.hongik.joinhere.dto.application.ShowApplicationResponse;
-import com.hongik.joinhere.dto.application.UpdateApplicantRequest;
+import com.hongik.joinhere.dto.application.*;
 import com.hongik.joinhere.entity.*;
 import com.hongik.joinhere.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,14 +69,24 @@ public class ApplicationService {
         }
     }
 
-    public List<ShowApplicationResponse> findApplications(String memberId, Long applicationId) {
+    public List<ShowApplicationContentResponse> findApplications(String memberId, Long applicationId) {
         Application application = applicationRepository.findById(applicationId);
         Announcement announcement = announcementRepository.findById(application.getAnnouncement().getId());
         List<Question> questions = questionRepository.findByAnnouncementId(announcement.getId());
-        List<ShowApplicationResponse> responses = new ArrayList<>();
+        List<ShowApplicationContentResponse> responses = new ArrayList<>();
         for (Question question : questions) {
             Answer answer = answerRepository.findByMemberIdAndQuestionId(memberId, question.getId()).get(0);
-            responses.add(ShowApplicationResponse.from(question, answer));
+            responses.add(ShowApplicationContentResponse.from(question, answer));
+        }
+        return responses;
+    }
+
+    public List<ShowMyApplicationResponse> findApplicationsByMemberId(String memberId) {
+        List<Application> applications = applicationRepository.findByMemberId(memberId);
+        List<ShowMyApplicationResponse> responses = new ArrayList<>();
+        for (Application application : applications) {
+            Club club = clubRepository.findById(application.getAnnouncement().getClub().getId());
+            responses.add(ShowMyApplicationResponse.from(club, application));
         }
         return responses;
     }

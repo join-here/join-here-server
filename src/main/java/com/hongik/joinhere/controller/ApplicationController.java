@@ -1,9 +1,6 @@
 package com.hongik.joinhere.controller;
 
-import com.hongik.joinhere.dto.application.PublishApplicationRequest;
-import com.hongik.joinhere.dto.application.ShowApplicantResponse;
-import com.hongik.joinhere.dto.application.ShowApplicationResponse;
-import com.hongik.joinhere.dto.application.UpdateApplicantRequest;
+import com.hongik.joinhere.dto.application.*;
 import com.hongik.joinhere.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,9 +35,14 @@ public class ApplicationController {
         applicationService.publishApplications(requests, clubId);
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
-    
+
+    @GetMapping("/members/{member-id}/applications")
+    public List<ShowMyApplicationResponse> showMyApplications(@PathVariable(name = "member-id") String memberId) {
+        return applicationService.findApplicationsByMemberId(memberId);
+    }
+
     @GetMapping("/members/{member-id}/applications/{application-id}")
-    public List<ShowApplicationResponse> showApplications(@PathVariable(name = "member-id") String memberId, @PathVariable(name = "application-id") Long applicationId) {
+    public List<ShowApplicationContentResponse> showApplicationContents(@PathVariable(name = "member-id") String memberId, @PathVariable(name = "application-id") Long applicationId) {
         return applicationService.findApplications(memberId, applicationId);
     }
 }
