@@ -26,6 +26,14 @@ public class MemberService {
         return MemberResponse.from(memberRepository.save(member));
     }
 
+    public void updateMemberInfo(MemberRequest request) {
+        Member member = memberRepository.findById(request.getId());
+        member.setName(request.getName());
+        member.setPassword(request.getPassword());
+        member.setBirthday(request.getBirthday());
+        member.setPhone(request.getPhone());
+    }
+
     public MemberResponse findMember(String memberId) {
         Member member = memberRepository.findById(memberId);
         return MemberResponse.from(member);

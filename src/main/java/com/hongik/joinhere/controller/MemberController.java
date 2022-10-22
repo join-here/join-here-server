@@ -39,7 +39,7 @@ public class MemberController {
 
     @PatchMapping
     public void update(@RequestBody MemberRequest request) {
-
+        memberService.updateMemberInfo(request);
     }
 
     @PostMapping("/login")

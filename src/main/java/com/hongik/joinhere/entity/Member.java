@@ -8,6 +8,7 @@ import java.sql.Date;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Member {
