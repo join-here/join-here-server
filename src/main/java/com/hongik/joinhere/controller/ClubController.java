@@ -38,6 +38,11 @@ public class ClubController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @PatchMapping
+    public void update(@RequestBody UpdateClubRequest request) {
+        clubService.updateClubInfo(request);
+    }
+
     @GetMapping("/{club-id}")
     public ResponseEntity<ShowClubInfoResponse> showClubInfo(@PathVariable("club-id") Long id) {
         ShowClubInfoResponse response = clubService.findClubInfo(id);

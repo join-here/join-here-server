@@ -3,11 +3,13 @@ package com.hongik.joinhere.entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Club {
@@ -19,7 +21,7 @@ public class Club {
     private String area;
 
     @Lob
-    private byte[] image;
+    private Byte[] image;
     private String introduction;
     private Long view;
     private Long scrap;

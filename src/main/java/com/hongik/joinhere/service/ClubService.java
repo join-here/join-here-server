@@ -1,9 +1,6 @@
 package com.hongik.joinhere.service;
 
-import com.hongik.joinhere.dto.club.CreateClubRequest;
-import com.hongik.joinhere.dto.club.CreateClubResponse;
-import com.hongik.joinhere.dto.club.ShowClubInfoResponse;
-import com.hongik.joinhere.dto.club.ShowClubResponse;
+import com.hongik.joinhere.dto.club.*;
 import com.hongik.joinhere.entity.Announcement;
 import com.hongik.joinhere.entity.Belong;
 import com.hongik.joinhere.entity.Club;
@@ -80,5 +77,14 @@ public class ClubService {
             return ShowClubInfoResponse.from(club, null, null, null);
         else
             return ShowClubInfoResponse.from(club, announcements.get(announcements.size() - 1), null, null);
+    }
+
+    public void updateClubInfo(UpdateClubRequest request) {
+        Club club = clubRepository.findById(request.getClubId());
+        club.setName(request.getName());
+        club.setCategory(request.getCategory());
+        club.setArea(request.getArea());
+        club.setImage(request.getImage());
+        club.setIntroduction(request.getIntroduction());
     }
 }
