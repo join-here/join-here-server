@@ -87,3 +87,16 @@ CREATE TABLE application
     FOREIGN KEY (member_id) references member(id),
     FOREIGN KEY (announcement_id) references announcement(id)
 );
+
+-- Create review Table
+CREATE TABLE review
+(
+    `id`         BIGINT           NOT NULL    AUTO_INCREMENT,
+    `content`    VARCHAR(1000)    NOT NULL,
+    `time`       DATETIME         NOT NULL,
+    `member_id`  VARCHAR(20)      NOT NULL,
+    `club_id`    BIGINT           NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (member_id) references member(id),
+    FOREIGN KEY (club_id) references club(id)
+);
