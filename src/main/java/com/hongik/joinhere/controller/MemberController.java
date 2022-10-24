@@ -1,12 +1,10 @@
 package com.hongik.joinhere.controller;
 
-import com.hongik.joinhere.dto.club.ShowMyClubResponse;
 import com.hongik.joinhere.dto.member.MemberRequest;
 import com.hongik.joinhere.dto.member.MemberResponse;
 import com.hongik.joinhere.dto.member.LoginMemberRequest;
 import com.hongik.joinhere.dto.member.LoginMemberResponse;
 import com.hongik.joinhere.service.BelongService;
-import com.hongik.joinhere.service.ClubService;
 import com.hongik.joinhere.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -64,15 +61,5 @@ public class MemberController {
     @GetMapping("/{member-id}")
     public MemberResponse showMemberInfo(@PathVariable(name = "member-id") String memberId) {
         return memberService.findMember(memberId);
-    }
-
-    @GetMapping("/{member-id}/clubs")
-    public ResponseEntity<List<ShowMyClubResponse>> showMyClubs(@PathVariable("member-id") String memberId) {
-        System.out.println(memberId);
-        List<ShowMyClubResponse> responses = belongService.findBelongByMemberId(memberId);
-        if (responses != null)
-            return ResponseEntity.status(HttpStatus.OK).body(responses);
-        else
-            return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 }

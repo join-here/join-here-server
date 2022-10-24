@@ -4,6 +4,7 @@ import com.hongik.joinhere.dto.belong.CreateBelongRequest;
 import com.hongik.joinhere.dto.belong.DeleteBelongRequest;
 import com.hongik.joinhere.dto.belong.ShowBelongResponse;
 import com.hongik.joinhere.dto.belong.UpdateBelongRequest;
+import com.hongik.joinhere.dto.belong.ShowMyBelongResponse;
 import com.hongik.joinhere.service.BelongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,5 +42,15 @@ public class BelongController {
     @DeleteMapping("/clubs/{club-id}/belongs")
     public List<ShowBelongResponse> delete(@RequestBody DeleteBelongRequest request, @PathVariable("club-id") Long clubId) {
         return belongService.delete(request, clubId);
+    }
+
+    @GetMapping("/{member-id}/belongs")
+    public ResponseEntity<List<ShowMyBelongResponse>> showMyClubs(@PathVariable("member-id") String memberId) {
+        System.out.println(memberId);
+        List<ShowMyBelongResponse> responses = belongService.findBelongByMemberId(memberId);
+        if (responses != null)
+            return ResponseEntity.status(HttpStatus.OK).body(responses);
+        else
+            return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 }

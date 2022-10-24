@@ -4,10 +4,12 @@ import com.hongik.joinhere.dto.belong.CreateBelongRequest;
 import com.hongik.joinhere.dto.belong.DeleteBelongRequest;
 import com.hongik.joinhere.dto.belong.ShowBelongResponse;
 import com.hongik.joinhere.dto.belong.UpdateBelongRequest;
-import com.hongik.joinhere.dto.club.ShowMyClubResponse;
+import com.hongik.joinhere.dto.belong.ShowMyBelongResponse;
+import com.hongik.joinhere.entity.Announcement;
 import com.hongik.joinhere.entity.Belong;
 import com.hongik.joinhere.entity.Club;
 import com.hongik.joinhere.entity.Member;
+import com.hongik.joinhere.repository.AnnouncementRepository;
 import com.hongik.joinhere.repository.BelongRepository;
 import com.hongik.joinhere.repository.ClubRepository;
 import com.hongik.joinhere.repository.MemberRepository;
@@ -25,23 +27,27 @@ public class BelongService {
     private final BelongRepository belongRepository;
     private final MemberRepository memberRepository;
     private final ClubRepository clubRepository;
+    private final AnnouncementRepository announcementRepository;
 
     @Autowired
-    public BelongService(BelongRepository belongRepository, MemberRepository memberRepository, ClubRepository clubRepository) {
+    public BelongService(BelongRepository belongRepository, MemberRepository memberRepository, ClubRepository clubRepository, AnnouncementRepository announcementRepository) {
         this.belongRepository = belongRepository;
         this.memberRepository = memberRepository;
         this.clubRepository = clubRepository;
+        this.announcementRepository = announcementRepository;
     }
 
-    public List<ShowMyClubResponse> findBelongByMemberId(String memberId) {
+    public List<ShowMyBelongResponse> findBelongByMemberId(String memberId) {
         Member member = memberRepository.findById(memberId);
         List<Belong> belongs = belongRepository.findByMemberId(member);
-        List<ShowMyClubResponse> responses = new ArrayList<>();
+        List<ShowMyBelongResponse> responses = new ArrayList<>();
 
         if (belongs.size() == 0)
             return null;
-        for (Belong belong: belongs)
-            responses.add(ShowMyClubResponse.from(belong));
+        for (Belong belong: belongs) {
+            List<Announcement> announcement = announcementRepository.findByClubId(belong.getClub().getId());
+            responses.add(ShowMyBelongResponse.from(belong, !announcement.isEmpty()));
+        }
         return responses;
     }
 
