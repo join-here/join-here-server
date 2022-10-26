@@ -72,6 +72,7 @@ public class ClubService {
 
     public ShowClubInfoResponse findClubInfo(Long id) {
         Club club = clubRepository.findById(id);
+        club.setView(club.getView() + 1L);
         List<Announcement> announcements = announcementRepository.findByClubId(club.getId());
         if (announcements.size() == 0)
             return ShowClubInfoResponse.from(club, null, null, null);
