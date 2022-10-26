@@ -81,11 +81,23 @@ public class BelongService {
 
     private List<ShowBelongResponse> mappingResponse(List<Belong> belongs) {
         List<ShowBelongResponse> responses = new ArrayList<>();
+        List<ShowBelongResponse> preResponses = new ArrayList<>();
+        List<ShowBelongResponse> manResponses = new ArrayList<>();
+        List<ShowBelongResponse> norResponses = new ArrayList<>();
 
         if (belongs.size() == 0)
             return null;
-        for (Belong belong: belongs)
-            responses.add(ShowBelongResponse.from(belong));
+        for (Belong belong: belongs) {
+            if (belong.getPosition().equals("pre"))
+                preResponses.add(ShowBelongResponse.from(belong));
+            if (belong.getPosition().equals("man"))
+                manResponses.add(ShowBelongResponse.from(belong));
+            if (belong.getPosition().equals("nor"))
+                norResponses.add(ShowBelongResponse.from(belong));
+        }
+        responses.addAll(preResponses);
+        responses.addAll(manResponses);
+        responses.addAll(norResponses);
         return responses;
     }
 }
