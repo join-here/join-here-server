@@ -44,7 +44,7 @@ public class BelongController {
         return belongService.delete(request, clubId);
     }
 
-    @GetMapping("/{member-id}/belongs")
+    @GetMapping("members/{member-id}/belongs")
     public ResponseEntity<List<ShowMyBelongResponse>> showMyClubs(@PathVariable("member-id") String memberId) {
         System.out.println(memberId);
         List<ShowMyBelongResponse> responses = belongService.findBelongByMemberId(memberId);
