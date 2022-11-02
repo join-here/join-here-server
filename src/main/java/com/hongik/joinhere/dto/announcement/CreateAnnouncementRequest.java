@@ -8,8 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -19,7 +17,7 @@ public class CreateAnnouncementRequest {
     private String id;
     private String title;
     private String description;
-    private Byte[] poster;
+    private String poster;
     private Date startDate;
     private Date endDate;
     private List<String> question;

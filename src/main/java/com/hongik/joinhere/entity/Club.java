@@ -21,7 +21,7 @@ public class Club {
     private String area;
 
     @Lob
-    private Byte[] image;
+    private String image;
     private String introduction;
     private Long view;
     private Long scrap;

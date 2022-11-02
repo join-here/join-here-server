@@ -19,7 +19,7 @@ public class Announcement {
     private String description;
 
     @Lob
-    private Byte[] poster;
+    private String poster;
 
     @Column(name = "start_date")
     private Date startDate;

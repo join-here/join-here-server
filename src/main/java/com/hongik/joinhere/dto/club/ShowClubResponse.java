@@ -14,7 +14,7 @@ public class ShowClubResponse {
     private String name;
     private String category;
     private String area;
-    private Byte[] image;
+    private String image;
     private String introduction;
     private Long view;
     private Long scrap;

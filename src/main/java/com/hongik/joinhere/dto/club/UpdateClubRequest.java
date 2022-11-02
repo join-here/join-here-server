@@ -11,6 +11,6 @@ public class UpdateClubRequest {
     private String name;
     private String category;
     private String area;
-    private Byte[] image;
+    private String image;
     private String introduction;
 }
