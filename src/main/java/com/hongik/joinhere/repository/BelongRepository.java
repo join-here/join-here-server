@@ -36,6 +36,13 @@ public class BelongRepository {
                 .getResultList();
     }
 
+    public List<Belong> findByMemberIdAndClubId(String memberId, Long clubId) {
+        return em.createQuery("select b from Belong b where b.member.id = :member and b.club.id = :club", Belong.class)
+                .setParameter("member", memberId)
+                .setParameter("club", clubId)
+                .getResultList();
+    }
+
     public void delete(Belong belong) {
         em.remove(belong);
     }

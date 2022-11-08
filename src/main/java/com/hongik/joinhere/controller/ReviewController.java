@@ -20,6 +20,8 @@ public class ReviewController {
     @PostMapping("/clubs/{club-id}/reviews")
     public ResponseEntity<?> create(@RequestBody CreateReviewRequest request, @PathVariable(name = "club-id") Long clubId) {
         List<CreateReviewResponse> responses = reviewService.register(request, clubId);
+        if (responses == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         return ResponseEntity.status(HttpStatus.CREATED).body(responses);
     }
 }

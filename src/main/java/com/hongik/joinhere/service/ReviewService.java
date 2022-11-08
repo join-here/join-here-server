@@ -2,6 +2,7 @@ package com.hongik.joinhere.service;
 
 import com.hongik.joinhere.dto.review.CreateReviewRequest;
 import com.hongik.joinhere.dto.review.CreateReviewResponse;
+import com.hongik.joinhere.entity.Belong;
 import com.hongik.joinhere.entity.Club;
 import com.hongik.joinhere.entity.Member;
 import com.hongik.joinhere.entity.Review;
@@ -31,6 +32,9 @@ public class ReviewService {
     public List<CreateReviewResponse> register(CreateReviewRequest request, Long clubId) {
         Club club = clubRepository.findById(clubId);
         Member member = memberRepository.findById(request.getMemberId());
+        List<Belong> belongs = belongRepository.findByMemberIdAndClubId(request.getMemberId(), clubId);
+        if (belongs.isEmpty())
+            return null;
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         Review saveReview = new Review(null, request.getReviewContent(), now, member, club);
         reviewRepository.save(saveReview);
