@@ -26,4 +26,8 @@ public class QnaQuestionRepository {
                 .setParameter("club", clubId)
                 .getResultList();
     }
+
+    public void delete(QnaQuestion qnaQuestion) {
+        em.remove(qnaQuestion);
+    }
 }

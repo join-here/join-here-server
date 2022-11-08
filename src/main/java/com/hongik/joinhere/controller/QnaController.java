@@ -23,8 +23,8 @@ public class QnaController {
     }
 
     @DeleteMapping("/clubs/{club-id}/qnas/questions")
-    ResponseEntity<?> deleteQuestion(@RequestBody DeleteQnaQuestionRequest request, @PathVariable(name = "club-id") Long clubId) {
-        return null;
+    List<ShowQnaResponse> deleteQuestion(@RequestBody DeleteQnaQuestionRequest request, @PathVariable(name = "club-id") Long clubId) {
+        return qnaService.deleteQuestion(request, clubId);
     }
 
     @PostMapping("/clubs/{club-id}/qnas/answers")
