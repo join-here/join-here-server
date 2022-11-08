@@ -37,30 +37,17 @@ public class ClubService {
 
     public List<ShowClubResponse> findClubs() {
         List<Club> clubs = clubRepository.findAll();
-        List<ShowClubResponse> responses = new ArrayList<>();
-
-        for (Club club : clubs) {
-            List<Announcement> announcements = announcementRepository.findByClubId(club.getId());
-            if (announcements.size() == 0)
-                responses.add(ShowClubResponse.from(club, null));
-            else
-                responses.add(ShowClubResponse.from(club, announcements.get(announcements.size() - 1).getEndDate()));
-        }
-        return responses;
+        return mappingShowClubResponse(clubs);
     }
 
     public List<ShowClubResponse> findClubsByCategory(String category) {
         List<Club> clubs = clubRepository.findByCategory(category);
-        List<ShowClubResponse> responses = new ArrayList<>();
+        return mappingShowClubResponse(clubs);
+    }
 
-        for (Club club : clubs) {
-            List<Announcement> announcements = announcementRepository.findByClubId(club.getId());
-            if (announcements.size() == 0)
-                responses.add(ShowClubResponse.from(club, null));
-            else
-                responses.add(ShowClubResponse.from(club, announcements.get(announcements.size() - 1).getEndDate()));
-        }
-        return responses;
+    public List<ShowClubResponse> findClubsByQuery(String query) {
+        List<Club> clubs = clubRepository.findByQuery("%" + query + "%");
+        return mappingShowClubResponse(clubs);
     }
 
     public ShowClubInfoResponse findClubInfo(Long id) {
@@ -80,5 +67,18 @@ public class ClubService {
         club.setArea(request.getArea());
         club.setImage(request.getImage());
         club.setIntroduction(request.getIntroduction());
+    }
+
+    private List<ShowClubResponse> mappingShowClubResponse(List<Club> clubs) {
+        List<ShowClubResponse> responses = new ArrayList<>();
+
+        for (Club club : clubs) {
+            List<Announcement> announcements = announcementRepository.findByClubId(club.getId());
+            if (announcements.size() == 0)
+                responses.add(ShowClubResponse.from(club, null));
+            else
+                responses.add(ShowClubResponse.from(club, announcements.get(announcements.size() - 1).getEndDate()));
+        }
+        return responses;
     }
 }

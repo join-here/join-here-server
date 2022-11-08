@@ -32,4 +32,10 @@ public class ClubRepository {
                 .setParameter("category", category)
                 .getResultList();
     }
+
+    public List<Club> findByQuery(String query) {
+        return em.createQuery("select c from Club c where c.name like :query", Club.class)
+                .setParameter("query", query)
+                .getResultList();
+    }
 }

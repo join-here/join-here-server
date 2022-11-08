@@ -34,6 +34,11 @@ public class ClubController {
         clubService.updateClubInfo(request);
     }
 
+    @GetMapping("/search")
+    public List<ShowClubResponse> searchClubs(@RequestParam String query) {
+        return clubService.findClubsByQuery(query);
+    }
+
     @GetMapping("/{club-id}")
     public ResponseEntity<ShowClubInfoResponse> showClubInfo(@PathVariable("club-id") Long id) {
         ShowClubInfoResponse response = clubService.findClubInfo(id);
