@@ -9,9 +9,9 @@ import lombok.Getter;
 public class ShowMyBelongResponse {
 
     private Belong belong;
-    private boolean hasAnnouncement;
+    private Boolean hasAnnouncement;
 
-    public static ShowMyBelongResponse from(Belong belong, boolean hasAnnouncement) {
+    public static ShowMyBelongResponse from(Belong belong, Boolean hasAnnouncement) {
         Belong responseBelong = new Belong(belong.getId(), belong.getPosition(), null, belong.getClub());
         return new ShowMyBelongResponse(responseBelong, hasAnnouncement);
     }
