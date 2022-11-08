@@ -1,6 +1,7 @@
 package com.hongik.joinhere.service;
 
 import com.hongik.joinhere.controller.QnaController;
+import com.hongik.joinhere.dto.qna.CreateQnaAnswerRequest;
 import com.hongik.joinhere.dto.qna.CreateQnaQuestionRequest;
 import com.hongik.joinhere.dto.qna.ShowQnaResponse;
 import com.hongik.joinhere.entity.*;
@@ -31,6 +32,25 @@ public class QnaService {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         QnaQuestion saveQnaQuestion = new QnaQuestion(null, request.getQuestionContent(), now, member, club);
         qnaQuestionRepository.save(saveQnaQuestion);
+        return mappingResponse(clubId);
+    }
+
+    public List<ShowQnaResponse> registerAnswer(CreateQnaAnswerRequest request, Long clubId) {
+        Member member = memberRepository.findById(request.getMemberId());
+        QnaQuestion qnaQuestion = qnaQuestionRepository.findById(request.getQuestionId());
+        List<Belong> belong = belongRepository.findByMemberIdAndClubId(request.getMemberId(), clubId);
+        String isMember;
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        if (belong.isEmpty())
+            isMember = "n";
+        else
+            isMember = "y";
+        QnaAnswer qnaAnswer = new QnaAnswer(null, request.getAnswerContent(), isMember, now, member, qnaQuestion);
+        qnaAnswerRepository.save(qnaAnswer);
+        return mappingResponse(clubId);
+    }
+
+    private List<ShowQnaResponse> mappingResponse(Long clubId) {
         List<QnaQuestion> qnaQuestions = qnaQuestionRepository.findByClubId(clubId);
         List<ShowQnaResponse> responses = new ArrayList<>();
 

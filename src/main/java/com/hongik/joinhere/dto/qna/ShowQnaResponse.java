@@ -27,7 +27,6 @@ public class ShowQnaResponse {
         private String content;
         private LocalDateTime time;
         private String memberId;
-        private Long clubId;
     }
 
     @Getter
@@ -48,7 +47,7 @@ public class ShowQnaResponse {
     }
 
     private Question mappingQuestion(QnaQuestion qnaQuestion) {
-        return new Question(qnaQuestion.getId(), qnaQuestion.getContent(), qnaQuestion.getTime(), qnaQuestion.getMember().getId(), qnaQuestion.getClub().getId());
+        return new Question(qnaQuestion.getId(), qnaQuestion.getContent(), qnaQuestion.getTime(), qnaQuestion.getMember().getId());
     }
 
     private List<Answer> mappingAnswer(List<QnaAnswer> qnaAnswers) {

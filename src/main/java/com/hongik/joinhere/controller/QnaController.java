@@ -29,7 +29,8 @@ public class QnaController {
 
     @PostMapping("/clubs/{club-id}/qnas/answers")
     ResponseEntity<?> registerAnswer(@RequestBody CreateQnaAnswerRequest request, @PathVariable(name = "club-id") Long clubId) {
-        return null;
+        List<ShowQnaResponse> responses = qnaService.registerAnswer(request, clubId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responses);
     }
 
     @DeleteMapping("/clubs/{club-id}/qnas/answers")
