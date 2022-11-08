@@ -3,6 +3,7 @@ package com.hongik.joinhere.service;
 import com.hongik.joinhere.controller.QnaController;
 import com.hongik.joinhere.dto.qna.CreateQnaAnswerRequest;
 import com.hongik.joinhere.dto.qna.CreateQnaQuestionRequest;
+import com.hongik.joinhere.dto.qna.DeleteQnaAnswerRequest;
 import com.hongik.joinhere.dto.qna.ShowQnaResponse;
 import com.hongik.joinhere.entity.*;
 import com.hongik.joinhere.repository.*;
@@ -47,6 +48,12 @@ public class QnaService {
             isMember = "y";
         QnaAnswer qnaAnswer = new QnaAnswer(null, request.getAnswerContent(), isMember, now, member, qnaQuestion);
         qnaAnswerRepository.save(qnaAnswer);
+        return mappingResponse(clubId);
+    }
+
+    public List<ShowQnaResponse> deleteAnswer(DeleteQnaAnswerRequest request, Long clubId) {
+        QnaAnswer qnaAnswer = qnaAnswerRepository.findById(request.getAnswerId());
+        qnaAnswerRepository.delete(qnaAnswer);
         return mappingResponse(clubId);
     }
 

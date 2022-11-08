@@ -18,9 +18,17 @@ public class QnaAnswerRepository {
         em.persist(qnaAnswer);
     }
 
+    public QnaAnswer findById(Long id) {
+        return em.find(QnaAnswer.class, id);
+    }
+
     public List<QnaAnswer> findByQnaQuestionId(Long qnaQuestionId) {
         return em.createQuery("select q from QnaAnswer q where q.qnaQuestion.id = :qnaQuestion", QnaAnswer.class)
                 .setParameter("qnaQuestion", qnaQuestionId)
                 .getResultList();
+    }
+
+    public void delete(QnaAnswer qnaAnswer) {
+        em.remove(qnaAnswer);
     }
 }
