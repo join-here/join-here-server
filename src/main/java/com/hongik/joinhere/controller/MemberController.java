@@ -4,9 +4,8 @@ import com.hongik.joinhere.dto.member.MemberRequest;
 import com.hongik.joinhere.dto.member.MemberResponse;
 import com.hongik.joinhere.dto.member.LoginMemberRequest;
 import com.hongik.joinhere.dto.member.LoginMemberResponse;
-import com.hongik.joinhere.service.BelongService;
 import com.hongik.joinhere.service.MemberService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,16 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/members")
+@RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
-    private final BelongService belongService;
-
-    @Autowired
-    public MemberController(MemberService memberService, BelongService belongService) {
-        this.memberService = memberService;
-        this.belongService = belongService;
-    }
 
     @PostMapping
     public ResponseEntity<MemberResponse> create(@RequestBody MemberRequest request) {

@@ -9,7 +9,7 @@ import com.hongik.joinhere.repository.BelongRepository;
 import com.hongik.joinhere.repository.ClubRepository;
 import com.hongik.joinhere.repository.MemberRepository;
 import com.hongik.joinhere.repository.ReviewRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,20 +20,13 @@ import java.util.List;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class ReviewService {
 
     private final MemberRepository memberRepository;
     private final ClubRepository clubRepository;
     private final ReviewRepository reviewRepository;
     private final BelongRepository belongRepository;
-
-    @Autowired
-    public ReviewService(MemberRepository memberRepository, ClubRepository clubRepository, ReviewRepository reviewRepository, BelongRepository belongRepository) {
-        this.memberRepository = memberRepository;
-        this.clubRepository = clubRepository;
-        this.reviewRepository = reviewRepository;
-        this.belongRepository = belongRepository;
-    }
 
     public List<CreateReviewResponse> register(CreateReviewRequest request, Long clubId) {
         Club club = clubRepository.findById(clubId);

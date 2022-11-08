@@ -6,20 +6,16 @@ import com.hongik.joinhere.dto.member.MemberResponse;
 import com.hongik.joinhere.dto.member.LoginMemberRequest;
 import com.hongik.joinhere.dto.member.LoginMemberResponse;
 import com.hongik.joinhere.repository.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
-
-    @Autowired
-    public MemberService(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
-    }
 
     public MemberResponse join(MemberRequest request) {
         Member member = request.toEntity();

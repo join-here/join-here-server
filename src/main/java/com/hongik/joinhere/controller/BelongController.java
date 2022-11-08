@@ -6,7 +6,7 @@ import com.hongik.joinhere.dto.belong.ShowBelongResponse;
 import com.hongik.joinhere.dto.belong.UpdateBelongRequest;
 import com.hongik.joinhere.dto.belong.ShowMyBelongResponse;
 import com.hongik.joinhere.service.BelongService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,14 +15,10 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
+@RequiredArgsConstructor
 public class BelongController {
 
     private final BelongService belongService;
-
-    @Autowired
-    public BelongController(BelongService belongService) {
-        this.belongService = belongService;
-    }
 
     @GetMapping("/clubs/{club-id}/belongs")
     public List<ShowBelongResponse> showBelongsByClub(@PathVariable("club-id") Long clubId) {

@@ -2,7 +2,7 @@ package com.hongik.joinhere.controller;
 
 import com.hongik.joinhere.dto.question.ShowQuestionResponse;
 import com.hongik.joinhere.service.QuestionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,14 +12,10 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
+@RequiredArgsConstructor
 public class QuestionController {
 
-    private QuestionService questionService;
-
-    @Autowired
-    public QuestionController(QuestionService questionService) {
-        this.questionService = questionService;
-    }
+    private final QuestionService questionService;
 
     @GetMapping("/announcements/{announcement-id}/questions")
     public List<ShowQuestionResponse> showQuestions(@PathVariable("announcement-id") Long announcementId) {

@@ -3,7 +3,7 @@ package com.hongik.joinhere.service;
 import com.hongik.joinhere.dto.application.*;
 import com.hongik.joinhere.entity.*;
 import com.hongik.joinhere.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +12,7 @@ import java.util.List;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class ApplicationService {
 
     private final AnnouncementRepository announcementRepository;
@@ -21,17 +22,6 @@ public class ApplicationService {
     private final ClubRepository clubRepository;
     private final MemberRepository memberRepository;
     private final BelongRepository belongRepository;
-
-    @Autowired
-    public ApplicationService(AnnouncementRepository announcementRepository, ApplicationRepository applicationRepository, QuestionRepository questionRepository, AnswerRepository answerRepository, ClubRepository clubRepository, MemberRepository memberRepository, BelongRepository belongRepository) {
-        this.announcementRepository = announcementRepository;
-        this.applicationRepository = applicationRepository;
-        this.questionRepository = questionRepository;
-        this.answerRepository = answerRepository;
-        this.clubRepository = clubRepository;
-        this.memberRepository = memberRepository;
-        this.belongRepository = belongRepository;
-    }
 
     public List<ShowApplicantResponse> findApplicants(Long clubId) {
         List<Announcement> announcements = announcementRepository.findByClubId(clubId);

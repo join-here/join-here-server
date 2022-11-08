@@ -1,13 +1,8 @@
 package com.hongik.joinhere.controller;
 
-import com.hongik.joinhere.dto.announcement.CreateAnnouncementRequest;
-import com.hongik.joinhere.dto.announcement.CreateAnnouncementResponse;
 import com.hongik.joinhere.dto.club.*;
-import com.hongik.joinhere.entity.Announcement;
-import com.hongik.joinhere.service.AnnouncementService;
 import com.hongik.joinhere.service.ClubService;
-import org.aspectj.weaver.ast.Instanceof;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,14 +12,10 @@ import java.util.List;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/clubs")
+@RequiredArgsConstructor
 public class ClubController {
 
     private final ClubService clubService;
-
-    @Autowired
-    public ClubController(ClubService clubService) {
-        this.clubService = clubService;
-    }
 
     @GetMapping
     public ResponseEntity<List<ShowClubResponse>> showAll() {

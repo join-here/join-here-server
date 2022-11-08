@@ -8,24 +8,18 @@ import com.hongik.joinhere.entity.Question;
 import com.hongik.joinhere.repository.AnnouncementRepository;
 import com.hongik.joinhere.repository.ClubRepository;
 import com.hongik.joinhere.repository.QuestionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class AnnouncementService {
 
     private final AnnouncementRepository announcementRepository;
     private final ClubRepository clubRepository;
     private final QuestionRepository questionRepository;
-
-    @Autowired
-    public AnnouncementService(AnnouncementRepository announcementRepository, ClubRepository clubRepository, QuestionRepository questionRepository) {
-        this.announcementRepository = announcementRepository;
-        this.clubRepository = clubRepository;
-        this.questionRepository = questionRepository;
-    }
 
     public CreateAnnouncementResponse register(CreateAnnouncementRequest request, Long clubId) {
         Club club = clubRepository.findById(clubId);

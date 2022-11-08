@@ -13,7 +13,7 @@ import com.hongik.joinhere.repository.AnnouncementRepository;
 import com.hongik.joinhere.repository.BelongRepository;
 import com.hongik.joinhere.repository.ClubRepository;
 import com.hongik.joinhere.repository.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,20 +22,13 @@ import java.util.List;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class BelongService {
 
     private final BelongRepository belongRepository;
     private final MemberRepository memberRepository;
     private final ClubRepository clubRepository;
     private final AnnouncementRepository announcementRepository;
-
-    @Autowired
-    public BelongService(BelongRepository belongRepository, MemberRepository memberRepository, ClubRepository clubRepository, AnnouncementRepository announcementRepository) {
-        this.belongRepository = belongRepository;
-        this.memberRepository = memberRepository;
-        this.clubRepository = clubRepository;
-        this.announcementRepository = announcementRepository;
-    }
 
     public List<ShowMyBelongResponse> findBelongByMemberId(String memberId) {
         Member member = memberRepository.findById(memberId);
