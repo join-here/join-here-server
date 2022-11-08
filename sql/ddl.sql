@@ -119,7 +119,7 @@ CREATE TABLE qna_answer
 (
     `id`               BIGINT           NOT NULL    AUTO_INCREMENT,
     `content`          VARCHAR(1000)    NOT NULL,
-    `isManager`        VARCHAR(1)       NOT NULL,
+    `is_manager`        VARCHAR(1)       NOT NULL,
     `time`             DATETIME         NOT NULL,
     `member_id`        VARCHAR(20)      NOT NULL,
     `qna_question_id`  BIGINT           NOT NULL,
