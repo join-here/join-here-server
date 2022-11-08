@@ -113,3 +113,17 @@ CREATE TABLE qna_question
     FOREIGN KEY (member_id) references member(id),
     FOREIGN KEY (club_id) references club(id)
 );
+
+-- Create qna_answer Table
+CREATE TABLE qna_answer
+(
+    `id`               BIGINT           NOT NULL    AUTO_INCREMENT,
+    `content`          VARCHAR(1000)    NOT NULL,
+    `isManager`        VARCHAR(1)       NOT NULL,
+    `time`             DATETIME         NOT NULL,
+    `member_id`        VARCHAR(20)      NOT NULL,
+    `qna_question_id`  BIGINT           NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (member_id) references member(id),
+    FOREIGN KEY (qna_question_id) references qna_question(id)
+);
