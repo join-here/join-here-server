@@ -1,14 +1,10 @@
 package com.hongik.joinhere.service;
 
 import com.hongik.joinhere.dto.club.*;
-import com.hongik.joinhere.entity.Announcement;
-import com.hongik.joinhere.entity.Belong;
-import com.hongik.joinhere.entity.Club;
-import com.hongik.joinhere.entity.Member;
-import com.hongik.joinhere.repository.AnnouncementRepository;
-import com.hongik.joinhere.repository.BelongRepository;
-import com.hongik.joinhere.repository.ClubRepository;
-import com.hongik.joinhere.repository.MemberRepository;
+import com.hongik.joinhere.dto.qna.ShowQnaResponse;
+import com.hongik.joinhere.dto.review.CreateReviewResponse;
+import com.hongik.joinhere.entity.*;
+import com.hongik.joinhere.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +21,9 @@ public class ClubService {
     private final MemberRepository memberRepository;
     private final AnnouncementRepository announcementRepository;
     private final BelongRepository belongRepository;
+    private final ReviewRepository reviewRepository;
+    private final QnaQuestionRepository qnaQuestionRepository;
+    private final QnaAnswerRepository qnaAnswerRepository;
 
     public CreateClubResponse register(CreateClubRequest request) {
         Club club = request.toEntity();
@@ -54,10 +53,24 @@ public class ClubService {
         Club club = clubRepository.findById(id);
         club.setView(club.getView() + 1L);
         List<Announcement> announcements = announcementRepository.findByClubId(club.getId());
+        List<Review> reviews = reviewRepository.findByClubId(id);
+        List<CreateReviewResponse> createReviewResponses = new ArrayList<>();
+        for (Review review : reviews)
+            createReviewResponses.add(CreateReviewResponse.from(review));
+        List<QnaQuestion> qnaQuestions = qnaQuestionRepository.findByClubId(id);
+        List<ShowQnaResponse> showQnaResponses = new ArrayList<>();
+
+        for (QnaQuestion qnaQuestion : qnaQuestions) {
+            List<QnaAnswer> qnaAnswers = qnaAnswerRepository.findByQnaQuestionId(qnaQuestion.getId());
+            ShowQnaResponse response = new ShowQnaResponse();
+            response.from(qnaQuestion, qnaAnswers);
+            showQnaResponses.add(response);
+        }
+
         if (announcements.size() == 0)
-            return ShowClubInfoResponse.from(club, null, null, null);
+            return ShowClubInfoResponse.from(club, null, createReviewResponses, showQnaResponses);
         else
-            return ShowClubInfoResponse.from(club, announcements.get(announcements.size() - 1), null, null);
+            return ShowClubInfoResponse.from(club, announcements.get(announcements.size() - 1), createReviewResponses, showQnaResponses);
     }
 
     public void updateClubInfo(UpdateClubRequest request) {

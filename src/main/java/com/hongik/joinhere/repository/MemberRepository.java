@@ -18,7 +18,6 @@ public class MemberRepository {
     }
 
     public Member findById(String id) {
-        Member member = em.find(Member.class, id);
-        return member;
+        return em.find(Member.class, id);
     }
 }
