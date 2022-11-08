@@ -100,3 +100,16 @@ CREATE TABLE review
     FOREIGN KEY (member_id) references member(id),
     FOREIGN KEY (club_id) references club(id)
 );
+
+-- Create qna_question Table
+CREATE TABLE qna_question
+(
+    `id`         BIGINT           NOT NULL    AUTO_INCREMENT,
+    `content`    VARCHAR(1000)    NOT NULL,
+    `time`       DATETIME         NOT NULL,
+    `member_id`  VARCHAR(20)      NOT NULL,
+    `club_id`    BIGINT           NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (member_id) references member(id),
+    FOREIGN KEY (club_id) references club(id)
+);
