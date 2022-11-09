@@ -40,8 +40,13 @@ public class QnaService {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         if (belong.isEmpty())
             isMember = "n";
-        else
-            isMember = "y";
+        else {
+            if (belong.get(0).getPosition().equals("nor"))
+                isMember = "n";
+            else
+                isMember = "y";
+        }
+
         QnaAnswer qnaAnswer = new QnaAnswer(null, request.getAnswerContent(), isMember, now, member, qnaQuestion);
         qnaAnswerRepository.save(qnaAnswer);
         return mappingResponse(clubId);
