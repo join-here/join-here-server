@@ -2,7 +2,7 @@ package com.hongik.joinhere.service;
 
 import com.hongik.joinhere.dto.club.*;
 import com.hongik.joinhere.dto.qna.ShowQnaResponse;
-import com.hongik.joinhere.dto.review.CreateReviewResponse;
+import com.hongik.joinhere.dto.review.ReviewResponse;
 import com.hongik.joinhere.entity.*;
 import com.hongik.joinhere.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -54,9 +54,9 @@ public class ClubService {
         club.setView(club.getView() + 1L);
         List<Announcement> announcements = announcementRepository.findByClubId(club.getId());
         List<Review> reviews = reviewRepository.findByClubId(id);
-        List<CreateReviewResponse> createReviewResponses = new ArrayList<>();
+        List<ReviewResponse> reviewResponses = new ArrayList<>();
         for (Review review : reviews)
-            createReviewResponses.add(CreateReviewResponse.from(review));
+            reviewResponses.add(ReviewResponse.from(review));
         List<QnaQuestion> qnaQuestions = qnaQuestionRepository.findByClubId(id);
         List<ShowQnaResponse> showQnaResponses = new ArrayList<>();
 
@@ -68,9 +68,9 @@ public class ClubService {
         }
 
         if (announcements.size() == 0)
-            return ShowClubInfoResponse.from(club, null, createReviewResponses, showQnaResponses);
+            return ShowClubInfoResponse.from(club, null, reviewResponses, showQnaResponses);
         else
-            return ShowClubInfoResponse.from(club, announcements.get(announcements.size() - 1), createReviewResponses, showQnaResponses);
+            return ShowClubInfoResponse.from(club, announcements.get(announcements.size() - 1), reviewResponses, showQnaResponses);
     }
 
     public void updateClubInfo(UpdateClubRequest request) {

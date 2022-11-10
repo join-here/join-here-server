@@ -1,7 +1,7 @@
 package com.hongik.joinhere.dto.club;
 
 import com.hongik.joinhere.dto.qna.ShowQnaResponse;
-import com.hongik.joinhere.dto.review.CreateReviewResponse;
+import com.hongik.joinhere.dto.review.ReviewResponse;
 import com.hongik.joinhere.entity.Announcement;
 import com.hongik.joinhere.entity.Club;
 import lombok.AllArgsConstructor;
@@ -15,10 +15,10 @@ public class ShowClubInfoResponse {
 
     private Club club;
     private Announcement announcement;
-    private List<CreateReviewResponse> reviews;
+    private List<ReviewResponse> reviews;
     private List<ShowQnaResponse> qnas;
 
-    public static ShowClubInfoResponse from(Club club, Announcement announcement, List<CreateReviewResponse> reviews, List<ShowQnaResponse> qnas) {
+    public static ShowClubInfoResponse from(Club club, Announcement announcement, List<ReviewResponse> reviews, List<ShowQnaResponse> qnas) {
         return new ShowClubInfoResponse(club, transfer(announcement), reviews, qnas);
     }
 

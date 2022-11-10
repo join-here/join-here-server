@@ -18,9 +18,17 @@ public class ReviewRepository {
         em.persist(review);
     }
 
+    public Review findById(Long id) {
+        return em.find(Review.class, id);
+    }
+
     public List<Review> findByClubId(Long clubId) {
         return em.createQuery("select r from Review r where r.club.id = :club", Review.class)
                     .setParameter("club", clubId)
                     .getResultList();
+    }
+
+    public void delete(Review review) {
+        em.remove(review);
     }
 }

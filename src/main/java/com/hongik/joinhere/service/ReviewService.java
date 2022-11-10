@@ -1,7 +1,8 @@
 package com.hongik.joinhere.service;
 
 import com.hongik.joinhere.dto.review.CreateReviewRequest;
-import com.hongik.joinhere.dto.review.CreateReviewResponse;
+import com.hongik.joinhere.dto.review.DeleteReviewRequest;
+import com.hongik.joinhere.dto.review.ReviewResponse;
 import com.hongik.joinhere.entity.Belong;
 import com.hongik.joinhere.entity.Club;
 import com.hongik.joinhere.entity.Member;
@@ -29,7 +30,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final BelongRepository belongRepository;
 
-    public List<CreateReviewResponse> register(CreateReviewRequest request, Long clubId) {
+    public List<ReviewResponse> register(CreateReviewRequest request, Long clubId) {
         Club club = clubRepository.findById(clubId);
         Member member = memberRepository.findById(request.getMemberId());
         List<Belong> belongs = belongRepository.findByMemberIdAndClubId(request.getMemberId(), clubId);
@@ -38,11 +39,19 @@ public class ReviewService {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         Review saveReview = new Review(null, request.getReviewContent(), now, member, club);
         reviewRepository.save(saveReview);
+        return mappingResponse(clubId);
+    }
+
+    public List<ReviewResponse> delete(DeleteReviewRequest request, Long clubId) {
+        reviewRepository.delete(reviewRepository.findById(request.getReviewId()));
+        return mappingResponse(clubId);
+    }
+
+    private List<ReviewResponse> mappingResponse(Long clubId) {
         List<Review> reviews = reviewRepository.findByClubId(clubId);
-        List<CreateReviewResponse> responses = new ArrayList<>();
-        for (Review review : reviews) {
-            responses.add(CreateReviewResponse.from(review));
-        }
+        List<ReviewResponse> responses = new ArrayList<>();
+        for (Review review : reviews)
+            responses.add(ReviewResponse.from(review));
         return responses;
     }
 }
