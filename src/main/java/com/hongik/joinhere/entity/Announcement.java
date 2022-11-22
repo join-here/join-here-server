@@ -27,6 +27,9 @@ public class Announcement {
     @Column(name = "end_date")
     private Date endDate;
 
+    @Column(name = "inform_state")
+    private String informState;
+
     @ManyToOne
     @JoinColumn(name = "club_id")
     private Club club;

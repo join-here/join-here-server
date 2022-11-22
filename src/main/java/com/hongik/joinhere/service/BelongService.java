@@ -38,8 +38,13 @@ public class BelongService {
         if (belongs.size() == 0)
             return null;
         for (Belong belong: belongs) {
-            List<Announcement> announcement = announcementRepository.findByClubId(belong.getClub().getId());
-            responses.add(ShowMyBelongResponse.from(belong, !announcement.isEmpty()));
+            Boolean hasAnnouncement = false;
+            List<Announcement> announcements = announcementRepository.findByClubId(belong.getClub().getId());
+            if (!announcements.isEmpty()) {
+                if (announcements.get(announcements.size() - 1).getInformState().equals("n"))
+                    hasAnnouncement = true;
+            }
+            responses.add(ShowMyBelongResponse.from(belong, hasAnnouncement));
         }
         return responses;
     }

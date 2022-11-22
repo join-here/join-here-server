@@ -23,6 +23,6 @@ public class CreateAnnouncementRequest {
     private List<String> question;
 
     public Announcement toAnnouncement(Club club) {
-        return new Announcement(null, title, description, poster, startDate, endDate, club);
+        return new Announcement(null, title, description, poster, startDate, endDate, "n", club);
     }
 }
