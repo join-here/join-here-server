@@ -45,6 +45,8 @@ public class ApplicationService {
 
     public void publishApplications(List<PublishApplicationRequest> requests, Long clubId) {
         Club club = clubRepository.findById(clubId);
+        List<Announcement> announcements = announcementRepository.findByClubId(clubId);
+        announcements.get(announcements.size() - 1).setInformState("y");
         for (PublishApplicationRequest request : requests) {
             Application application = applicationRepository.findById(request.getApplicationId());
             application.setInformState("y");
