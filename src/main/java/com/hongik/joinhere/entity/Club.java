@@ -20,8 +20,8 @@ public class Club {
     private String category;
     private String area;
 
-    @Lob
-    private String image;
+    @Column(name = "image_url")
+    private String imageUrl;
     private String introduction;
     private Long view;
     private Long scrap;
