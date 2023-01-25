@@ -20,8 +20,8 @@ public class Announcement {
     private String title;
     private String description;
 
-    @Lob
-    private String poster;
+    @Column(name = "poster_url")
+    private String posterUrl;
 
     @Column(name = "start_date")
     private Date startDate;
