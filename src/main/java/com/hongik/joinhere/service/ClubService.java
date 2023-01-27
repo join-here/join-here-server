@@ -1,6 +1,5 @@
 package com.hongik.joinhere.service;
 
-import com.hongik.joinhere.S3Service;
 import com.hongik.joinhere.dto.club.*;
 import com.hongik.joinhere.dto.qna.ShowQnaResponse;
 import com.hongik.joinhere.dto.review.ReviewResponse;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,15 +31,14 @@ public class ClubService {
         String imageUrl = null;
         List<Club> clubs = clubRepository.findByName(request.getName());
 
-        if (clubs.isEmpty())
+        if (!clubs.isEmpty())
             return null;
         try {
-            if (multipartFile != null)
+            if (!multipartFile.isEmpty())
                 imageUrl = s3Service.uploadFiles(multipartFile, "images");
         } catch (Exception e) {
             return null;
         }
-
         Club club = request.toEntity(imageUrl);
         clubRepository.save(club);
         Member member = memberRepository.findById(request.getId());
