@@ -14,10 +14,9 @@ public class CreateClubRequest {
     private String name;
     private String category;
     private String area;
-    private String image;
     private String introduction;
 
-    public Club toEntity() {
-        return new Club(null, name, category, area, image, introduction, 0L, 0L);
+    public Club toEntity(String imageUrl) {
+        return new Club(null, name, category, area, imageUrl, introduction, 0L, 0L);
     }
 }

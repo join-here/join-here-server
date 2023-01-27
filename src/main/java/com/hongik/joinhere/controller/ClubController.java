@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,8 +25,11 @@ public class ClubController {
     }
 
     @PostMapping
-    public ResponseEntity<CreateClubResponse> create(@RequestBody CreateClubRequest request) {
-        CreateClubResponse response = clubService.register(request);
+    public ResponseEntity<?> create(@RequestPart(value = "request") CreateClubRequest request,
+                                    @RequestPart(value = "image", required = false) MultipartFile multipartFile) {
+        CreateClubResponse response = clubService.register(request, multipartFile);
+        if (response == null)
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

@@ -1,5 +1,6 @@
 package com.hongik.joinhere.service;
 
+import com.hongik.joinhere.S3Service;
 import com.hongik.joinhere.dto.club.*;
 import com.hongik.joinhere.dto.qna.ShowQnaResponse;
 import com.hongik.joinhere.dto.review.ReviewResponse;
@@ -8,7 +9,9 @@ import com.hongik.joinhere.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,14 +27,27 @@ public class ClubService {
     private final ReviewRepository reviewRepository;
     private final QnaQuestionRepository qnaQuestionRepository;
     private final QnaAnswerRepository qnaAnswerRepository;
+    private final S3Service s3Service;
 
-    public CreateClubResponse register(CreateClubRequest request) {
-        Club club = request.toEntity();
+    public CreateClubResponse register(CreateClubRequest request, MultipartFile multipartFile) {
+        String imageUrl = null;
+        List<Club> clubs = clubRepository.findByName(request.getName());
+
+        if (clubs.isEmpty())
+            return null;
+        try {
+            if (multipartFile != null)
+                imageUrl = s3Service.uploadFiles(multipartFile, "images");
+        } catch (Exception e) {
+            return null;
+        }
+
+        Club club = request.toEntity(imageUrl);
+        clubRepository.save(club);
         Member member = memberRepository.findById(request.getId());
-        CreateClubResponse response = CreateClubResponse.from(clubRepository.save(club));
         Belong belong = new Belong(null, "pre", member, club);
         belongRepository.save(belong);
-        return response;
+        return CreateClubResponse.from(club);
     }
 
     public List<ShowClubResponse> findClubs() {
@@ -78,7 +94,7 @@ public class ClubService {
         club.setName(request.getName());
         club.setCategory(request.getCategory());
         club.setArea(request.getArea());
-        club.setImage(request.getImage());
+        club.setImageUrl(request.getImage());
         club.setIntroduction(request.getIntroduction());
     }
 
