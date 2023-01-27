@@ -1,4 +1,4 @@
-package com.hongik.joinhere;
+package com.hongik.joinhere.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
