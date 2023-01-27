@@ -8,19 +8,19 @@ import java.sql.Date;
 
 @Getter
 @AllArgsConstructor
-public class ShowClubResponse {
+public class   ShowClubResponse {
 
     private Long id;
     private String name;
     private String category;
     private String area;
-    private String image;
+    private String imageUrl;
     private String introduction;
     private Long view;
     private Long scrap;
     private Date endDate;
 
     public static ShowClubResponse from(Club club, Date endDate) {
-        return new ShowClubResponse(club.getId(), club.getName(), club.getCategory(), club.getArea(), club.getImage(), club.getIntroduction(), club.getView(), club.getScrap(), endDate);
+        return new ShowClubResponse(club.getId(), club.getName(), club.getCategory(), club.getArea(), club.getImageUrl(), club.getIntroduction(), club.getView(), club.getScrap(), endDate);
     }
 }
