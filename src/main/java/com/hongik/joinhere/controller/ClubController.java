@@ -29,7 +29,7 @@ public class ClubController {
                                     @RequestPart(value = "image", required = false) MultipartFile multipartFile) {
         CreateClubResponse response = clubService.register(request, multipartFile);
         if (response == null)
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
