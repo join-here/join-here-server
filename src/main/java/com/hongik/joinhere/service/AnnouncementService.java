@@ -11,6 +11,7 @@ import com.hongik.joinhere.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Transactional
@@ -20,10 +21,18 @@ public class AnnouncementService {
     private final AnnouncementRepository announcementRepository;
     private final ClubRepository clubRepository;
     private final QuestionRepository questionRepository;
+    private final S3Service s3Service;
 
-    public CreateAnnouncementResponse register(CreateAnnouncementRequest request, Long clubId) {
+    public CreateAnnouncementResponse register(CreateAnnouncementRequest request, MultipartFile multipartFile, Long clubId) {
+        String posterUrl = null;
+        try {
+            if (!multipartFile.isEmpty())
+                posterUrl = s3Service.uploadFiles(multipartFile, "images");
+        } catch (Exception e) {
+            return null;
+        }
         Club club = clubRepository.findById(clubId);
-        Announcement announcement = request.toAnnouncement(club);
+        Announcement announcement = request.toAnnouncement(club, posterUrl);
         CreateAnnouncementResponse response = CreateAnnouncementResponse.from(announcementRepository.save(announcement));
         for (String content : request.getQuestion()) {
             Question question = new Question(null, content, announcement);

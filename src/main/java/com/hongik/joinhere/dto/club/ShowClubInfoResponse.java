@@ -25,6 +25,6 @@ public class ShowClubInfoResponse {
     private static Announcement transfer(Announcement announcement) {
         if (announcement == null)
             return null;
-        return new Announcement(announcement.getId(), announcement.getTitle(), announcement.getDescription(), announcement.getPoster(), announcement.getStartDate(), announcement.getEndDate(), announcement.getInformState(), null);
+        return new Announcement(announcement.getId(), announcement.getTitle(), announcement.getDescription(), announcement.getPosterUrl(), announcement.getStartDate(), announcement.getEndDate(), announcement.getInformState(), null);
     }
 }

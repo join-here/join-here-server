@@ -17,12 +17,11 @@ public class CreateAnnouncementRequest {
     private String id;
     private String title;
     private String description;
-    private String poster;
     private Date startDate;
     private Date endDate;
     private List<String> question;
 
-    public Announcement toAnnouncement(Club club) {
-        return new Announcement(null, title, description, poster, startDate, endDate, "n", club);
+    public Announcement toAnnouncement(Club club, String posterUrl) {
+        return new Announcement(null, title, description, posterUrl, startDate, endDate, "n", club);
     }
 }
