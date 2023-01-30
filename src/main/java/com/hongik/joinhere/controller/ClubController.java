@@ -34,8 +34,11 @@ public class ClubController {
     }
 
     @PatchMapping
-    public void update(@RequestBody UpdateClubRequest request) {
-        clubService.updateClubInfo(request);
+    public ResponseEntity<?> update(@RequestPart(value = "request") UpdateClubRequest request,
+                                         @RequestPart(value = "image", required = false) MultipartFile multipartFile) {
+        if (clubService.updateClubInfo(request, multipartFile))
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
     @GetMapping("/search")

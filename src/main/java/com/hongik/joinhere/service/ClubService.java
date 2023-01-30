@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,9 +31,8 @@ public class ClubService {
 
     public CreateClubResponse register(CreateClubRequest request, MultipartFile multipartFile) {
         String imageUrl = null;
-        List<Club> clubs = clubRepository.findByName(request.getName());
 
-        if (!clubs.isEmpty())
+        if (!validateDuplicatedClubName(request.getName()))
             return null;
         try {
             if (!multipartFile.isEmpty())
@@ -86,13 +87,33 @@ public class ClubService {
             return ShowClubInfoResponse.from(club, announcements.get(announcements.size() - 1), reviewResponses, showQnaResponses);
     }
 
-    public void updateClubInfo(UpdateClubRequest request) {
+    public boolean updateClubInfo(UpdateClubRequest request, MultipartFile multipartFile) {
         Club club = clubRepository.findById(request.getClubId());
+        if (!club.getName().equals(request.getName()) && !validateDuplicatedClubName(request.getName()))
+            return false;
+        if (request.getIsImageChanged()) {
+            String imageUrl = null;
+
+            try {
+                if (!multipartFile.isEmpty())
+                    imageUrl = s3Service.uploadFiles(multipartFile, "images");
+            } catch (Exception e) {
+                return false;
+            }
+
+            try {
+                if (club.getImageUrl() != null)
+                    s3Service.deleteS3(URLDecoder.decode(club.getImageUrl().substring(50), "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                return false;
+            }
+            club.setImageUrl(imageUrl);
+        }
         club.setName(request.getName());
         club.setCategory(request.getCategory());
         club.setArea(request.getArea());
-        club.setImageUrl(request.getImage());
         club.setIntroduction(request.getIntroduction());
+        return true;
     }
 
     private List<ShowClubResponse> mappingShowClubResponse(List<Club> clubs) {
@@ -106,5 +127,12 @@ public class ClubService {
                 responses.add(ShowClubResponse.from(club, announcements.get(announcements.size() - 1).getEndDate()));
         }
         return responses;
+    }
+
+    private Boolean validateDuplicatedClubName(String name) {
+        List<Club> clubs = clubRepository.findByName(name);
+        if (clubs.isEmpty())
+            return true;
+        return false;
     }
 }
