@@ -8,7 +8,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CreateClubResponse {
 
-    private Long id;
+    private Long clubId;
 
     public static CreateClubResponse from(Club club) {
         return new CreateClubResponse(club.getId());
