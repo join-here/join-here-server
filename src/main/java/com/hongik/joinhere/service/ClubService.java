@@ -35,7 +35,7 @@ public class ClubService {
         if (!validateDuplicatedClubName(request.getName()))
             return null;
         try {
-            if (!multipartFile.isEmpty())
+            if (multipartFile != null && !multipartFile.isEmpty())
                 imageUrl = s3Service.uploadFiles(multipartFile, "images");
         } catch (Exception e) {
             return null;
@@ -95,7 +95,7 @@ public class ClubService {
             String imageUrl = null;
 
             try {
-                if (!multipartFile.isEmpty())
+                if (multipartFile != null && !multipartFile.isEmpty())
                     imageUrl = s3Service.uploadFiles(multipartFile, "images");
             } catch (Exception e) {
                 return false;
