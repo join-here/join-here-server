@@ -8,7 +8,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CreateAnnouncementResponse {
 
-    private Long id;
+    private Long announcementId;
 
     public static CreateAnnouncementResponse from(Announcement announcement) {
         return new CreateAnnouncementResponse(announcement.getId());
