@@ -61,13 +61,13 @@ public class ApplicationService {
         }
     }
 
-    public List<ShowApplicationContentResponse> findApplications(String memberId, Long applicationId) {
+    public List<ShowApplicationContentResponse> findApplications(Long applicationId) {
         Application application = applicationRepository.findById(applicationId);
         Announcement announcement = announcementRepository.findById(application.getAnnouncement().getId());
         List<Question> questions = questionRepository.findByAnnouncementId(announcement.getId());
         List<ShowApplicationContentResponse> responses = new ArrayList<>();
         for (Question question : questions) {
-            Answer answer = answerRepository.findByMemberIdAndQuestionId(memberId, question.getId()).get(0);
+            Answer answer = answerRepository.findByMemberIdAndQuestionId(application.getMember().getId(), question.getId()).get(0);
             responses.add(ShowApplicationContentResponse.from(question, answer));
         }
         return responses;

@@ -37,8 +37,8 @@ public class ApplicationController {
         return applicationService.findApplicationsByMemberId(memberId);
     }
 
-    @GetMapping("/members/{member-id}/applications/{application-id}")
-    public List<ShowApplicationContentResponse> showApplicationContents(@PathVariable(name = "member-id") String memberId, @PathVariable(name = "application-id") Long applicationId) {
-        return applicationService.findApplications(memberId, applicationId);
+    @GetMapping("/applications/{application-id}")
+    public List<ShowApplicationContentResponse> showApplicationContents(@PathVariable(name = "application-id") Long applicationId) {
+        return applicationService.findApplications(applicationId);
     }
 }
