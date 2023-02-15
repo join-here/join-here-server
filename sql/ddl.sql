@@ -134,9 +134,18 @@ CREATE TABLE users
 (
     `id`            BIGINT          NOT NULL    AUTO_INCREMENT,
     `username`      VARCHAR(20)     NOT NULL,
-    `nickname`      VARCHAR(10)     NOT NULL,
+    `nickname`      VARCHAR(20)     NOT NULL,
     `password`      VARCHAR(255)    NOT NULL,
     `birthday`      DATE            NOT NULL,
     `phone`         VARCHAR(20)     NOT NULL,
+    `authority`     VARCHAR(20)     NOT NULL,
+    PRIMARY KEY (id)
+);
+
+-- Create RefreshToken Table
+CREATE TABLE refresh_token
+(
+    `id`           VARCHAR(20)         NOT NULL,
+    `value`         VARCHAR(255)        NOT NULL,
     PRIMARY KEY (id)
 );
