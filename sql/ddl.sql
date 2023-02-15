@@ -128,3 +128,15 @@ CREATE TABLE qna_answer
     FOREIGN KEY (member_id) references member(id),
     FOREIGN KEY (qna_question_id) references qna_question(id)
 );
+
+-- Create User Table
+CREATE TABLE users
+(
+    `id`            BIGINT          NOT NULL    AUTO_INCREMENT,
+    `username`      VARCHAR(20)     NOT NULL,
+    `nickname`      VARCHAR(10)     NOT NULL,
+    `password`      VARCHAR(255)    NOT NULL,
+    `birthday`      DATE            NOT NULL,
+    `phone`         VARCHAR(20)     NOT NULL,
+    PRIMARY KEY (id)
+);
