@@ -1,6 +1,5 @@
-package com.hongik.joinhere.user.dto;
+package com.hongik.joinhere.dto.user;
 
-import com.hongik.joinhere.user.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 

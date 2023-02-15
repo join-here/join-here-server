@@ -1,11 +1,12 @@
 package com.hongik.joinhere.user;
 
-import com.hongik.joinhere.user.entity.User;
+import com.hongik.joinhere.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 @AllArgsConstructor

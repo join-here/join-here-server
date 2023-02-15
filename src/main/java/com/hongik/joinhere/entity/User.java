@@ -1,12 +1,9 @@
-package com.hongik.joinhere.user.entity;
+package com.hongik.joinhere.entity;
 
 import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @Entity
 @Getter
@@ -24,4 +21,7 @@ public class User {
     private String nickname;
     private Date birthday;
     private String phone;
+
+    @Enumerated(EnumType.STRING)
+    private Authority authority;
 }
