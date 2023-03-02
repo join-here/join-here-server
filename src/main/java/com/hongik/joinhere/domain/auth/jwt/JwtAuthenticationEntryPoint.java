@@ -1,4 +1,4 @@
-package com.hongik.joinhere.jwt;
+package com.hongik.joinhere.domain.auth.jwt;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

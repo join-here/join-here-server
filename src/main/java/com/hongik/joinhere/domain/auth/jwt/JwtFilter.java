@@ -1,4 +1,4 @@
-package com.hongik.joinhere.jwt;
+package com.hongik.joinhere.domain.auth.jwt;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;

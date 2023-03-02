@@ -1,6 +1,6 @@
-package com.hongik.joinhere.repository;
+package com.hongik.joinhere.domain.user.repository;
 
-import com.hongik.joinhere.entity.User;
+import com.hongik.joinhere.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

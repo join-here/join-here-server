@@ -1,8 +1,8 @@
 package com.hongik.joinhere.config;
 
-import com.hongik.joinhere.jwt.JwtAccessDeniedHandler;
-import com.hongik.joinhere.jwt.JwtAuthenticationEntryPoint;
-import com.hongik.joinhere.jwt.TokenProvider;
+import com.hongik.joinhere.domain.auth.jwt.JwtAccessDeniedHandler;
+import com.hongik.joinhere.domain.auth.jwt.JwtAuthenticationEntryPoint;
+import com.hongik.joinhere.domain.auth.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,7 +12,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.CorsFilter;
 
 @EnableWebSecurity

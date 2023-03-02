@@ -1,7 +1,7 @@
-package com.hongik.joinhere.user;
+package com.hongik.joinhere.domain.user;
 
-import com.hongik.joinhere.entity.User;
-import com.hongik.joinhere.repository.UserRepository;
+import com.hongik.joinhere.domain.user.entity.User;
+import com.hongik.joinhere.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.Collections;
 
 @Service

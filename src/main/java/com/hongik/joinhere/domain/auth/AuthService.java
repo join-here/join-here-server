@@ -1,22 +1,25 @@
-package com.hongik.joinhere.service;
+package com.hongik.joinhere.domain.auth;
 
 import com.hongik.joinhere.dto.token.TokenRequest;
 import com.hongik.joinhere.dto.token.TokenResponse;
 import com.hongik.joinhere.dto.user.CreateUserRequest;
 import com.hongik.joinhere.dto.user.LoginUserRequest;
-import com.hongik.joinhere.entity.Authority;
+import com.hongik.joinhere.domain.user.entity.Authority;
 import com.hongik.joinhere.entity.RefreshToken;
-import com.hongik.joinhere.jwt.TokenProvider;
-import com.hongik.joinhere.entity.User;
+import com.hongik.joinhere.domain.auth.jwt.TokenProvider;
+import com.hongik.joinhere.domain.user.entity.User;
 import com.hongik.joinhere.repository.RefreshTokenRepository;
-import com.hongik.joinhere.repository.UserRepository;
+import com.hongik.joinhere.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -24,9 +27,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
+    private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
     public void signup(CreateUserRequest request) {
@@ -47,7 +50,7 @@ public class AuthService {
     public TokenResponse login(LoginUserRequest request) {
         UsernamePasswordAuthenticationToken authenticationToken = request.toAuthentication();
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        TokenResponse response = tokenProvider.generateToken(authentication);
+        TokenResponse response = tokenProvider.generateToken(authentication, userRepository.findByUsername(request.getUsername()).get());
         RefreshToken refreshToken = RefreshToken.builder()
                 .id(authentication.getName())
                 .value(response.getRefreshToken())
@@ -66,7 +69,7 @@ public class AuthService {
         if (!refreshToken.getValue().equals(request.getRefreshToken())) {
             throw new RuntimeException("토큰의 유저 정보가 일치하지 않습니다.");
         }
-        TokenResponse response = tokenProvider.generateToken(authentication);
+        TokenResponse response = tokenProvider.generateToken(authentication, userRepository.findById(Long.valueOf(authentication.getName())).get());
         RefreshToken newRefreshToken = refreshToken.updateValue(response.getRefreshToken());
         refreshTokenRepository.save(newRefreshToken);
         return response;

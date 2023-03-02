@@ -1,17 +1,14 @@
-package com.hongik.joinhere.controller;
+package com.hongik.joinhere.domain.auth;
 
 import com.hongik.joinhere.dto.token.TokenRequest;
 import com.hongik.joinhere.dto.token.TokenResponse;
 import com.hongik.joinhere.dto.user.CreateUserRequest;
 import com.hongik.joinhere.dto.user.LoginUserRequest;
-import com.hongik.joinhere.service.AuthService;
+import com.hongik.joinhere.domain.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,7 +28,7 @@ public class AuthController {
         return ResponseEntity.ok(authService.login(request));
     }
 
-    @PostMapping("/reissue")
+    @PostMapping("/refresh")
     public ResponseEntity<TokenResponse> reissue(@RequestBody TokenRequest request) {
         return ResponseEntity.ok(authService.reissue(request));
     }

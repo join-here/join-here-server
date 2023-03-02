@@ -1,4 +1,4 @@
-package com.hongik.joinhere.jwt;
+package com.hongik.joinhere.domain.auth.jwt;
 
 import com.hongik.joinhere.dto.token.TokenResponse;
 import io.jsonwebtoken.*;
@@ -36,7 +36,7 @@ public class TokenProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public TokenResponse generateToken(Authentication authentication) {
+    public TokenResponse generateToken(Authentication authentication, com.hongik.joinhere.domain.user.entity.User user) {
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -46,6 +46,8 @@ public class TokenProvider {
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())       // payload "sub": "name"
+                .claim("id", user.getUsername())
+                .claim("name", user.getNickname())
                 .claim(AUTHORITIES_KEY, authorities)        // payload "auth": "ROLE_USER"
                 .setExpiration(accessTokenExpiresIn)        // payload "exp": 1516239022 (example)
                 .signWith(key, SignatureAlgorithm.HS512)    // header "alg": "HS512"

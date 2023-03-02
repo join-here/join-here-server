@@ -1,4 +1,4 @@
-package com.hongik.joinhere.jwt;
+package com.hongik.joinhere.domain.auth.jwt;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;

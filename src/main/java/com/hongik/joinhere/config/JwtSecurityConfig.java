@@ -1,7 +1,7 @@
 package com.hongik.joinhere.config;
 
-import com.hongik.joinhere.jwt.JwtFilter;
-import com.hongik.joinhere.jwt.TokenProvider;
+import com.hongik.joinhere.domain.auth.jwt.JwtFilter;
+import com.hongik.joinhere.domain.auth.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
