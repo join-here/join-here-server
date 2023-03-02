@@ -1,10 +1,9 @@
 package com.hongik.joinhere.domain.auth;
 
-import com.hongik.joinhere.dto.token.TokenRequest;
-import com.hongik.joinhere.dto.token.TokenResponse;
+import com.hongik.joinhere.domain.auth.dto.request.TokenRequest;
+import com.hongik.joinhere.domain.auth.dto.response.TokenResponse;
 import com.hongik.joinhere.dto.user.CreateUserRequest;
 import com.hongik.joinhere.dto.user.LoginUserRequest;
-import com.hongik.joinhere.domain.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

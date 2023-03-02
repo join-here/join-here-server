@@ -1,4 +1,4 @@
-package com.hongik.joinhere.config;
+package com.hongik.joinhere.domain.auth.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

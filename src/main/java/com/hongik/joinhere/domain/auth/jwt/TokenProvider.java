@@ -1,6 +1,6 @@
 package com.hongik.joinhere.domain.auth.jwt;
 
-import com.hongik.joinhere.dto.token.TokenResponse;
+import com.hongik.joinhere.domain.auth.dto.response.TokenResponse;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

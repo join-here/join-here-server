@@ -1,4 +1,4 @@
-package com.hongik.joinhere.domain.user;
+package com.hongik.joinhere.domain.auth.security;
 
 import com.hongik.joinhere.domain.user.entity.User;
 import com.hongik.joinhere.domain.user.repository.UserRepository;

@@ -1,4 +1,4 @@
-package com.hongik.joinhere.util;
+package com.hongik.joinhere.domain.auth.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -9,7 +9,7 @@ public class SecurityUtil {
 
     private SecurityUtil() { }
 
-    public static Long getCurrentUsername() {
+    public static Long getCurrentUserId() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || authentication.getName() == null) {

@@ -1,4 +1,4 @@
-package com.hongik.joinhere.config;
+package com.hongik.joinhere.domain.auth.security;
 
 import com.hongik.joinhere.domain.auth.jwt.JwtFilter;
 import com.hongik.joinhere.domain.auth.jwt.TokenProvider;

@@ -1,4 +1,4 @@
-package com.hongik.joinhere.dto.token;
+package com.hongik.joinhere.domain.auth.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

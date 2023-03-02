@@ -1,25 +1,22 @@
 package com.hongik.joinhere.domain.auth;
 
-import com.hongik.joinhere.dto.token.TokenRequest;
-import com.hongik.joinhere.dto.token.TokenResponse;
+import com.hongik.joinhere.domain.auth.dto.request.TokenRequest;
+import com.hongik.joinhere.domain.auth.dto.response.TokenResponse;
 import com.hongik.joinhere.dto.user.CreateUserRequest;
 import com.hongik.joinhere.dto.user.LoginUserRequest;
 import com.hongik.joinhere.domain.user.entity.Authority;
-import com.hongik.joinhere.entity.RefreshToken;
+import com.hongik.joinhere.domain.auth.entity.RefreshToken;
 import com.hongik.joinhere.domain.auth.jwt.TokenProvider;
 import com.hongik.joinhere.domain.user.entity.User;
-import com.hongik.joinhere.repository.RefreshTokenRepository;
+import com.hongik.joinhere.domain.auth.repository.RefreshTokenRepository;
 import com.hongik.joinhere.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @Transactional

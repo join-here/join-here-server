@@ -1,7 +1,5 @@
-package com.hongik.joinhere.config;
+package com.hongik.joinhere.domain.auth.security;
 
-import com.hongik.joinhere.domain.auth.jwt.JwtAccessDeniedHandler;
-import com.hongik.joinhere.domain.auth.jwt.JwtAuthenticationEntryPoint;
 import com.hongik.joinhere.domain.auth.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -30,8 +28,7 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/h2-console/**"
-                , "/favicon.ico");
+        return (web) -> web.ignoring().antMatchers("/favicon.ico");
     }
 
     @Bean

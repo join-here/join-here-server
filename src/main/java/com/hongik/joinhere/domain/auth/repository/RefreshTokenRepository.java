@@ -1,6 +1,6 @@
-package com.hongik.joinhere.repository;
+package com.hongik.joinhere.domain.auth.repository;
 
-import com.hongik.joinhere.entity.RefreshToken;
+import com.hongik.joinhere.domain.auth.entity.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
