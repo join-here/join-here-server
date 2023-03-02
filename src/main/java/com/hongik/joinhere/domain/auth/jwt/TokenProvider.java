@@ -45,12 +45,12 @@ public class TokenProvider {
 
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         String accessToken = Jwts.builder()
-                .setSubject(authentication.getName())       // payload "sub": "name"
-                .claim("id", user.getUsername())
-                .claim("name", user.getNickname())
-                .claim(AUTHORITIES_KEY, authorities)        // payload "auth": "ROLE_USER"
-                .setExpiration(accessTokenExpiresIn)        // payload "exp": 1516239022 (example)
-                .signWith(key, SignatureAlgorithm.HS512)    // header "alg": "HS512"
+                .setSubject(authentication.getName())           // payload "sub": "name"
+                .claim("username", user.getUsername())
+                .claim("nickname", user.getNickname())
+                .claim(AUTHORITIES_KEY, authorities)            // payload "auth": "ROLE_USER"
+                .setExpiration(accessTokenExpiresIn)            // payload "exp": 1516239022 (example)
+                .signWith(key, SignatureAlgorithm.HS512)        // header "alg": "HS512"
                 .compact();
 
         String refreshToken = Jwts.builder()
