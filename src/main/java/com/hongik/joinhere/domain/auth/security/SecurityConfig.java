@@ -3,6 +3,7 @@ package com.hongik.joinhere.domain.auth.security;
 import com.hongik.joinhere.domain.auth.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -47,7 +48,12 @@ public class SecurityConfig {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/auth/**").permitAll()
+                .antMatchers("/auth/signup").permitAll()
+                .antMatchers("/auth/login").permitAll()
+                .antMatchers("/auth/refresh").permitAll()
+                .antMatchers(HttpMethod.GET, "/clubs").permitAll()
+                .antMatchers(HttpMethod.GET, "/clubs/{club-id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/clubs/categories/**").permitAll()
                 .anyRequest().authenticated()
 
                 .and()
