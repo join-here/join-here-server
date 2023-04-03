@@ -4,11 +4,21 @@ use join_here;
 -- Create member Table
 CREATE TABLE member
 (
-    `id`        VARCHAR(20)    NOT NULL,
-    `name`      VARCHAR(10)    NOT NULL,
-    `password`  VARCHAR(20)    NOT NULL,
-    `birthday`  DATE           NOT NULL,
-    `phone`     VARCHAR(20)    NOT NULL,
+    `id`            BIGINT          NOT NULL    AUTO_INCREMENT,
+    `username`      VARCHAR(20)     NOT NULL,
+    `password`      VARCHAR(255)    NOT NULL,
+    `name`          VARCHAR(20)     NOT NULL,
+    `birthday`      DATE            NOT NULL,
+    `phone`         VARCHAR(20)     NOT NULL,
+    `authority`     VARCHAR(20)     NOT NULL    DEFAULT 'ROLE_USER',
+    PRIMARY KEY (id)
+);
+
+-- Create refresh_token Table
+CREATE TABLE refresh_token
+(
+    `id`           VARCHAR(20)         NOT NULL,
+    `value`         VARCHAR(255)        NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -129,8 +139,8 @@ CREATE TABLE qna_answer
     FOREIGN KEY (qna_question_id) references qna_question(id)
 );
 
--- Create User Table
-CREATE TABLE users
+-- Create Member Table
+CREATE TABLE member
 (
     `id`            BIGINT          NOT NULL    AUTO_INCREMENT,
     `username`      VARCHAR(20)     NOT NULL,
@@ -139,13 +149,5 @@ CREATE TABLE users
     `birthday`      DATE            NOT NULL,
     `phone`         VARCHAR(20)     NOT NULL,
     `authority`     VARCHAR(20)     NOT NULL    DEFAULT 'ROLE_USER',
-    PRIMARY KEY (id)
-);
-
--- Create RefreshToken Table
-CREATE TABLE refresh_token
-(
-    `id`           VARCHAR(20)         NOT NULL,
-    `value`         VARCHAR(255)        NOT NULL,
     PRIMARY KEY (id)
 );
