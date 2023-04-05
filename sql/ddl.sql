@@ -11,6 +11,8 @@ CREATE TABLE member
     `birthday`      DATE            NOT NULL,
     `phone`         VARCHAR(20)     NOT NULL,
     `authority`     VARCHAR(20)     NOT NULL    DEFAULT 'ROLE_USER',
+    `created_at`    TIMESTAMP       NOT NULL,
+    `updated_at`    TIMESTAMP       NOT NULL,
     PRIMARY KEY (id)
 );
 
