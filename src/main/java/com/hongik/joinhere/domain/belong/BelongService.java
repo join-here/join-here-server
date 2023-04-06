@@ -7,7 +7,7 @@ import com.hongik.joinhere.domain.belong.repository.BelongRepository;
 import com.hongik.joinhere.domain.club.repository.ClubRepository;
 import com.hongik.joinhere.domain.dto.belong.CreateBelongRequest;
 import com.hongik.joinhere.domain.dto.belong.DeleteBelongRequest;
-import com.hongik.joinhere.domain.dto.belong.ShowBelongResponse;
+import com.hongik.joinhere.domain.belong.dto.ShowBelongResponse;
 import com.hongik.joinhere.domain.dto.belong.UpdateBelongRequest;
 import com.hongik.joinhere.domain.dto.belong.ShowMyBelongResponse;
 import com.hongik.joinhere.domain.announcement.entity.Announcement;
@@ -43,6 +43,21 @@ public class BelongService {
         return sortedByPosition(belongs);
     }
 
+    public List<ShowBelongResponse> registerByMemberId(CreateBelongRequest request, Long clubId) {
+        Member member = memberRepository.findById(request.getMemberId())
+                .orElseThrow(() -> new BadRequestException(ErrorCode.MEMBER_NOT_FOUND));
+        Club club = clubRepository.findById(clubId)
+                .orElseThrow(() -> new BadRequestException(ErrorCode.CLUB_NOT_FOUND));
+        Belong belong = Belong.builder()
+                        .position(Position.NORMAL)
+                        .member(member)
+                        .club(club)
+                        .build();
+        belongRepository.save(belong);
+        List<Belong> belongs = belongRepository.findByClub(club);
+        return sortedByPosition(belongs);
+    }
+
     public List<ShowMyBelongResponse> findBelongByMemberId(String memberId) {
         Member member = memberRepository.findById(memberId);
         List<Belong> belongs = belongRepository.findByMemberId(member);
@@ -60,15 +75,6 @@ public class BelongService {
             responses.add(ShowMyBelongResponse.from(belong, hasAnnouncement));
         }
         return responses;
-    }
-
-    public List<ShowBelongResponse> register(CreateBelongRequest request, Long clubId) {
-        Member member = memberRepository.findById(request.getMemberId());
-        Club club = clubRepository.findById(clubId);
-        Belong belong = new Belong(null, "nor", member, club);
-        belongRepository.save(belong);
-        List<Belong> belongs = belongRepository.findByClubId(clubId);
-        return mappingResponse(belongs);
     }
 
     public List<ShowBelongResponse> updatePosition(UpdateBelongRequest request, Long clubId) {

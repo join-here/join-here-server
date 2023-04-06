@@ -1,4 +1,4 @@
-package com.hongik.joinhere.dto.belong;
+package com.hongik.joinhere.domain.dto.belong;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class CreateBelongRequest {
 
-    private String memberId;
+    private Long memberId;
 }

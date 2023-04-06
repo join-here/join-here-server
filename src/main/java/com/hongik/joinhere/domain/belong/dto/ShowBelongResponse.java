@@ -1,4 +1,4 @@
-package com.hongik.joinhere.domain.dto.belong;
+package com.hongik.joinhere.domain.belong.dto;
 
 import com.hongik.joinhere.domain.belong.entity.Belong;
 import com.hongik.joinhere.domain.belong.entity.Position;

@@ -2,10 +2,9 @@ package com.hongik.joinhere.domain.belong;
 
 import com.hongik.joinhere.domain.dto.belong.CreateBelongRequest;
 import com.hongik.joinhere.domain.dto.belong.DeleteBelongRequest;
-import com.hongik.joinhere.domain.dto.belong.ShowBelongResponse;
+import com.hongik.joinhere.domain.belong.dto.ShowBelongResponse;
 import com.hongik.joinhere.domain.dto.belong.UpdateBelongRequest;
 import com.hongik.joinhere.domain.dto.belong.ShowMyBelongResponse;
-import com.hongik.joinhere.domain.belong.BelongService;
 import com.hongik.joinhere.global.common.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,8 +25,8 @@ public class BelongController {
     }
 
     @PostMapping("/clubs/{club-id}/belongs")
-    public ResponseEntity<List<ShowBelongResponse>> create(@RequestBody  CreateBelongRequest request, @PathVariable("club-id") Long clubId) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(belongService.register(request, clubId));
+    public CommonResponse<List<ShowBelongResponse>> createByMemberId(@RequestBody  CreateBelongRequest request, @PathVariable("club-id") Long clubId) {
+        return CommonResponse.onSuccess(HttpStatus.CREATED.value(), belongService.registerByMemberId(request, clubId));
     }
 
     @PatchMapping("/clubs/{club-id}/belongs")

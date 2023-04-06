@@ -4,6 +4,7 @@ import com.hongik.joinhere.domain.club.entity.Club;
 import com.hongik.joinhere.domain.member.entity.Member;
 import com.hongik.joinhere.global.common.entity.TimeBaseEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Belong extends TimeBaseEntity {
