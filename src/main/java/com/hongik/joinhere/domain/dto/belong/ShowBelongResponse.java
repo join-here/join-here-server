@@ -1,6 +1,7 @@
-package com.hongik.joinhere.dto.belong;
+package com.hongik.joinhere.domain.dto.belong;
 
-import com.hongik.joinhere.entity.Belong;
+import com.hongik.joinhere.domain.belong.entity.Belong;
+import com.hongik.joinhere.domain.belong.entity.Position;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -9,9 +10,9 @@ import lombok.Getter;
 public class ShowBelongResponse {
 
     private Long belongId;
-    private String memberId;
+    private Long memberId;
     private String memberName;
-    private String position;
+    private Position position;
 
     public static ShowBelongResponse from(Belong belong) {
         return new ShowBelongResponse(belong.getId(), belong.getMember().getId(), belong.getMember().getName(), belong.getPosition());

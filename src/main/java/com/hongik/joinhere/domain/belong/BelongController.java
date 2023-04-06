@@ -1,11 +1,12 @@
-package com.hongik.joinhere.controller;
+package com.hongik.joinhere.domain.belong;
 
-import com.hongik.joinhere.dto.belong.CreateBelongRequest;
-import com.hongik.joinhere.dto.belong.DeleteBelongRequest;
-import com.hongik.joinhere.dto.belong.ShowBelongResponse;
-import com.hongik.joinhere.dto.belong.UpdateBelongRequest;
-import com.hongik.joinhere.dto.belong.ShowMyBelongResponse;
-import com.hongik.joinhere.service.BelongService;
+import com.hongik.joinhere.domain.dto.belong.CreateBelongRequest;
+import com.hongik.joinhere.domain.dto.belong.DeleteBelongRequest;
+import com.hongik.joinhere.domain.dto.belong.ShowBelongResponse;
+import com.hongik.joinhere.domain.dto.belong.UpdateBelongRequest;
+import com.hongik.joinhere.domain.dto.belong.ShowMyBelongResponse;
+import com.hongik.joinhere.domain.belong.BelongService;
+import com.hongik.joinhere.global.common.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,8 @@ public class BelongController {
     private final BelongService belongService;
 
     @GetMapping("/clubs/{club-id}/belongs")
-    public List<ShowBelongResponse> showBelongsByClub(@PathVariable("club-id") Long clubId) {
-        return belongService.findBelongByClub(clubId);
+    public CommonResponse<List<ShowBelongResponse>> showBelongsByClub(@PathVariable("club-id") Long clubId) {
+        return CommonResponse.onSuccess(HttpStatus.OK.value(), belongService.showClubMembers(clubId));
     }
 
     @PostMapping("/clubs/{club-id}/belongs")
