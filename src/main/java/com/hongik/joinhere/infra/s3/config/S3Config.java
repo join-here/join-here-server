@@ -1,4 +1,4 @@
-package com.hongik.joinhere;
+package com.hongik.joinhere.infra.s3.config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class AmazonS3Config {
+public class S3Config {
 
     @Value("${cloud.aws.credentials.access-key}")
     private String accessKey;

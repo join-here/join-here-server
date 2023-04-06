@@ -1,9 +1,11 @@
-package com.hongik.joinhere.service;
+package com.hongik.joinhere.infra.s3;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.hongik.joinhere.global.error.ErrorCode;
+import com.hongik.joinhere.global.error.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -26,7 +28,7 @@ public class S3Service {
 
     public String uploadFiles(MultipartFile multipartFile, String dirName) throws IOException {
         File uploadFile = convert(multipartFile)
-                .orElseThrow(() -> new IllegalArgumentException("error: MultipartFile -> File convert fail"));
+                .orElseThrow(() -> new BadRequestException(ErrorCode.S3_SERVER_ERROR));
         return upload(uploadFile, dirName);
     }
 
