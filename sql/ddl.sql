@@ -31,7 +31,7 @@ CREATE TABLE club
     `name`          VARCHAR(50)      NOT NULL,
     `category`      CHAR(10)         NOT NULL,
     `area`          CHAR(2)          NOT NULL,
-    `imageUrl`      VARCHAR(2083)    NULL,
+    `image_url`      VARCHAR(2083)    NULL,
     `introduction`  VARCHAR(1000)    NOT NULL,
     `view`          BIGINT           NOT NULL    DEFAULT 0,
     `created_at`    TIMESTAMP        NOT NULL,
