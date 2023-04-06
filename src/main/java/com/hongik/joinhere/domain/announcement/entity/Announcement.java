@@ -3,6 +3,7 @@ package com.hongik.joinhere.domain.announcement.entity;
 import com.hongik.joinhere.domain.club.entity.Club;
 import com.hongik.joinhere.global.common.entity.TimeBaseEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.sql.Date;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Announcement extends TimeBaseEntity {

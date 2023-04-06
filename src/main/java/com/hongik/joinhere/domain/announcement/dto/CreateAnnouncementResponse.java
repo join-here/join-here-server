@@ -1,6 +1,6 @@
-package com.hongik.joinhere.dto.announcement;
+package com.hongik.joinhere.domain.announcement.dto;
 
-import com.hongik.joinhere.entity.Announcement;
+import com.hongik.joinhere.domain.announcement.entity.Announcement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
