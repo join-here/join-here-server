@@ -44,7 +44,7 @@ public class AnnouncementService {
                 .orElseThrow(() -> new BadRequestException(ErrorCode.CLUB_NOT_FOUND));
         Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId())
                 .orElseThrow(() -> new BadRequestException(ErrorCode.MEMBER_NOT_FOUND));
-        Belong belong = belongRepository.findBelongByMemberAndClub(member, club)
+        Belong belong = belongRepository.findByMemberAndClub(member, club)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.BELONG_NOT_FOUND));
         if (belong.getPosition() == Position.NORMAL)
             throw new ForbiddenException(ErrorCode.BELONG_FORBIDDEN_MEMBER);
