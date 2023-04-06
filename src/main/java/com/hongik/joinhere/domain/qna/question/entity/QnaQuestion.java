@@ -1,22 +1,26 @@
-package com.hongik.joinhere.entity;
+package com.hongik.joinhere.domain.qna.question.entity;
 
+import com.hongik.joinhere.domain.club.entity.Club;
+import com.hongik.joinhere.domain.member.entity.Member;
+import com.hongik.joinhere.global.common.entity.TimeBaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Belong {
+@Table(name = "qna_question")
+public class QnaQuestion extends TimeBaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String position;
+
+    @Column(length = 1000)
+    private String content;
 
     @ManyToOne
     @JoinColumn(name = "member_id")

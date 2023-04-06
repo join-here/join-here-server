@@ -1,5 +1,7 @@
-package com.hongik.joinhere.entity;
+package com.hongik.joinhere.domain.qna.answer.entity;
 
+import com.hongik.joinhere.domain.member.entity.Member;
+import com.hongik.joinhere.domain.qna.question.entity.QnaQuestion;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,11 +19,11 @@ public class QnaAnswer {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 1000)
     private String content;
 
     @Column(name = "is_manager")
-    private String isManager;
-    private LocalDateTime time;
+    private Boolean isManager;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
