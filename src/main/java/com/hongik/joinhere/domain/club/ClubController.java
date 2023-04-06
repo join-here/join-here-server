@@ -1,7 +1,10 @@
-package com.hongik.joinhere.controller;
+package com.hongik.joinhere.domain.club;
 
-import com.hongik.joinhere.dto.club.*;
-import com.hongik.joinhere.service.ClubService;
+import com.hongik.joinhere.domain.club.dto.*;
+import com.hongik.joinhere.domain.dto.club.ShowClubInfoResponse;
+import com.hongik.joinhere.domain.dto.club.ShowClubResponse;
+import com.hongik.joinhere.domain.dto.club.UpdateClubRequest;
+import com.hongik.joinhere.global.common.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +27,9 @@ public class ClubController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestPart(value = "request") CreateClubRequest request,
-                                    @RequestPart(value = "image", required = false) MultipartFile multipartFile) {
-        CreateClubResponse response = clubService.register(request, multipartFile);
-        if (response == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    public CommonResponse<CreateClubResponse> create(@RequestPart(value = "request") CreateClubRequest request,
+                                 @RequestPart(value = "image", required = false) MultipartFile multipartFile) {
+        return CommonResponse.onSuccess(HttpStatus.CREATED.value(), clubService.register(request, multipartFile));
     }
 
     @PatchMapping

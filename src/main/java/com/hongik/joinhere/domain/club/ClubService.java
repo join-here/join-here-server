@@ -1,10 +1,26 @@
-package com.hongik.joinhere.service;
+package com.hongik.joinhere.domain.club;
 
-import com.hongik.joinhere.dto.club.*;
-import com.hongik.joinhere.dto.qna.ShowQnaResponse;
-import com.hongik.joinhere.dto.review.ReviewResponse;
-import com.hongik.joinhere.entity.*;
-import com.hongik.joinhere.repository.*;
+import com.hongik.joinhere.domain.announcement.entity.Announcement;
+import com.hongik.joinhere.domain.auth.security.SecurityUtil;
+import com.hongik.joinhere.domain.belong.entity.Belong;
+import com.hongik.joinhere.domain.belong.Review;
+import com.hongik.joinhere.domain.belong.entity.Position;
+import com.hongik.joinhere.domain.belong.repository.BelongRepository;
+import com.hongik.joinhere.domain.club.dto.*;
+import com.hongik.joinhere.domain.club.entity.Club;
+import com.hongik.joinhere.domain.club.repository.ClubRepository;
+import com.hongik.joinhere.domain.dto.club.ShowClubInfoResponse;
+import com.hongik.joinhere.domain.dto.club.ShowClubResponse;
+import com.hongik.joinhere.domain.dto.club.UpdateClubRequest;
+import com.hongik.joinhere.domain.dto.qna.ShowQnaResponse;
+import com.hongik.joinhere.domain.dto.review.ReviewResponse;
+import com.hongik.joinhere.domain.member.entity.Member;
+import com.hongik.joinhere.domain.member.repository.MemberRepository;
+import com.hongik.joinhere.domain.qna.answer.entity.QnaAnswer;
+import com.hongik.joinhere.domain.qna.question.entity.QnaQuestion;
+import com.hongik.joinhere.global.error.ErrorCode;
+import com.hongik.joinhere.global.error.exception.BadRequestException;
+import com.hongik.joinhere.infra.s3.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,18 +48,25 @@ public class ClubService {
     public CreateClubResponse register(CreateClubRequest request, MultipartFile multipartFile) {
         String imageUrl = null;
 
-        if (!validateDuplicatedClubName(request.getName()))
-            return null;
+        if (!validateDuplicatedClubName(request.getName())) {
+            throw new BadRequestException(ErrorCode.DUPLICATE_CLUB);
+        }
         try {
-            if (multipartFile != null && !multipartFile.isEmpty())
+            if (multipartFile != null && !multipartFile.isEmpty()) {
                 imageUrl = s3Service.uploadFiles(multipartFile, "images");
+            }
         } catch (Exception e) {
-            return null;
+            throw new BadRequestException(ErrorCode.S3_CONNECTION_ERROR);
         }
         Club club = request.toEntity(imageUrl);
         clubRepository.save(club);
-        Member member = memberRepository.findById(request.getId());
-        Belong belong = new Belong(null, "pre", member, club);
+        Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId())
+                .orElseThrow(() -> (new BadRequestException(ErrorCode.MEMBER_NOT_FOUND)));
+        Belong belong = Belong.builder()
+                        .position(Position.PRESIDENT)
+                        .member(member)
+                        .club(club)
+                        .build();
         belongRepository.save(belong);
         return CreateClubResponse.from(club);
     }
@@ -65,7 +88,7 @@ public class ClubService {
 
     public ShowClubInfoResponse findClubInfo(Long id) {
         Club club = clubRepository.findById(id);
-        club.setView(club.getView() + 1L);
+        club.increaseView();
         List<Announcement> announcements = announcementRepository.findByClubId(club.getId());
         List<Review> reviews = reviewRepository.findByClubId(id);
         List<ReviewResponse> reviewResponses = new ArrayList<>();
@@ -107,12 +130,12 @@ public class ClubService {
             } catch (UnsupportedEncodingException e) {
                 return false;
             }
-            club.setImageUrl(imageUrl);
+            club.updateImageUrl(imageUrl);
         }
-        club.setName(request.getName());
-        club.setCategory(request.getCategory());
-        club.setArea(request.getArea());
-        club.setIntroduction(request.getIntroduction());
+        club.updateName(request.getName());
+        club.updateCategory(request.getCategory());
+        club.updateArea(request.getArea());
+        club.updateIntroduction(request.getIntroduction());
         return true;
     }
 

@@ -1,6 +1,6 @@
-package com.hongik.joinhere.dto.club;
+package com.hongik.joinhere.domain.club.dto;
 
-import com.hongik.joinhere.entity.Club;
+import com.hongik.joinhere.domain.club.entity.Club;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
