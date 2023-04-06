@@ -29,12 +29,13 @@ CREATE TABLE club
 (
     `id`            BIGINT           NOT NULL    AUTO_INCREMENT,
     `name`          VARCHAR(50)      NOT NULL,
-    `category`      CHAR(3)          NOT NULL,
+    `category`      CHAR(10)         NOT NULL,
     `area`          CHAR(2)          NOT NULL,
-    `image`         MEDIUMBLOB           NULL,
+    `imageUrl`      VARCHAR(2083)    NULL,
     `introduction`  VARCHAR(1000)    NOT NULL,
-    `view`          BIGINT           NOT NULL,
-    `scrap`         BIGINT           NOT NULL,
+    `view`          BIGINT           NOT NULL    DEFAULT 0,
+    `created_at`    TIMESTAMP        NOT NULL,
+    `updated_at`    TIMESTAMP        NOT NULL,
     PRIMARY KEY (id)
 );
 
