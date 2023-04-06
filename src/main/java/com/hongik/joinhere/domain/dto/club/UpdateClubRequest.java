@@ -1,5 +1,7 @@
-package com.hongik.joinhere.dto.club;
+package com.hongik.joinhere.domain.dto.club;
 
+import com.hongik.joinhere.domain.club.entity.Area;
+import com.hongik.joinhere.domain.club.entity.Category;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,8 +11,8 @@ public class UpdateClubRequest {
 
     private Long clubId;
     private String name;
-    private String category;
-    private String area;
+    private Category category;
+    private Area area;
     private String introduction;
     private Boolean isImageChanged;
 }

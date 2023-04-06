@@ -48,7 +48,7 @@ public class ClubService {
     public CreateClubResponse register(CreateClubRequest request, MultipartFile multipartFile) {
         String imageUrl = null;
 
-        if (!validateDuplicatedClubName(request.getName())) {
+        if (clubRepository.existsByName(request.getName())) {
             throw new BadRequestException(ErrorCode.DUPLICATE_CLUB);
         }
         try {
@@ -110,25 +110,21 @@ public class ClubService {
             return ShowClubInfoResponse.from(club, announcements.get(announcements.size() - 1), reviewResponses, showQnaResponses);
     }
 
-    public boolean updateClubInfo(UpdateClubRequest request, MultipartFile multipartFile) {
-        Club club = clubRepository.findById(request.getClubId());
-        if (!club.getName().equals(request.getName()) && !validateDuplicatedClubName(request.getName()))
-            return false;
+    public void updateClubInfo(UpdateClubRequest request, MultipartFile multipartFile) {
+        Club club = clubRepository.findById(request.getClubId())
+                .orElseThrow(() -> new BadRequestException(ErrorCode.CLUB_NOT_FOUND));
+        if (!club.getName().equals(request.getName()) && clubRepository.existsByName(request.getName())) {
+            throw new BadRequestException(ErrorCode.DUPLICATE_CLUB);
+        }
         if (request.getIsImageChanged()) {
             String imageUrl = null;
-
             try {
                 if (multipartFile != null && !multipartFile.isEmpty())
                     imageUrl = s3Service.uploadFiles(multipartFile, "images");
-            } catch (Exception e) {
-                return false;
-            }
-
-            try {
                 if (club.getImageUrl() != null)
                     s3Service.deleteS3(URLDecoder.decode(club.getImageUrl().substring(50), "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                return false;
+            } catch (Exception e) {
+                throw new BadRequestException(ErrorCode.S3_CONNECTION_ERROR);
             }
             club.updateImageUrl(imageUrl);
         }
@@ -136,7 +132,6 @@ public class ClubService {
         club.updateCategory(request.getCategory());
         club.updateArea(request.getArea());
         club.updateIntroduction(request.getIntroduction());
-        return true;
     }
 
     private List<ShowClubResponse> mappingShowClubResponse(List<Club> clubs) {
@@ -150,12 +145,5 @@ public class ClubService {
                 responses.add(ShowClubResponse.from(club, announcements.get(announcements.size() - 1).getEndDate()));
         }
         return responses;
-    }
-
-    private Boolean validateDuplicatedClubName(String name) {
-        List<Club> clubs = clubRepository.findByName(name);
-        if (clubs.isEmpty())
-            return true;
-        return false;
     }
 }

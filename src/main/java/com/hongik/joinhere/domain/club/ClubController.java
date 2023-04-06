@@ -33,11 +33,10 @@ public class ClubController {
     }
 
     @PatchMapping
-    public ResponseEntity<?> update(@RequestPart(value = "request") UpdateClubRequest request,
+    public CommonResponse<?> update(@RequestPart(value = "request") UpdateClubRequest request,
                                          @RequestPart(value = "image", required = false) MultipartFile multipartFile) {
-        if (clubService.updateClubInfo(request, multipartFile))
-            return ResponseEntity.status(HttpStatus.OK).body(null);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        clubService.updateClubInfo(request, multipartFile);
+        return CommonResponse.onSuccess(HttpStatus.OK.value());
     }
 
     @GetMapping("/search")
