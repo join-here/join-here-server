@@ -2,9 +2,11 @@ package com.hongik.joinhere.domain.application.application;
 
 import com.hongik.joinhere.domain.announcement.entity.Announcement;
 import com.hongik.joinhere.domain.announcement.repository.AnnouncementRepository;
+import com.hongik.joinhere.domain.application.application.dto.PublishApplicationRequest;
 import com.hongik.joinhere.domain.application.application.dto.ShowApplicantResponse;
 import com.hongik.joinhere.domain.application.application.dto.UpdateApplicantRequest;
 import com.hongik.joinhere.domain.application.application.entity.Application;
+import com.hongik.joinhere.domain.application.application.entity.PassState;
 import com.hongik.joinhere.domain.application.application.repository.ApplicationRepository;
 import com.hongik.joinhere.domain.application.question.entity.ApplicationQuestion;
 import com.hongik.joinhere.domain.application.answer.entity.ApplicationAnswer;
@@ -43,15 +45,7 @@ public class ApplicationService {
 
 
     public List<ShowApplicantResponse> findApplicants(Long clubId) {
-        Club club = clubRepository.findById(clubId)
-                .orElseThrow(() -> new BadRequestException(ErrorCode.CLUB_NOT_FOUND));
-        Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId())
-                .orElseThrow(() -> new BadRequestException(ErrorCode.MEMBER_NOT_FOUND));
-        Belong belong = belongRepository.findByMemberAndClub(member, club)
-                .orElseThrow(() -> new BadRequestException(ErrorCode.BELONG_NOT_FOUND));
-        if (belong.getPosition() == Position.NORMAL) {
-            throw new ForbiddenException(ErrorCode.BELONG_FORBIDDEN_MEMBER);
-        }
+        Club club = checkClubManageAuthority(clubId);
         List<Announcement> announcements = announcementRepository.findByClub(club);
         Announcement announcement = announcements.get(announcements.size() - 1);
         List<Application> applications = applicationRepository.findByAnnouncement(announcement);
@@ -62,15 +56,7 @@ public class ApplicationService {
     }
 
     public List<ShowApplicantResponse> updateApplicantsPassState(Long clubId, List<UpdateApplicantRequest> requests) {
-        Club club = clubRepository.findById(clubId)
-                .orElseThrow(() -> new BadRequestException(ErrorCode.CLUB_NOT_FOUND));
-        Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId())
-                .orElseThrow(() -> new BadRequestException(ErrorCode.MEMBER_NOT_FOUND));
-        Belong belong = belongRepository.findByMemberAndClub(member, club)
-                .orElseThrow(() -> new BadRequestException(ErrorCode.BELONG_NOT_FOUND));
-        if (belong.getPosition() == Position.NORMAL) {
-            throw new ForbiddenException(ErrorCode.BELONG_FORBIDDEN_MEMBER);
-        }
+        checkClubManageAuthority(clubId);
         List<ShowApplicantResponse> responses = new ArrayList<>();
         for (UpdateApplicantRequest request : requests) {
             Application application = applicationRepository.findById(request.getApplicationId())
@@ -82,20 +68,26 @@ public class ApplicationService {
     }
 
     public void publishApplications(List<PublishApplicationRequest> requests, Long clubId) {
-        Club club = clubRepository.findById(clubId);
-        List<Announcement> announcements = announcementRepository.findByClubId(clubId);
-        announcements.get(announcements.size() - 1).setInformState("y");
+        Club club = checkClubManageAuthority(clubId);
+        List<Announcement> announcements = announcementRepository.findByClub(club);
+        announcements.get(announcements.size() - 1).updateInformState(true);
         for (PublishApplicationRequest request : requests) {
-            Application application = applicationRepository.findById(request.getApplicationId());
-            application.setInformState("y");
-            if (request.getPassState().equals("pass")) {
-                application.setPassState(request.getPassState());
-                Member member = memberRepository.findById(request.getMemberId());
-                Belong belong = new Belong(null, "nor", member, club);
+            Application application = applicationRepository.findById(request.getApplicationId())
+                            .orElseThrow(() -> new BadRequestException(ErrorCode.APPLICATION_NOT_FOUND));
+            if (request.getPassState() == PassState.PASS) {
+                application.updatePassState(request.getPassState());
+                Member member = memberRepository.findById(request.getMemberId())
+                        .orElseThrow(() -> new BadRequestException(ErrorCode.MEMBER_NOT_FOUND));
+                Belong belong = Belong.builder()
+                        .position(Position.NORMAL)
+                        .member(member)
+                        .club(club)
+                        .build();
                 belongRepository.save(belong);
             }
-            else
-                application.setPassState("fail");
+            else {
+                application.updatePassState(PassState.FAIL);
+            }
         }
     }
 
@@ -121,7 +113,16 @@ public class ApplicationService {
         return responses;
     }
 
-    private void checkClubAuthority(Long clubId) {
-
+    private Club checkClubManageAuthority(Long clubId) {
+        Club club = clubRepository.findById(clubId)
+                .orElseThrow(() -> new BadRequestException(ErrorCode.CLUB_NOT_FOUND));
+        Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId())
+                .orElseThrow(() -> new BadRequestException(ErrorCode.MEMBER_NOT_FOUND));
+        Belong belong = belongRepository.findByMemberAndClub(member, club)
+                .orElseThrow(() -> new BadRequestException(ErrorCode.BELONG_NOT_FOUND));
+        if (belong.getPosition() == Position.NORMAL) {
+            throw new ForbiddenException(ErrorCode.BELONG_FORBIDDEN_MEMBER);
+        }
+        return club;
     }
 }

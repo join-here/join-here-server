@@ -1,12 +1,12 @@
 package com.hongik.joinhere.domain.application.application;
 
+import com.hongik.joinhere.domain.application.application.dto.PublishApplicationRequest;
 import com.hongik.joinhere.domain.application.application.dto.ShowApplicantResponse;
 import com.hongik.joinhere.domain.application.application.dto.UpdateApplicantRequest;
 import com.hongik.joinhere.domain.dto.application.*;
 import com.hongik.joinhere.global.common.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,9 +28,9 @@ public class ApplicationController {
     }
 
     @PostMapping("clubs/{club-id}/applications/publish")
-    public ResponseEntity<?> publishApplications(@RequestBody List<PublishApplicationRequest> requests, @PathVariable(name = "club-id") Long clubId) {
+    public CommonResponse<?> publishApplications(@RequestBody List<PublishApplicationRequest> requests, @PathVariable(name = "club-id") Long clubId) {
         applicationService.publishApplications(requests, clubId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(null);
+        CommonResponse.onSuccess(HttpStatus.OK.value());
     }
 
     @GetMapping("/members/{member-id}/applications")
