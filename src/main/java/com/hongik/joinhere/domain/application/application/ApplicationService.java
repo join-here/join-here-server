@@ -4,6 +4,7 @@ import com.hongik.joinhere.domain.announcement.entity.Announcement;
 import com.hongik.joinhere.domain.announcement.repository.AnnouncementRepository;
 import com.hongik.joinhere.domain.application.application.dto.PublishApplicationRequest;
 import com.hongik.joinhere.domain.application.application.dto.ShowApplicantResponse;
+import com.hongik.joinhere.domain.application.application.dto.ShowMyApplicationResponse;
 import com.hongik.joinhere.domain.application.application.dto.UpdateApplicantRequest;
 import com.hongik.joinhere.domain.application.application.entity.Application;
 import com.hongik.joinhere.domain.application.application.entity.PassState;
@@ -91,6 +92,17 @@ public class ApplicationService {
         }
     }
 
+    public List<ShowMyApplicationResponse> findMyApplications() {
+        Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId())
+                .orElseThrow(() -> new BadRequestException(ErrorCode.MEMBER_NOT_FOUND));
+        List<Application> applications = applicationRepository.findByMember(member);
+        List<ShowMyApplicationResponse> responses = new ArrayList<>();
+        for (Application application : applications) {
+            responses.add(ShowMyApplicationResponse.from(application.getAnnouncement().getClub(), application));
+        }
+        return responses;
+    }
+
     public List<ShowApplicationContentResponse> findApplications(Long applicationId) {
         Application application = applicationRepository.findById(applicationId);
         Announcement announcement = announcementRepository.findById(application.getAnnouncement().getId());
@@ -99,16 +111,6 @@ public class ApplicationService {
         for (ApplicationQuestion applicationQuestion : applicationQuestions) {
             ApplicationAnswer applicationAnswer = answerRepository.findByMemberIdAndQuestionId(application.getMember().getId(), applicationQuestion.getId()).get(0);
             responses.add(ShowApplicationContentResponse.from(applicationQuestion, applicationAnswer));
-        }
-        return responses;
-    }
-
-    public List<ShowMyApplicationResponse> findApplicationsByMemberId(String memberId) {
-        List<Application> applications = applicationRepository.findByMemberId(memberId);
-        List<ShowMyApplicationResponse> responses = new ArrayList<>();
-        for (Application application : applications) {
-            Club club = clubRepository.findById(application.getAnnouncement().getClub().getId());
-            responses.add(ShowMyApplicationResponse.from(club, application));
         }
         return responses;
     }

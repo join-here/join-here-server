@@ -2,6 +2,7 @@ package com.hongik.joinhere.domain.application.application;
 
 import com.hongik.joinhere.domain.application.application.dto.PublishApplicationRequest;
 import com.hongik.joinhere.domain.application.application.dto.ShowApplicantResponse;
+import com.hongik.joinhere.domain.application.application.dto.ShowMyApplicationResponse;
 import com.hongik.joinhere.domain.application.application.dto.UpdateApplicantRequest;
 import com.hongik.joinhere.domain.dto.application.*;
 import com.hongik.joinhere.global.common.response.CommonResponse;
@@ -33,9 +34,9 @@ public class ApplicationController {
         CommonResponse.onSuccess(HttpStatus.OK.value());
     }
 
-    @GetMapping("/members/{member-id}/applications")
-    public List<ShowMyApplicationResponse> showMyApplications(@PathVariable(name = "member-id") String memberId) {
-        return applicationService.findApplicationsByMemberId(memberId);
+    @GetMapping("/applications")
+    public CommonResponse<List<ShowMyApplicationResponse>> showMyApplications() {
+        return CommonResponse.onSuccess(HttpStatus.OK.value(), applicationService.findMyApplications());
     }
 
     @GetMapping("/applications/{application-id}")
