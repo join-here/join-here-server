@@ -30,4 +30,8 @@ public class Application extends TimeBaseEntity {
     @ManyToOne
     @JoinColumn(name = "announcement_id")
     Announcement announcement;
+
+    public void updatePassState(PassState passState) {
+        this.passState = passState;
+    }
 }
