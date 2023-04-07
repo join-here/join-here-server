@@ -2,23 +2,20 @@ package com.hongik.joinhere.domain.application.application;
 
 import com.hongik.joinhere.domain.announcement.entity.Announcement;
 import com.hongik.joinhere.domain.announcement.repository.AnnouncementRepository;
-import com.hongik.joinhere.domain.application.application.dto.PublishApplicationRequest;
-import com.hongik.joinhere.domain.application.application.dto.ShowApplicantResponse;
-import com.hongik.joinhere.domain.application.application.dto.ShowMyApplicationResponse;
-import com.hongik.joinhere.domain.application.application.dto.UpdateApplicantRequest;
+import com.hongik.joinhere.domain.application.answer.repository.ApplicationAnswerRepository;
+import com.hongik.joinhere.domain.application.application.dto.*;
 import com.hongik.joinhere.domain.application.application.entity.Application;
 import com.hongik.joinhere.domain.application.application.entity.PassState;
 import com.hongik.joinhere.domain.application.application.repository.ApplicationRepository;
 import com.hongik.joinhere.domain.application.question.entity.ApplicationQuestion;
 import com.hongik.joinhere.domain.application.answer.entity.ApplicationAnswer;
+import com.hongik.joinhere.domain.application.question.repository.ApplicationQuestionRepository;
 import com.hongik.joinhere.domain.auth.security.SecurityUtil;
 import com.hongik.joinhere.domain.belong.entity.Belong;
 import com.hongik.joinhere.domain.belong.entity.Position;
 import com.hongik.joinhere.domain.belong.repository.BelongRepository;
 import com.hongik.joinhere.domain.club.entity.Club;
 import com.hongik.joinhere.domain.club.repository.ClubRepository;
-import com.hongik.joinhere.domain.dto.application.*;
-import com.hongik.joinhere.domain.entity.*;
 import com.hongik.joinhere.domain.member.entity.Member;
 import com.hongik.joinhere.domain.member.repository.MemberRepository;
 import com.hongik.joinhere.global.error.ErrorCode;
@@ -41,9 +38,8 @@ public class ApplicationService {
     private final BelongRepository belongRepository;
     private final AnnouncementRepository announcementRepository;
     private final ApplicationRepository applicationRepository;
-    private final QuestionRepository questionRepository;
-    private final AnswerRepository answerRepository;
-
+    private final ApplicationQuestionRepository applicationQuestionRepository;
+    private final ApplicationAnswerRepository applicationAnswerRepository;
 
     public List<ShowApplicantResponse> findApplicants(Long clubId) {
         Club club = checkClubManageAuthority(clubId);
@@ -104,12 +100,15 @@ public class ApplicationService {
     }
 
     public List<ShowApplicationContentResponse> findApplications(Long applicationId) {
-        Application application = applicationRepository.findById(applicationId);
-        Announcement announcement = announcementRepository.findById(application.getAnnouncement().getId());
-        List<ApplicationQuestion> applicationQuestions = questionRepository.findByAnnouncementId(announcement.getId());
+        Application application = applicationRepository.findById(applicationId).
+                orElseThrow(() -> new BadRequestException(ErrorCode.APPLICATION_NOT_FOUND));
+        checkClubManageAuthority(application.getAnnouncement().getClub().getId());
+        Announcement announcement = application.getAnnouncement();
+        List<ApplicationQuestion> applicationQuestions = applicationQuestionRepository.findByAnnouncement(announcement);
         List<ShowApplicationContentResponse> responses = new ArrayList<>();
         for (ApplicationQuestion applicationQuestion : applicationQuestions) {
-            ApplicationAnswer applicationAnswer = answerRepository.findByMemberIdAndQuestionId(application.getMember().getId(), applicationQuestion.getId()).get(0);
+            ApplicationAnswer applicationAnswer = applicationAnswerRepository.findByMemberAndApplicationQuestion(application.getMember(), applicationQuestion)
+                            .orElseThrow(() -> new BadRequestException(ErrorCode.APPLICATION_ANSWER_NOT_FOUND));
             responses.add(ShowApplicationContentResponse.from(applicationQuestion, applicationAnswer));
         }
         return responses;

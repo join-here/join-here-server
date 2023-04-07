@@ -1,10 +1,6 @@
 package com.hongik.joinhere.domain.application.application;
 
-import com.hongik.joinhere.domain.application.application.dto.PublishApplicationRequest;
-import com.hongik.joinhere.domain.application.application.dto.ShowApplicantResponse;
-import com.hongik.joinhere.domain.application.application.dto.ShowMyApplicationResponse;
-import com.hongik.joinhere.domain.application.application.dto.UpdateApplicantRequest;
-import com.hongik.joinhere.domain.dto.application.*;
+import com.hongik.joinhere.domain.application.application.dto.*;
 import com.hongik.joinhere.global.common.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,7 +27,7 @@ public class ApplicationController {
     @PostMapping("clubs/{club-id}/applications/publish")
     public CommonResponse<?> publishApplications(@RequestBody List<PublishApplicationRequest> requests, @PathVariable(name = "club-id") Long clubId) {
         applicationService.publishApplications(requests, clubId);
-        CommonResponse.onSuccess(HttpStatus.OK.value());
+        return CommonResponse.onSuccess(HttpStatus.OK.value());
     }
 
     @GetMapping("/applications")
@@ -40,7 +36,7 @@ public class ApplicationController {
     }
 
     @GetMapping("/applications/{application-id}")
-    public List<ShowApplicationContentResponse> showApplicationContents(@PathVariable(name = "application-id") Long applicationId) {
-        return applicationService.findApplications(applicationId);
+    public CommonResponse<List<ShowApplicationContentResponse>> showApplicationContents(@PathVariable(name = "application-id") Long applicationId) {
+        return CommonResponse.onSuccess(HttpStatus.OK.value(), applicationService.findApplications(applicationId));
     }
 }
