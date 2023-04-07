@@ -1,9 +1,10 @@
 package com.hongik.joinhere.domain.club;
 
 import com.hongik.joinhere.domain.club.dto.*;
+import com.hongik.joinhere.domain.club.entity.Category;
 import com.hongik.joinhere.domain.dto.club.ShowClubInfoResponse;
-import com.hongik.joinhere.domain.dto.club.ShowClubResponse;
-import com.hongik.joinhere.domain.dto.club.UpdateClubRequest;
+import com.hongik.joinhere.domain.club.dto.ShowClubResponse;
+import com.hongik.joinhere.domain.club.dto.UpdateClubRequest;
 import com.hongik.joinhere.global.common.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,9 +22,8 @@ public class ClubController {
     private final ClubService clubService;
 
     @GetMapping
-    public ResponseEntity<List<ShowClubResponse>> showAll() {
-        List<ShowClubResponse> responses = clubService.findClubs();
-        return ResponseEntity.status(HttpStatus.OK).body(responses);
+    public CommonResponse<List<ShowClubResponse>> showAll() {
+        return CommonResponse.onSuccess(HttpStatus.OK.value(), clubService.findClubs());
     }
 
     @PostMapping
@@ -40,8 +40,8 @@ public class ClubController {
     }
 
     @GetMapping("/search")
-    public List<ShowClubResponse> searchClubs(@RequestParam String query) {
-        return clubService.findClubsByQuery(query);
+    public CommonResponse<List<ShowClubResponse>> searchClubs(@RequestParam String query) {
+        return CommonResponse.onSuccess(HttpStatus.OK.value(), clubService.findClubsByQuery(query));
     }
 
     @GetMapping("/{club-id}")
@@ -51,8 +51,7 @@ public class ClubController {
     }
 
     @GetMapping("/categories/{category}")
-    public ResponseEntity<List<ShowClubResponse>> showClubsByCategory(@PathVariable String category) {
-        List<ShowClubResponse> responses = clubService.findClubsByCategory(category);
-        return ResponseEntity.status(HttpStatus.OK).body(responses);
+    public CommonResponse<List<ShowClubResponse>> showClubsByCategory(@PathVariable Category category) {
+        return CommonResponse.onSuccess(HttpStatus.OK.value(), clubService.findClubsByCategory(category));
     }
 }

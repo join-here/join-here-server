@@ -1,4 +1,4 @@
-package com.hongik.joinhere.domain.dto.club;
+package com.hongik.joinhere.domain.club.dto;
 
 import com.hongik.joinhere.domain.club.entity.Area;
 import com.hongik.joinhere.domain.club.entity.Category;

@@ -1,17 +1,19 @@
 package com.hongik.joinhere.domain.club;
 
 import com.hongik.joinhere.domain.announcement.entity.Announcement;
+import com.hongik.joinhere.domain.announcement.repository.AnnouncementRepository;
 import com.hongik.joinhere.domain.auth.security.SecurityUtil;
 import com.hongik.joinhere.domain.belong.entity.Belong;
 import com.hongik.joinhere.domain.belong.Review;
 import com.hongik.joinhere.domain.belong.entity.Position;
 import com.hongik.joinhere.domain.belong.repository.BelongRepository;
 import com.hongik.joinhere.domain.club.dto.*;
+import com.hongik.joinhere.domain.club.entity.Category;
 import com.hongik.joinhere.domain.club.entity.Club;
 import com.hongik.joinhere.domain.club.repository.ClubRepository;
 import com.hongik.joinhere.domain.dto.club.ShowClubInfoResponse;
-import com.hongik.joinhere.domain.dto.club.ShowClubResponse;
-import com.hongik.joinhere.domain.dto.club.UpdateClubRequest;
+import com.hongik.joinhere.domain.club.dto.ShowClubResponse;
+import com.hongik.joinhere.domain.club.dto.UpdateClubRequest;
 import com.hongik.joinhere.domain.dto.qna.ShowQnaResponse;
 import com.hongik.joinhere.domain.dto.review.ReviewResponse;
 import com.hongik.joinhere.domain.member.entity.Member;
@@ -26,7 +28,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,18 +73,15 @@ public class ClubService {
     }
 
     public List<ShowClubResponse> findClubs() {
-        List<Club> clubs = clubRepository.findAll();
-        return mappingShowClubResponse(clubs);
+        return mappingShowClubResponse(clubRepository.findAll());
     }
 
-    public List<ShowClubResponse> findClubsByCategory(String category) {
-        List<Club> clubs = clubRepository.findByCategory(category);
-        return mappingShowClubResponse(clubs);
+    public List<ShowClubResponse> findClubsByCategory(Category category) {
+        return mappingShowClubResponse(clubRepository.findByCategory(category));
     }
 
     public List<ShowClubResponse> findClubsByQuery(String query) {
-        List<Club> clubs = clubRepository.findByQuery("%" + query + "%");
-        return mappingShowClubResponse(clubs);
+        return mappingShowClubResponse(clubRepository.findByNameContaining(query));
     }
 
     public ShowClubInfoResponse findClubInfo(Long id) {
@@ -138,11 +136,12 @@ public class ClubService {
         List<ShowClubResponse> responses = new ArrayList<>();
 
         for (Club club : clubs) {
-            List<Announcement> announcements = announcementRepository.findByClubId(club.getId());
-            if (announcements.size() == 0)
+            List<Announcement> announcements = announcementRepository.findByClub(club);
+            if (announcements.isEmpty()) {
                 responses.add(ShowClubResponse.from(club, null));
-            else
+            } else {
                 responses.add(ShowClubResponse.from(club, announcements.get(announcements.size() - 1).getEndDate()));
+            }
         }
         return responses;
     }
