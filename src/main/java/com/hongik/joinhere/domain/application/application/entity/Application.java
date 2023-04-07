@@ -4,6 +4,7 @@ import com.hongik.joinhere.domain.announcement.entity.Announcement;
 import com.hongik.joinhere.domain.member.entity.Member;
 import com.hongik.joinhere.global.common.entity.TimeBaseEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Application extends TimeBaseEntity {

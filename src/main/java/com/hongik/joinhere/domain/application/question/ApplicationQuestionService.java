@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class ApplicationQuestionService {
     public List<ShowApplicationQuestionResponse> findApplicationQuestionsByAnnouncement(Long announcementId) {
         Announcement announcement = announcementRepository.findById(announcementId)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.ANNOUNCEMENT_NOT_FOUND));
-        LocalDate localDate = LocalDate.now();
+        LocalDate localDate = LocalDate.now(ZoneId.of("Asia/Seoul"));
         if (localDate.isAfter(announcement.getEndDate())) {
             throw new BadRequestException(ErrorCode.APPLICATION_PERIOD_EXPIRED);
         }
