@@ -4,6 +4,7 @@ import com.hongik.joinhere.domain.club.entity.Club;
 import com.hongik.joinhere.domain.member.entity.Member;
 import com.hongik.joinhere.global.common.entity.TimeBaseEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "qna_question")
@@ -24,9 +26,9 @@ public class QnaQuestion extends TimeBaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "member_id")
-    Member member;
+    private Member member;
 
     @ManyToOne
     @JoinColumn(name = "club_id")
-    Club club;
+    private Club club;
 }
