@@ -48,7 +48,7 @@ public class AnnouncementService {
                 .orElseThrow(() -> new BadRequestException(ErrorCode.BELONG_NOT_FOUND));
         if (belong.getPosition() == Position.NORMAL)
             throw new ForbiddenException(ErrorCode.BELONG_FORBIDDEN_MEMBER);
-        List<Announcement> announcements = announcementRepository.findAnnouncementsByClub(club);
+        List<Announcement> announcements = announcementRepository.findByClub(club);
         if (!announcements.isEmpty() && !announcements.get(announcements.size() - 1).getInformState())
             throw new BadRequestException(ErrorCode.ANNOUNCEMENT_NOT_INFORM);
         try {

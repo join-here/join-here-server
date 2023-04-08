@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -30,10 +30,10 @@ public class Announcement extends TimeBaseEntity {
     private String imageUrl;
 
     @Column(name = "start_date")
-    private Date startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date")
-    private Date endDate;
+    private LocalDate endDate;
 
     @Column(name = "inform_state")
     private Boolean informState;
@@ -41,4 +41,8 @@ public class Announcement extends TimeBaseEntity {
     @ManyToOne
     @JoinColumn(name = "club_id")
     private Club club;
+
+    public void updateInformState(Boolean informState) {
+        this.informState = informState;
+    }
 }
