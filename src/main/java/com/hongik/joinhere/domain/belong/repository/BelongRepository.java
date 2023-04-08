@@ -11,5 +11,6 @@ import java.util.Optional;
 public interface BelongRepository extends JpaRepository<Belong, Long> {
 
     Optional<Belong> findByMemberAndClub(Member member, Club club);
+    List<Belong> findByMember(Member member);
     List<Belong> findByClub(Club club);
 }

@@ -33,9 +33,22 @@ public class Belong extends TimeBaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "member_id")
-    Member member;
+    private Member member;
 
     @ManyToOne
     @JoinColumn(name = "club_id")
-    Club club;
+    private Club club;
+
+    public void updateReview(String review) {
+        this.review = review;
+    }
+
+    public void updateReviewCreatedAt(LocalDateTime reviewCreatedAt) {
+        this.reviewCreatedAt = reviewCreatedAt;
+    }
+
+    public void deleteReview() {
+        review = null;
+        reviewCreatedAt = null;
+    }
 }

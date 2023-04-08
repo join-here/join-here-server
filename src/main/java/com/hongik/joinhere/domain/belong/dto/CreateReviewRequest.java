@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateBelongRequest {
+public class CreateReviewRequest {
 
-    private Long memberId;
+    private String reviewContent;
 }

@@ -7,14 +7,14 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ShowBelongResponse {
+public class BelongResponse {
 
     private Long belongId;
     private Long memberId;
     private String memberName;
     private Position position;
 
-    public static ShowBelongResponse from(Belong belong) {
-        return new ShowBelongResponse(belong.getId(), belong.getMember().getId(), belong.getMember().getName(), belong.getPosition());
+    public static BelongResponse from(Belong belong) {
+        return new BelongResponse(belong.getId(), belong.getMember().getId(), belong.getMember().getName(), belong.getPosition());
     }
 }
