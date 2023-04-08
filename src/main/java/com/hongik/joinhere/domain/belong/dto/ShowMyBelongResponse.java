@@ -14,7 +14,6 @@ public class ShowMyBelongResponse {
     private Boolean hasAnnouncement;
 
     public static ShowMyBelongResponse from(Belong belong, Boolean hasAnnouncement) {
-        Belong responseBelong = new Belong(belong.getId(), belong.getPosition(), null, belong.getClub());
-        return new ShowMyBelongResponse(responseBelong, hasAnnouncement);
+        return new ShowMyBelongResponse(belong.getId(), belong.getPosition(), hasAnnouncement);
     }
 }

@@ -73,17 +73,19 @@ public class BelongService {
     }
 
     public List<BelongResponse> updatePosition(UpdateBelongRequest request, Long clubId) {
-        Belong belong = belongRepository.findById(request.getBelongId());
-        belong.setPosition(request.getPosition());
-        List<Belong> belongs = belongRepository.findByClubId(clubId);
-        return mappingResponse(belongs);
+        Belong belong = belongRepository.findById(request.getBelongId())
+                        .orElseThrow(() -> new BadRequestException(ErrorCode.BELONG_NOT_FOUND));
+        belong.updatePosition(request.getPosition());
+        List<Belong> belongs = belongRepository.findByClub(belong.getClub());
+        return sortedByPosition(belongs);
     }
 
     public List<BelongResponse> delete(DeleteBelongRequest request, Long clubId) {
-        Belong belong = belongRepository.findById(request.getBelongId());
+        Belong belong = belongRepository.findById(request.getBelongId())
+                        .orElseThrow(() -> new BadRequestException(ErrorCode.BELONG_NOT_FOUND));
         belongRepository.delete(belong);
-        List<Belong> belongs = belongRepository.findByClubId(clubId);
-        return mappingResponse(belongs);
+        List<Belong> belongs = belongRepository.findByClub(belong.getClub());
+        return sortedByPosition(belongs);
     }
 
     public List<ReviewResponse> registerReview(CreateReviewRequest request, Long clubId) {

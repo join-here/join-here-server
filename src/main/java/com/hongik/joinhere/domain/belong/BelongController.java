@@ -30,13 +30,13 @@ public class BelongController {
     }
 
     @PatchMapping("/belongs")
-    public List<BelongResponse> update(@RequestBody UpdateBelongRequest request, @PathVariable("club-id") Long clubId) {
-        return belongService.updatePosition(request, clubId);
+    public CommonResponse<List<BelongResponse>> update(@RequestBody UpdateBelongRequest request, @PathVariable("club-id") Long clubId) {
+        return CommonResponse.onSuccess(HttpStatus.OK.value(), belongService.updatePosition(request, clubId));
     }
 
     @DeleteMapping("/belongs")
-    public List<BelongResponse> delete(@RequestBody DeleteBelongRequest request, @PathVariable("club-id") Long clubId) {
-        return belongService.delete(request, clubId);
+    public CommonResponse<List<BelongResponse>> delete(@RequestBody DeleteBelongRequest request, @PathVariable("club-id") Long clubId) {
+        return CommonResponse.onSuccess(HttpStatus.OK.value(), belongService.delete(request, clubId));
     }
 
     @PostMapping("/clubs/{club-id}/reviews")

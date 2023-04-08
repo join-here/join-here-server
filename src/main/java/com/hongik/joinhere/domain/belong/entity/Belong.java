@@ -39,6 +39,10 @@ public class Belong extends TimeBaseEntity {
     @JoinColumn(name = "club_id")
     private Club club;
 
+    public void updatePosition(Position position) {
+        this.position = position;
+    }
+
     public void updateReview(String review) {
         this.review = review;
     }
