@@ -48,7 +48,7 @@ CREATE TABLE announcement
     `image_url`    VARCHAR(2083)    NULL,
     `start_date`   DATE             NOT NULL,
     `end_date`     DATE             NOT NULL,
-    `inform_state` TINYINT          NOT NULL    DEFAULT 0,
+    `inform_state` TINYINT(1)       NOT NULL    DEFAULT 0,
     `created_at`   TIMESTAMP        NOT NULL,
     `updated_at`   TIMESTAMP        NOT NULL,
     `club_id`      BIGINT           NOT NULL,
@@ -86,8 +86,8 @@ CREATE TABLE application
     FOREIGN KEY (announcement_id) references announcement(id)
 );
 
--- Create application_question Table
-CREATE TABLE application_question
+-- Create announcement_question Table
+CREATE TABLE announcement_question
 (
     `id`               BIGINT          NOT NULL    AUTO_INCREMENT,
     `content`          VARCHAR(500)    NOT NULL,
@@ -105,11 +105,11 @@ CREATE TABLE application_answer
     `content`                   VARCHAR(2000)    NOT NULL,
     `created_at`                TIMESTAMP        NOT NULL,
     `updated_at`                TIMESTAMP        NOT NULL,
-    `member_id`                 BIGINT           NOT NULL,
-    `application_question_id`   BIGINT           NOT NULL,
+    `application_id`            BIGINT           NOT NULL,
+    `announcement_question_id`  BIGINT           NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (member_id) references member(id),
-    FOREIGN KEY (application_question_id) references application_question(id)
+    FOREIGN KEY (application_id) references application(id),
+    FOREIGN KEY (announcement_question_id) references announcement_question(id)
 );
 
 -- Create qna_question Table
@@ -131,7 +131,7 @@ CREATE TABLE qna_answer
 (
     `id`               BIGINT           NOT NULL    AUTO_INCREMENT,
     `content`          VARCHAR(1000)    NOT NULL,
-    `is_manager`       TINYINT          NOT NULL,
+    `is_manager`       TINYINT(1)       NOT NULL,
     `created_at`       TIMESTAMP        NOT NULL,
     `updated_at`       TIMESTAMP        NOT NULL,
     `member_id`        BIGINT           NOT NULL,
