@@ -1,15 +1,15 @@
 package com.hongik.joinhere.domain.application.application;
 
-import com.hongik.joinhere.domain.announcement.entity.Announcement;
-import com.hongik.joinhere.domain.announcement.repository.AnnouncementRepository;
+import com.hongik.joinhere.domain.announcement.announcement.entity.Announcement;
+import com.hongik.joinhere.domain.announcement.announcement.repository.AnnouncementRepository;
 import com.hongik.joinhere.domain.application.answer.repository.ApplicationAnswerRepository;
 import com.hongik.joinhere.domain.application.application.dto.*;
 import com.hongik.joinhere.domain.application.application.entity.Application;
 import com.hongik.joinhere.domain.application.application.entity.PassState;
 import com.hongik.joinhere.domain.application.application.repository.ApplicationRepository;
-import com.hongik.joinhere.domain.application.question.entity.ApplicationQuestion;
+import com.hongik.joinhere.domain.announcement.question.entity.AnnouncementQuestion;
 import com.hongik.joinhere.domain.application.answer.entity.ApplicationAnswer;
-import com.hongik.joinhere.domain.application.question.repository.ApplicationQuestionRepository;
+import com.hongik.joinhere.domain.announcement.question.repository.AnnouncementQuestionRepository;
 import com.hongik.joinhere.domain.auth.security.SecurityUtil;
 import com.hongik.joinhere.domain.belong.entity.Belong;
 import com.hongik.joinhere.domain.belong.entity.Position;
@@ -38,7 +38,7 @@ public class ApplicationService {
     private final BelongRepository belongRepository;
     private final AnnouncementRepository announcementRepository;
     private final ApplicationRepository applicationRepository;
-    private final ApplicationQuestionRepository applicationQuestionRepository;
+    private final AnnouncementQuestionRepository announcementQuestionRepository;
     private final ApplicationAnswerRepository applicationAnswerRepository;
 
     public List<ShowApplicantResponse> findApplicants(Long clubId) {
@@ -104,12 +104,12 @@ public class ApplicationService {
                 orElseThrow(() -> new BadRequestException(ErrorCode.APPLICATION_NOT_FOUND));
         checkClubManageAuthority(application.getAnnouncement().getClub().getId());
         Announcement announcement = application.getAnnouncement();
-        List<ApplicationQuestion> applicationQuestions = applicationQuestionRepository.findByAnnouncement(announcement);
+        List<AnnouncementQuestion> announcementQuestions = announcementQuestionRepository.findByAnnouncement(announcement);
         List<ShowApplicationContentResponse> responses = new ArrayList<>();
-        for (ApplicationQuestion applicationQuestion : applicationQuestions) {
-            ApplicationAnswer applicationAnswer = applicationAnswerRepository.findByMemberAndApplicationQuestion(application.getMember(), applicationQuestion)
+        for (AnnouncementQuestion announcementQuestion : announcementQuestions) {
+            ApplicationAnswer applicationAnswer = applicationAnswerRepository.findByApplicationAndAnnouncementQuestion(application, announcementQuestion)
                             .orElseThrow(() -> new BadRequestException(ErrorCode.APPLICATION_ANSWER_NOT_FOUND));
-            responses.add(ShowApplicationContentResponse.from(applicationQuestion, applicationAnswer));
+            responses.add(ShowApplicationContentResponse.from(announcementQuestion, applicationAnswer));
         }
         return responses;
     }

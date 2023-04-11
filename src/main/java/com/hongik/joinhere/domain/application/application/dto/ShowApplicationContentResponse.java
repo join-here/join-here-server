@@ -1,7 +1,7 @@
 package com.hongik.joinhere.domain.application.application.dto;
 
 import com.hongik.joinhere.domain.application.answer.entity.ApplicationAnswer;
-import com.hongik.joinhere.domain.application.question.entity.ApplicationQuestion;
+import com.hongik.joinhere.domain.announcement.question.entity.AnnouncementQuestion;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,10 +16,10 @@ public class ShowApplicationContentResponse {
     private Long answerId;
     private String answerContent;
 
-    public static ShowApplicationContentResponse from(ApplicationQuestion applicationQuestion, ApplicationAnswer applicationAnswer) {
+    public static ShowApplicationContentResponse from(AnnouncementQuestion announcementQuestion, ApplicationAnswer applicationAnswer) {
         return ShowApplicationContentResponse.builder()
-                .questionId(applicationQuestion.getId())
-                .questionContent(applicationQuestion.getContent())
+                .questionId(announcementQuestion.getId())
+                .questionContent(announcementQuestion.getContent())
                 .answerId(applicationAnswer.getId())
                 .answerContent(applicationAnswer.getContent())
                 .build();

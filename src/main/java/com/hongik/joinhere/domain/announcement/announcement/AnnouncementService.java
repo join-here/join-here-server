@@ -1,16 +1,16 @@
-package com.hongik.joinhere.domain.announcement;
+package com.hongik.joinhere.domain.announcement.announcement;
 
-import com.hongik.joinhere.domain.announcement.entity.Announcement;
-import com.hongik.joinhere.domain.announcement.repository.AnnouncementRepository;
-import com.hongik.joinhere.domain.application.question.entity.ApplicationQuestion;
-import com.hongik.joinhere.domain.application.question.repository.ApplicationQuestionRepository;
+import com.hongik.joinhere.domain.announcement.announcement.entity.Announcement;
+import com.hongik.joinhere.domain.announcement.announcement.repository.AnnouncementRepository;
+import com.hongik.joinhere.domain.announcement.question.entity.AnnouncementQuestion;
+import com.hongik.joinhere.domain.announcement.question.repository.AnnouncementQuestionRepository;
 import com.hongik.joinhere.domain.auth.security.SecurityUtil;
 import com.hongik.joinhere.domain.belong.entity.Belong;
 import com.hongik.joinhere.domain.belong.entity.Position;
 import com.hongik.joinhere.domain.belong.repository.BelongRepository;
 import com.hongik.joinhere.domain.club.repository.ClubRepository;
-import com.hongik.joinhere.domain.announcement.dto.CreateAnnouncementRequest;
-import com.hongik.joinhere.domain.announcement.dto.CreateAnnouncementResponse;
+import com.hongik.joinhere.domain.announcement.announcement.dto.CreateAnnouncementRequest;
+import com.hongik.joinhere.domain.announcement.announcement.dto.CreateAnnouncementResponse;
 import com.hongik.joinhere.domain.club.entity.Club;
 import com.hongik.joinhere.domain.member.entity.Member;
 import com.hongik.joinhere.domain.member.repository.MemberRepository;
@@ -34,7 +34,7 @@ public class AnnouncementService {
     private final MemberRepository memberRepository;
     private final BelongRepository belongRepository;
     private final AnnouncementRepository announcementRepository;
-    private final ApplicationQuestionRepository applicationQuestionRepository;
+    private final AnnouncementQuestionRepository announcementQuestionRepository;
     private final S3Service s3Service;
 
     public CreateAnnouncementResponse register(CreateAnnouncementRequest request, MultipartFile multipartFile, Long clubId) {
@@ -60,8 +60,8 @@ public class AnnouncementService {
         Announcement announcement = request.toAnnouncement(club, posterUrl);
         CreateAnnouncementResponse response = CreateAnnouncementResponse.from(announcementRepository.save(announcement));
         for (String content : request.getQuestion()) {
-            ApplicationQuestion applicationQuestion = new ApplicationQuestion(null, content, announcement);
-            applicationQuestionRepository.save(applicationQuestion);
+            AnnouncementQuestion announcementQuestion = new AnnouncementQuestion(null, content, announcement);
+            announcementQuestionRepository.save(announcementQuestion);
         }
         return response;
     }

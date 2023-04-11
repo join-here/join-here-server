@@ -1,7 +1,7 @@
-package com.hongik.joinhere.domain.announcement;
+package com.hongik.joinhere.domain.announcement.announcement;
 
-import com.hongik.joinhere.domain.announcement.dto.CreateAnnouncementRequest;
-import com.hongik.joinhere.domain.announcement.dto.CreateAnnouncementResponse;
+import com.hongik.joinhere.domain.announcement.announcement.dto.CreateAnnouncementRequest;
+import com.hongik.joinhere.domain.announcement.announcement.dto.CreateAnnouncementResponse;
 import com.hongik.joinhere.global.common.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

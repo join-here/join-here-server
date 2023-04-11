@@ -1,6 +1,6 @@
-package com.hongik.joinhere.domain.announcement.repository;
+package com.hongik.joinhere.domain.announcement.announcement.repository;
 
-import com.hongik.joinhere.domain.announcement.entity.Announcement;
+import com.hongik.joinhere.domain.announcement.announcement.entity.Announcement;
 import com.hongik.joinhere.domain.club.entity.Club;
 import org.springframework.data.jpa.repository.JpaRepository;
 

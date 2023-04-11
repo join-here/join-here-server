@@ -1,6 +1,6 @@
 package com.hongik.joinhere.domain.application.application.entity;
 
-import com.hongik.joinhere.domain.announcement.entity.Announcement;
+import com.hongik.joinhere.domain.announcement.announcement.entity.Announcement;
 import com.hongik.joinhere.domain.member.entity.Member;
 import com.hongik.joinhere.global.common.entity.TimeBaseEntity;
 import lombok.AllArgsConstructor;

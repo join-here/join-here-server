@@ -1,8 +1,8 @@
 package com.hongik.joinhere.domain.application.answer.dto;
 
 import com.hongik.joinhere.domain.application.answer.entity.ApplicationAnswer;
-import com.hongik.joinhere.domain.application.question.entity.ApplicationQuestion;
-import com.hongik.joinhere.domain.member.entity.Member;
+import com.hongik.joinhere.domain.application.application.entity.Application;
+import com.hongik.joinhere.domain.announcement.question.entity.AnnouncementQuestion;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,11 +13,11 @@ public class CreateApplicationAnswerRequest {
     private String answerContent;
     private Long questionId;
 
-    public ApplicationAnswer toEntity(Member member, ApplicationQuestion applicationQuestion) {
+    public ApplicationAnswer toEntity(Application application, AnnouncementQuestion announcementQuestion) {
         return ApplicationAnswer.builder()
                 .content(answerContent)
-                .member(member)
-                .applicationQuestion(applicationQuestion)
+                .application(application)
+                .announcementQuestion(announcementQuestion)
                 .build();
     }
 }

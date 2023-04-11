@@ -1,10 +1,10 @@
-package com.hongik.joinhere.domain.application.question;
+package com.hongik.joinhere.domain.announcement.question;
 
-import com.hongik.joinhere.domain.announcement.entity.Announcement;
-import com.hongik.joinhere.domain.announcement.repository.AnnouncementRepository;
-import com.hongik.joinhere.domain.application.question.entity.ApplicationQuestion;
-import com.hongik.joinhere.domain.application.question.dto.ShowApplicationQuestionResponse;
-import com.hongik.joinhere.domain.application.question.repository.ApplicationQuestionRepository;
+import com.hongik.joinhere.domain.announcement.announcement.entity.Announcement;
+import com.hongik.joinhere.domain.announcement.announcement.repository.AnnouncementRepository;
+import com.hongik.joinhere.domain.announcement.question.entity.AnnouncementQuestion;
+import com.hongik.joinhere.domain.announcement.question.dto.ShowAnnouncementQuestionResponse;
+import com.hongik.joinhere.domain.announcement.question.repository.AnnouncementQuestionRepository;
 import com.hongik.joinhere.global.error.ErrorCode;
 import com.hongik.joinhere.global.error.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
@@ -19,22 +19,22 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ApplicationQuestionService {
+public class AnnouncementQuestionService {
 
-    private final ApplicationQuestionRepository applicationQuestionRepository;
+    private final AnnouncementQuestionRepository announcementQuestionRepository;
     private final AnnouncementRepository announcementRepository;
 
-    public List<ShowApplicationQuestionResponse> findApplicationQuestionsByAnnouncement(Long announcementId) {
+    public List<ShowAnnouncementQuestionResponse> findApplicationQuestionsByAnnouncement(Long announcementId) {
         Announcement announcement = announcementRepository.findById(announcementId)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.ANNOUNCEMENT_NOT_FOUND));
         LocalDate localDate = LocalDate.now(ZoneId.of("Asia/Seoul"));
         if (localDate.isAfter(announcement.getEndDate())) {
             throw new BadRequestException(ErrorCode.APPLICATION_PERIOD_EXPIRED);
         }
-        List<ApplicationQuestion> applicationQuestions = applicationQuestionRepository.findByAnnouncement(announcement);
-        List<ShowApplicationQuestionResponse> responses = new ArrayList<>();
-        for (ApplicationQuestion applicationQuestion : applicationQuestions) {
-            responses.add(ShowApplicationQuestionResponse.from(applicationQuestion));
+        List<AnnouncementQuestion> announcementQuestions = announcementQuestionRepository.findByAnnouncement(announcement);
+        List<ShowAnnouncementQuestionResponse> responses = new ArrayList<>();
+        for (AnnouncementQuestion announcementQuestion : announcementQuestions) {
+            responses.add(ShowAnnouncementQuestionResponse.from(announcementQuestion));
         }
         return responses;
     }

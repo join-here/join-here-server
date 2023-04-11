@@ -1,6 +1,6 @@
-package com.hongik.joinhere.domain.application.question.entity;
+package com.hongik.joinhere.domain.announcement.question.entity;
 
-import com.hongik.joinhere.domain.announcement.entity.Announcement;
+import com.hongik.joinhere.domain.announcement.announcement.entity.Announcement;
 import com.hongik.joinhere.global.common.entity.TimeBaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,8 +12,8 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "application_question")
-public class ApplicationQuestion extends TimeBaseEntity {
+@Table(name = "announcement_question")
+public class AnnouncementQuestion extends TimeBaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -1,12 +1,12 @@
-package com.hongik.joinhere.domain.application.question.repository;
+package com.hongik.joinhere.domain.announcement.question.repository;
 
-import com.hongik.joinhere.domain.announcement.entity.Announcement;
-import com.hongik.joinhere.domain.application.question.entity.ApplicationQuestion;
+import com.hongik.joinhere.domain.announcement.announcement.entity.Announcement;
+import com.hongik.joinhere.domain.announcement.question.entity.AnnouncementQuestion;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface ApplicationQuestionRepository extends JpaRepository<ApplicationQuestion, Long> {
+public interface AnnouncementQuestionRepository extends JpaRepository<AnnouncementQuestion, Long> {
 
-    List<ApplicationQuestion> findByAnnouncement(Announcement announcement);
+    List<AnnouncementQuestion> findByAnnouncement(Announcement announcement);
 }

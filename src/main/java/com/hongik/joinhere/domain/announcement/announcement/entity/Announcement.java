@@ -1,4 +1,4 @@
-package com.hongik.joinhere.domain.announcement.entity;
+package com.hongik.joinhere.domain.announcement.announcement.entity;
 
 import com.hongik.joinhere.domain.club.entity.Club;
 import com.hongik.joinhere.global.common.entity.TimeBaseEntity;

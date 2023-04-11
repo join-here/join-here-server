@@ -1,6 +1,6 @@
-package com.hongik.joinhere.domain.application.question;
+package com.hongik.joinhere.domain.announcement.question;
 
-import com.hongik.joinhere.domain.application.question.dto.ShowApplicationQuestionResponse;
+import com.hongik.joinhere.domain.announcement.question.dto.ShowAnnouncementQuestionResponse;
 import com.hongik.joinhere.global.common.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,12 +12,12 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class ApplicationQuestionController {
+public class AnnouncementQuestionController {
 
-    private final ApplicationQuestionService applicationQuestionService;
+    private final AnnouncementQuestionService announcementQuestionService;
 
     @GetMapping("/announcements/{announcement-id}/questions")
-    public CommonResponse<List<ShowApplicationQuestionResponse>> showQuestions(@PathVariable("announcement-id") Long announcementId) {
-        return CommonResponse.onSuccess(HttpStatus.OK.value(), applicationQuestionService.findApplicationQuestionsByAnnouncement(announcementId));
+    public CommonResponse<List<ShowAnnouncementQuestionResponse>> showQuestions(@PathVariable("announcement-id") Long announcementId) {
+        return CommonResponse.onSuccess(HttpStatus.OK.value(), announcementQuestionService.findApplicationQuestionsByAnnouncement(announcementId));
     }
 }

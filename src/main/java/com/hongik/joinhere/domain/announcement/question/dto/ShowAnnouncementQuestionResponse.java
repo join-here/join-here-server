@@ -1,17 +1,17 @@
-package com.hongik.joinhere.domain.application.question.dto;
+package com.hongik.joinhere.domain.announcement.question.dto;
 
-import com.hongik.joinhere.domain.application.question.entity.ApplicationQuestion;
+import com.hongik.joinhere.domain.announcement.question.entity.AnnouncementQuestion;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ShowApplicationQuestionResponse {
+public class ShowAnnouncementQuestionResponse {
 
     private Long questionId;
     private String content;
 
-    public static ShowApplicationQuestionResponse from(ApplicationQuestion applicationQuestion) {
-        return new ShowApplicationQuestionResponse(applicationQuestion.getId(), applicationQuestion.getContent());
+    public static ShowAnnouncementQuestionResponse from(AnnouncementQuestion announcementQuestion) {
+        return new ShowAnnouncementQuestionResponse(announcementQuestion.getId(), announcementQuestion.getContent());
     }
 }

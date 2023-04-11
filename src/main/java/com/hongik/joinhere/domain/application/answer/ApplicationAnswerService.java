@@ -1,15 +1,15 @@
 package com.hongik.joinhere.domain.application.answer;
 
-import com.hongik.joinhere.domain.announcement.entity.Announcement;
-import com.hongik.joinhere.domain.announcement.repository.AnnouncementRepository;
+import com.hongik.joinhere.domain.announcement.announcement.entity.Announcement;
+import com.hongik.joinhere.domain.announcement.announcement.repository.AnnouncementRepository;
 import com.hongik.joinhere.domain.application.answer.entity.ApplicationAnswer;
 import com.hongik.joinhere.domain.application.answer.repository.ApplicationAnswerRepository;
 import com.hongik.joinhere.domain.application.application.entity.PassState;
 import com.hongik.joinhere.domain.application.application.repository.ApplicationRepository;
-import com.hongik.joinhere.domain.application.question.entity.ApplicationQuestion;
+import com.hongik.joinhere.domain.announcement.question.entity.AnnouncementQuestion;
 import com.hongik.joinhere.domain.application.application.entity.Application;
 import com.hongik.joinhere.domain.application.answer.dto.CreateApplicationAnswerRequest;
-import com.hongik.joinhere.domain.application.question.repository.ApplicationQuestionRepository;
+import com.hongik.joinhere.domain.announcement.question.repository.AnnouncementQuestionRepository;
 import com.hongik.joinhere.domain.auth.security.SecurityUtil;
 import com.hongik.joinhere.domain.member.entity.Member;
 import com.hongik.joinhere.domain.member.repository.MemberRepository;
@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 
@@ -33,7 +32,7 @@ public class ApplicationAnswerService {
     private final AnnouncementRepository announcementRepository;
     private final ApplicationRepository applicationRepository;
     private final ApplicationAnswerRepository applicationAnswerRepository;
-    private final ApplicationQuestionRepository applicationQuestionRepository;
+    private final AnnouncementQuestionRepository announcementQuestionRepository;
 
     public void register(List<CreateApplicationAnswerRequest> requests, Long announcementId) {
         Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId())
@@ -51,9 +50,9 @@ public class ApplicationAnswerService {
                                 .build();
         applicationRepository.save(application);
         for (CreateApplicationAnswerRequest request : requests) {
-            ApplicationQuestion applicationQuestion = applicationQuestionRepository.findById(request.getQuestionId())
+            AnnouncementQuestion announcementQuestion = announcementQuestionRepository.findById(request.getQuestionId())
                     .orElseThrow(() -> new BadRequestException(ErrorCode.APPLICATION_QUESTION_NOT_FOUND));
-            ApplicationAnswer applicationAnswer = request.toEntity(member, applicationQuestion);
+            ApplicationAnswer applicationAnswer = request.toEntity(application, announcementQuestion);
             applicationAnswerRepository.save(applicationAnswer);
         }
     }

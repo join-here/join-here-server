@@ -1,7 +1,7 @@
 package com.hongik.joinhere.domain.application.answer.entity;
 
-import com.hongik.joinhere.domain.application.question.entity.ApplicationQuestion;
-import com.hongik.joinhere.domain.member.entity.Member;
+import com.hongik.joinhere.domain.application.application.entity.Application;
+import com.hongik.joinhere.domain.announcement.question.entity.AnnouncementQuestion;
 import com.hongik.joinhere.global.common.entity.TimeBaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,10 +25,10 @@ public class ApplicationAnswer extends TimeBaseEntity {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
-    Member member;
+    @JoinColumn(name = "application_id")
+    Application application;
 
     @ManyToOne
     @JoinColumn(name = "application_question_id")
-    ApplicationQuestion applicationQuestion;
+    AnnouncementQuestion announcementQuestion;
 }
