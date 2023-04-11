@@ -28,6 +28,12 @@ public class AuthController {
         return CommonResponse.onSuccess(HttpStatus.OK.value(), authService.login(request));
     }
 
+    @PostMapping("/logout")
+    public CommonResponse<?> logout() {
+        authService.logout();
+        return CommonResponse.onSuccess(HttpStatus.OK.value());
+    }
+
     @PostMapping("/reissue")
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<TokenResponse> reissue(@RequestBody TokenRequest request) {

@@ -2,6 +2,7 @@ package com.hongik.joinhere.domain.auth;
 
 import com.hongik.joinhere.domain.auth.dto.request.TokenRequest;
 import com.hongik.joinhere.domain.auth.dto.response.TokenResponse;
+import com.hongik.joinhere.domain.auth.security.SecurityUtil;
 import com.hongik.joinhere.domain.member.dto.CreateMemberRequest;
 import com.hongik.joinhere.domain.member.dto.LoginMemberRequest;
 import com.hongik.joinhere.domain.member.entity.Member;
@@ -11,7 +12,6 @@ import com.hongik.joinhere.domain.auth.jwt.TokenProvider;
 import com.hongik.joinhere.domain.auth.repository.RefreshTokenRepository;
 import com.hongik.joinhere.global.error.ErrorCode;
 import com.hongik.joinhere.global.error.exception.BadRequestException;
-import com.hongik.joinhere.global.error.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -57,6 +57,12 @@ public class AuthService {
         return response;
     }
 
+    public void logout() {
+        RefreshToken refreshToken = refreshTokenRepository.findById(SecurityUtil.getCurrentMemberId().toString())
+                .orElseThrow(() -> new BadRequestException(ErrorCode.REFRESH_TOKEN_NOT_FOUND));
+        refreshTokenRepository.delete(refreshToken);
+    }
+
     public TokenResponse reissue(TokenRequest request) {
         // Refresh Token 검증
         if (!tokenProvider.validateToken(request.getRefreshToken())) {
@@ -68,7 +74,7 @@ public class AuthService {
 
         // 저장소에서 Member ID 를 기반으로 Refresh Token 값 가져옴
         RefreshToken refreshToken = refreshTokenRepository.findById(authentication.getName())
-                .orElseThrow(() -> new NotFoundException(ErrorCode.REFRESH_TOKEN_NOT_FOUND));
+                .orElseThrow(() -> new BadRequestException(ErrorCode.REFRESH_TOKEN_NOT_FOUND));
 
         // Refresh Token 일치하는지 검사
         if (!refreshToken.getValue().equals(request.getRefreshToken())) {
