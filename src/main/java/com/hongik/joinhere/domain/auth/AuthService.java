@@ -2,14 +2,17 @@ package com.hongik.joinhere.domain.auth;
 
 import com.hongik.joinhere.domain.auth.dto.request.TokenRequest;
 import com.hongik.joinhere.domain.auth.dto.response.TokenResponse;
-import com.hongik.joinhere.dto.user.CreateUserRequest;
-import com.hongik.joinhere.dto.user.LoginUserRequest;
-import com.hongik.joinhere.domain.user.entity.Authority;
+import com.hongik.joinhere.domain.member.dto.CreateMemberRequest;
+import com.hongik.joinhere.domain.member.dto.LoginMemberRequest;
+import com.hongik.joinhere.domain.member.entity.Member;
+import com.hongik.joinhere.domain.member.repository.MemberRepository;
+import com.hongik.joinhere.domain.member.entity.Authority;
 import com.hongik.joinhere.domain.auth.entity.RefreshToken;
 import com.hongik.joinhere.domain.auth.jwt.TokenProvider;
-import com.hongik.joinhere.domain.user.entity.User;
 import com.hongik.joinhere.domain.auth.repository.RefreshTokenRepository;
-import com.hongik.joinhere.domain.user.repository.UserRepository;
+import com.hongik.joinhere.global.error.ErrorCode;
+import com.hongik.joinhere.global.error.exception.BadRequestException;
+import com.hongik.joinhere.global.error.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -26,28 +29,34 @@ public class AuthService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    public void signup(CreateUserRequest request) {
-        if (userRepository.existsByUsername(request.getUsername())) {
-            throw new RuntimeException("이미 가입되어 있는 유저입니다");
+    public void signup(CreateMemberRequest request) {
+        if (memberRepository.existsByUsername(request.getUsername())) {
+            throw new BadRequestException(ErrorCode.DUPLICATE_MEMBER);
         }
-        User user = User.builder()
+        Member member = Member.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .nickname(request.getNickname())
+                .name(request.getName())
                 .birthday(request.getBirthday())
                 .phone(request.getPhone())
                 .authority(Authority.ROLE_USER)
                 .build();
-        userRepository.save(user);
+        memberRepository.save(member);
     }
 
-    public TokenResponse login(LoginUserRequest request) {
+    public TokenResponse login(LoginMemberRequest request) {
+        // Login ID/PW 를 기반으로 AuthenticationToken 생성
         UsernamePasswordAuthenticationToken authenticationToken = request.toAuthentication();
+
+        // 실제로 검증(사용자 비밀번호 체크)이 이루어지는 부분
+        // authenticate 메서드가 실행이 될 때 CustomUserDetailsService에서 만들었던 loadUserByUsername 메서드가 실행됨
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        TokenResponse response = tokenProvider.generateToken(authentication, userRepository.findByUsername(request.getUsername()).get());
+
+        // 인증 정보를 기반으로 JWT 토큰 생성
+        TokenResponse response = tokenProvider.generateToken(authentication, memberRepository.findByUsername(request.getUsername()).get());
         RefreshToken refreshToken = RefreshToken.builder()
                 .id(authentication.getName())
                 .value(response.getRefreshToken())
@@ -57,16 +66,25 @@ public class AuthService {
     }
 
     public TokenResponse reissue(TokenRequest request) {
+        // Refresh Token 검증
         if (!tokenProvider.validateToken(request.getRefreshToken())) {
-            throw new RuntimeException("Refresh Token 이 유효하지 않습니다.");
+            throw new BadRequestException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
+
+        // Access Token 에서 Member ID 가져오기
         Authentication authentication = tokenProvider.getAuthentication(request.getAccessToken());
+
+        // 저장소에서 Member ID 를 기반으로 Refresh Token 값 가져옴
         RefreshToken refreshToken = refreshTokenRepository.findById(authentication.getName())
-                .orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.REFRESH_TOKEN_NOT_FOUND));
+
+        // Refresh Token 일치하는지 검사
         if (!refreshToken.getValue().equals(request.getRefreshToken())) {
-            throw new RuntimeException("토큰의 유저 정보가 일치하지 않습니다.");
+            throw new BadRequestException(ErrorCode.MISMATCH_REFRESH_TOKEN);
         }
-        TokenResponse response = tokenProvider.generateToken(authentication, userRepository.findById(Long.valueOf(authentication.getName())).get());
+
+        // 새로운 토큰 생성
+        TokenResponse response = tokenProvider.generateToken(authentication, memberRepository.findById(Long.valueOf(authentication.getName())).get());
         RefreshToken newRefreshToken = refreshToken.updateValue(response.getRefreshToken());
         refreshTokenRepository.save(newRefreshToken);
         return response;

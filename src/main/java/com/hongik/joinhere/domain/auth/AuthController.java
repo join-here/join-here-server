@@ -2,11 +2,11 @@ package com.hongik.joinhere.domain.auth;
 
 import com.hongik.joinhere.domain.auth.dto.request.TokenRequest;
 import com.hongik.joinhere.domain.auth.dto.response.TokenResponse;
-import com.hongik.joinhere.dto.user.CreateUserRequest;
-import com.hongik.joinhere.dto.user.LoginUserRequest;
+import com.hongik.joinhere.domain.member.dto.CreateMemberRequest;
+import com.hongik.joinhere.domain.member.dto.LoginMemberRequest;
+import com.hongik.joinhere.global.common.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,18 +17,18 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody CreateUserRequest request) {
+    public CommonResponse<?> signup(@RequestBody CreateMemberRequest request) {
         authService.signup(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(null);
+        return CommonResponse.onSuccess(HttpStatus.CREATED.value());
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponse> login(@RequestBody LoginUserRequest request) {
-        return ResponseEntity.ok(authService.login(request));
+    public CommonResponse<TokenResponse> login(@RequestBody LoginMemberRequest request) {
+        return CommonResponse.onSuccess(HttpStatus.OK.value(), authService.login(request));
     }
 
-    @PostMapping("/refresh")
-    public ResponseEntity<TokenResponse> reissue(@RequestBody TokenRequest request) {
-        return ResponseEntity.ok(authService.reissue(request));
+    @PostMapping("/reissue")
+    public CommonResponse<TokenResponse> reissue(@RequestBody TokenRequest request) {
+        return CommonResponse.onSuccess(HttpStatus.OK.value(), authService.reissue(request));
     }
 }
