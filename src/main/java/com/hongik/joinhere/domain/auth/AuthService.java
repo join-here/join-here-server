@@ -6,7 +6,6 @@ import com.hongik.joinhere.domain.member.dto.CreateMemberRequest;
 import com.hongik.joinhere.domain.member.dto.LoginMemberRequest;
 import com.hongik.joinhere.domain.member.entity.Member;
 import com.hongik.joinhere.domain.member.repository.MemberRepository;
-import com.hongik.joinhere.domain.member.entity.Authority;
 import com.hongik.joinhere.domain.auth.entity.RefreshToken;
 import com.hongik.joinhere.domain.auth.jwt.TokenProvider;
 import com.hongik.joinhere.domain.auth.repository.RefreshTokenRepository;
@@ -36,14 +35,7 @@ public class AuthService {
         if (memberRepository.existsByUsername(request.getUsername())) {
             throw new BadRequestException(ErrorCode.DUPLICATE_MEMBER);
         }
-        Member member = Member.builder()
-                .username(request.getUsername())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .name(request.getName())
-                .birthday(request.getBirthday())
-                .phone(request.getPhone())
-                .authority(Authority.ROLE_USER)
-                .build();
+        Member member = request.toEntity(passwordEncoder);
         memberRepository.save(member);
     }
 

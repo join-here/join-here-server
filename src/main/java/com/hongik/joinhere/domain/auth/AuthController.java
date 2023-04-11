@@ -17,6 +17,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
+    @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<?> signup(@RequestBody CreateMemberRequest request) {
         authService.signup(request);
         return CommonResponse.onSuccess(HttpStatus.CREATED.value());
