@@ -1,7 +1,6 @@
 package com.hongik.joinhere.domain.auth.jwt;
 
 import com.hongik.joinhere.global.error.ErrorCode;
-import com.hongik.joinhere.global.error.FilterExceptionHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;

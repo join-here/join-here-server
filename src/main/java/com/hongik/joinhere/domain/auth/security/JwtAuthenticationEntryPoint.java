@@ -1,7 +1,6 @@
 package com.hongik.joinhere.domain.auth.security;
 
 import com.hongik.joinhere.global.error.ErrorCode;
-import com.hongik.joinhere.global.error.FilterExceptionHandler;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;

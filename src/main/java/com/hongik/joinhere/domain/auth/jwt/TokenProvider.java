@@ -3,7 +3,6 @@ package com.hongik.joinhere.domain.auth.jwt;
 import com.hongik.joinhere.domain.auth.dto.response.TokenResponse;
 import com.hongik.joinhere.domain.member.entity.Member;
 import com.hongik.joinhere.global.error.ErrorCode;
-import com.hongik.joinhere.global.error.exception.BadRequestException;
 import com.hongik.joinhere.global.error.exception.UnauthorizedException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -46,9 +45,8 @@ public class TokenProvider {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        long now = (new Date()).getTime();
-
         // Access Token 생성
+        long now = (new Date()).getTime();
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())           // payload "sub": "name"
@@ -64,7 +62,6 @@ public class TokenProvider {
                 .setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
-
         return TokenResponse.builder()
                 .grantType(BEARER_TYPE)
                 .accessToken(accessToken)

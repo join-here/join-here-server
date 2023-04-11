@@ -1,7 +1,6 @@
 package com.hongik.joinhere.domain.auth.security;
 
 import com.hongik.joinhere.global.error.ErrorCode;
-import com.hongik.joinhere.global.error.FilterExceptionHandler;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
