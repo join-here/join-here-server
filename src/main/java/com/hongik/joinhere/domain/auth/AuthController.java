@@ -29,7 +29,8 @@ public class AuthController {
     }
 
     @PostMapping("/reissue")
+    @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<TokenResponse> reissue(@RequestBody TokenRequest request) {
-        return CommonResponse.onSuccess(HttpStatus.OK.value(), authService.reissue(request));
+        return CommonResponse.onSuccess(HttpStatus.CREATED.value(), authService.reissue(request));
     }
 }
