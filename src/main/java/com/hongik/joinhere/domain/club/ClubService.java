@@ -1,25 +1,27 @@
 package com.hongik.joinhere.domain.club;
 
-import com.hongik.joinhere.domain.announcement.entity.Announcement;
-import com.hongik.joinhere.domain.announcement.repository.AnnouncementRepository;
+import com.hongik.joinhere.domain.announcement.announcement.dto.AnnouncementResponse;
+import com.hongik.joinhere.domain.announcement.announcement.entity.Announcement;
+import com.hongik.joinhere.domain.announcement.announcement.repository.AnnouncementRepository;
 import com.hongik.joinhere.domain.auth.security.SecurityUtil;
 import com.hongik.joinhere.domain.belong.entity.Belong;
-import com.hongik.joinhere.domain.belong.Review;
 import com.hongik.joinhere.domain.belong.entity.Position;
 import com.hongik.joinhere.domain.belong.repository.BelongRepository;
 import com.hongik.joinhere.domain.club.dto.*;
 import com.hongik.joinhere.domain.club.entity.Category;
 import com.hongik.joinhere.domain.club.entity.Club;
 import com.hongik.joinhere.domain.club.repository.ClubRepository;
-import com.hongik.joinhere.domain.dto.club.ShowClubInfoResponse;
-import com.hongik.joinhere.domain.club.dto.ShowClubResponse;
+import com.hongik.joinhere.domain.club.dto.ShowClubInfoResponse;
+import com.hongik.joinhere.domain.club.dto.ClubResponse;
 import com.hongik.joinhere.domain.club.dto.UpdateClubRequest;
-import com.hongik.joinhere.domain.dto.qna.ShowQnaResponse;
-import com.hongik.joinhere.domain.dto.review.ReviewResponse;
+import com.hongik.joinhere.domain.qna.answer.repository.QnaAnswerRepository;
+import com.hongik.joinhere.domain.qna.qna.dto.QnaResponse;
+import com.hongik.joinhere.domain.belong.dto.ReviewResponse;
 import com.hongik.joinhere.domain.member.entity.Member;
 import com.hongik.joinhere.domain.member.repository.MemberRepository;
 import com.hongik.joinhere.domain.qna.answer.entity.QnaAnswer;
 import com.hongik.joinhere.domain.qna.question.entity.QnaQuestion;
+import com.hongik.joinhere.domain.qna.question.repository.QnaQuestionRepository;
 import com.hongik.joinhere.global.error.ErrorCode;
 import com.hongik.joinhere.global.error.exception.BadRequestException;
 import com.hongik.joinhere.infra.s3.S3Service;
@@ -41,7 +43,6 @@ public class ClubService {
     private final MemberRepository memberRepository;
     private final AnnouncementRepository announcementRepository;
     private final BelongRepository belongRepository;
-    private final ReviewRepository reviewRepository;
     private final QnaQuestionRepository qnaQuestionRepository;
     private final QnaAnswerRepository qnaAnswerRepository;
     private final S3Service s3Service;
@@ -72,40 +73,46 @@ public class ClubService {
         return CreateClubResponse.from(club);
     }
 
-    public List<ShowClubResponse> findClubs() {
+    public List<ClubResponse> findClubs() {
         return mappingShowClubResponse(clubRepository.findAll());
     }
 
-    public List<ShowClubResponse> findClubsByCategory(Category category) {
+    public List<ClubResponse> findClubsByCategory(Category category) {
         return mappingShowClubResponse(clubRepository.findByCategory(category));
     }
 
-    public List<ShowClubResponse> findClubsByQuery(String query) {
+    public List<ClubResponse> findClubsByQuery(String query) {
         return mappingShowClubResponse(clubRepository.findByNameContaining(query));
     }
 
-    public ShowClubInfoResponse findClubInfo(Long id) {
-        Club club = clubRepository.findById(id);
+    public ShowClubInfoResponse findClubInfo(Long clubId) {
+        Club club = clubRepository.findById(clubId)
+                        .orElseThrow(() -> new BadRequestException(ErrorCode.CLUB_NOT_FOUND));
         club.increaseView();
-        List<Announcement> announcements = announcementRepository.findByClubId(club.getId());
-        List<Review> reviews = reviewRepository.findByClubId(id);
-        List<ReviewResponse> reviewResponses = new ArrayList<>();
-        for (Review review : reviews)
-            reviewResponses.add(ReviewResponse.from(review));
-        List<QnaQuestion> qnaQuestions = qnaQuestionRepository.findByClubId(id);
-        List<ShowQnaResponse> showQnaResponses = new ArrayList<>();
-
-        for (QnaQuestion qnaQuestion : qnaQuestions) {
-            List<QnaAnswer> qnaAnswers = qnaAnswerRepository.findByQnaQuestionId(qnaQuestion.getId());
-            ShowQnaResponse response = new ShowQnaResponse();
-            response.from(qnaQuestion, qnaAnswers);
-            showQnaResponses.add(response);
+        ClubResponse clubResponse = ClubResponse.from(club, null);
+        List<Announcement> announcements = announcementRepository.findByClub(club);
+        AnnouncementResponse announcementResponse;
+        if (announcements.isEmpty()) {
+            announcementResponse = null;
+        } else {
+            announcementResponse = AnnouncementResponse.from(announcements.get(announcements.size() - 1));
         }
-
-        if (announcements.size() == 0)
-            return ShowClubInfoResponse.from(club, null, reviewResponses, showQnaResponses);
-        else
-            return ShowClubInfoResponse.from(club, announcements.get(announcements.size() - 1), reviewResponses, showQnaResponses);
+        List<Belong> belongs = belongRepository.findByClub(club);
+        List<ReviewResponse> reviewResponses = new ArrayList<>();
+        for (Belong belong : belongs) {
+            if (belong.getReview() != null) {
+                reviewResponses.add(ReviewResponse.from(belong));
+            }
+        }
+        List<QnaQuestion> qnaQuestions = qnaQuestionRepository.findByClub(club);
+        List<QnaResponse> qnaResponses = new ArrayList<>();
+        for (QnaQuestion qnaQuestion : qnaQuestions) {
+            List<QnaAnswer> qnaAnswers = qnaAnswerRepository.findByQnaQuestion(qnaQuestion);
+            QnaResponse response = new QnaResponse();
+            response.from(qnaQuestion, qnaAnswers);
+            qnaResponses.add(response);
+        }
+        return ShowClubInfoResponse.from(clubResponse, announcementResponse, reviewResponses, qnaResponses);
     }
 
     public void updateClubInfo(UpdateClubRequest request, MultipartFile multipartFile) {
@@ -132,15 +139,15 @@ public class ClubService {
         club.updateIntroduction(request.getIntroduction());
     }
 
-    private List<ShowClubResponse> mappingShowClubResponse(List<Club> clubs) {
-        List<ShowClubResponse> responses = new ArrayList<>();
+    private List<ClubResponse> mappingShowClubResponse(List<Club> clubs) {
+        List<ClubResponse> responses = new ArrayList<>();
 
         for (Club club : clubs) {
             List<Announcement> announcements = announcementRepository.findByClub(club);
             if (announcements.isEmpty()) {
-                responses.add(ShowClubResponse.from(club, null));
+                responses.add(ClubResponse.from(club, null));
             } else {
-                responses.add(ShowClubResponse.from(club, announcements.get(announcements.size() - 1).getEndDate()));
+                responses.add(ClubResponse.from(club, announcements.get(announcements.size() - 1).getEndDate()));
             }
         }
         return responses;

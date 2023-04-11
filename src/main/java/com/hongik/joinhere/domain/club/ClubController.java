@@ -2,13 +2,12 @@ package com.hongik.joinhere.domain.club;
 
 import com.hongik.joinhere.domain.club.dto.*;
 import com.hongik.joinhere.domain.club.entity.Category;
-import com.hongik.joinhere.domain.dto.club.ShowClubInfoResponse;
-import com.hongik.joinhere.domain.club.dto.ShowClubResponse;
+import com.hongik.joinhere.domain.club.dto.ShowClubInfoResponse;
+import com.hongik.joinhere.domain.club.dto.ClubResponse;
 import com.hongik.joinhere.domain.club.dto.UpdateClubRequest;
 import com.hongik.joinhere.global.common.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,7 +21,7 @@ public class ClubController {
     private final ClubService clubService;
 
     @GetMapping
-    public CommonResponse<List<ShowClubResponse>> showAll() {
+    public CommonResponse<List<ClubResponse>> showAll() {
         return CommonResponse.onSuccess(HttpStatus.OK.value(), clubService.findClubs());
     }
 
@@ -40,18 +39,17 @@ public class ClubController {
     }
 
     @GetMapping("/search")
-    public CommonResponse<List<ShowClubResponse>> searchClubs(@RequestParam String query) {
+    public CommonResponse<List<ClubResponse>> searchClubs(@RequestParam String query) {
         return CommonResponse.onSuccess(HttpStatus.OK.value(), clubService.findClubsByQuery(query));
     }
 
     @GetMapping("/{club-id}")
-    public ResponseEntity<ShowClubInfoResponse> showClubInfo(@PathVariable("club-id") Long id) {
-        ShowClubInfoResponse response = clubService.findClubInfo(id);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+    public CommonResponse<ShowClubInfoResponse> showClubInfo(@PathVariable("club-id") Long clubId) {
+        return CommonResponse.onSuccess(HttpStatus.OK.value(), clubService.findClubInfo(clubId));
     }
 
     @GetMapping("/categories/{category}")
-    public CommonResponse<List<ShowClubResponse>> showClubsByCategory(@PathVariable Category category) {
+    public CommonResponse<List<ClubResponse>> showClubsByCategory(@PathVariable Category category) {
         return CommonResponse.onSuccess(HttpStatus.OK.value(), clubService.findClubsByCategory(category));
     }
 }
