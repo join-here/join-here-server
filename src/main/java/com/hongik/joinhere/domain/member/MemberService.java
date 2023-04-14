@@ -20,16 +20,16 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
+    public MemberResponse findMemberInfo() {
+        Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId())
+                .orElseThrow(() -> new BadRequestException(ErrorCode.MEMBER_NOT_FOUND));
+        return MemberResponse.from(member);
+    }
+
     public void updateMemberInfo(UpdateMemberRequest request) {
         Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId())
                 .orElseThrow(() -> new BadRequestException(ErrorCode.MEMBER_NOT_FOUND));
         member.updatePassword(passwordEncoder.encode(request.getPassword()));
         member.updatePhone(request.getPhone());
-    }
-
-    public MemberResponse findMember() {
-        Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId())
-                .orElseThrow(() -> new BadRequestException(ErrorCode.MEMBER_NOT_FOUND));
-        return MemberResponse.from(member);
     }
 }

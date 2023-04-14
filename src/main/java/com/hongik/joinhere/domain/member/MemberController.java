@@ -8,19 +8,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/members")
+@RequestMapping("/members/me")
 @RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
 
     @GetMapping
-    public CommonResponse<MemberResponse> showMemberInfo() {
-        return CommonResponse.onSuccess(HttpStatus.OK.value(), memberService.findMember());
+    public CommonResponse<MemberResponse> showMyInfo() {
+        return CommonResponse.onSuccess(HttpStatus.OK.value(), memberService.findMemberInfo());
     }
 
     @PatchMapping
-    public CommonResponse<?> update(@RequestBody UpdateMemberRequest request) {
+    public CommonResponse<?> updateMyInfo(@RequestBody UpdateMemberRequest request) {
         memberService.updateMemberInfo(request);
         return CommonResponse.onSuccess(HttpStatus.OK.value());
     }
