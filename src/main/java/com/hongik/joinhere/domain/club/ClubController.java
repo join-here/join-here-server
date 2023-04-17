@@ -26,6 +26,7 @@ public class ClubController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<CreateClubResponse> create(@RequestPart(value = "request") CreateClubRequest request,
                                  @RequestPart(value = "image", required = false) MultipartFile multipartFile) {
         return CommonResponse.onSuccess(HttpStatus.CREATED.value(), clubService.register(request, multipartFile));

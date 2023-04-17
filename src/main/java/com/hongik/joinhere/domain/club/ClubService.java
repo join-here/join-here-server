@@ -49,7 +49,8 @@ public class ClubService {
 
     public CreateClubResponse register(CreateClubRequest request, MultipartFile multipartFile) {
         String imageUrl = null;
-
+        Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId())
+                .orElseThrow(() -> (new BadRequestException(ErrorCode.MEMBER_NOT_FOUND)));
         if (clubRepository.existsByName(request.getName())) {
             throw new BadRequestException(ErrorCode.DUPLICATE_CLUB);
         }
@@ -62,8 +63,6 @@ public class ClubService {
         }
         Club club = request.toEntity(imageUrl);
         clubRepository.save(club);
-        Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId())
-                .orElseThrow(() -> (new BadRequestException(ErrorCode.MEMBER_NOT_FOUND)));
         Belong belong = Belong.builder()
                         .position(Position.PRESIDENT)
                         .member(member)
