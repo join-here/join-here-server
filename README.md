@@ -9,6 +9,32 @@
 
 <!-- ## 프로젝트 개요-->
 
+## Main Features
+<img width="809" alt="Main Feature" src="https://user-images.githubusercontent.com/71253970/232682766-760bb751-6ec8-4535-aed4-ae183624846d.png">
+
+<!-- 
+### 사용자 관점
+- 카테고리별 동아리 목록 보기
+- 동아리 상세정보(모집공고, 후기, QnA) 보기
+- 동아리 지원
+- 동아리 지원여부, 합격여부 확인
+
+### 동아리 운영진 관점
+- 동아리 모집공고, 지원서 질문 등록
+- 동아리 지원자와 지원서 확인
+- 지원자 합격여부 설정
+- 동아리원 관리
+
+
+## 화면 구성 📺
+| 메인 페이지  |  소개 페이지   |
+| :-------------------------------------------: | :------------: |
+|  <img width="329" src="https://user-images.githubusercontent.com/50205887/208036155-a57900f7-c68a-470d-923c-ff3c296ea635.png"/> |  <img width="329" src="https://user-images.githubusercontent.com/50205887/208036645-a76cf400-85bc-4fa2-af72-86d2abf61366.png"/>|  
+| 강좌 소개 페이지   |  강의 영상 페이지   |  
+| <img width="329" src="https://user-images.githubusercontent.com/50205887/208038737-2b32b7d2-25f4-4949-baf5-83b5c02915a3.png"/>   |  <img width="329" src="https://user-images.githubusercontent.com/50205887/208038965-43a6318a-7b05-44bb-97c8-b08b0495fba7.png"/>     |
+| 강좌 소개 페이지   |  강의 영상 페이지   |  
+| <img width="329" src="https://user-images.githubusercontent.com/50205887/208038737-2b32b7d2-25f4-4949-baf5-83b5c02915a3.png"/>   |  <img width="329" src="https://user-images.githubusercontent.com/50205887/208038965-43a6318a-7b05-44bb-97c8-b08b0495fba7.png"/>     |
+-->
 
 
 
