@@ -24,17 +24,18 @@
 - 동아리 지원자와 지원서 확인
 - 지원자 합격여부 설정
 - 동아리원 관리
+-->
 
 
 ## 화면 구성 📺
-| 메인 페이지  |  소개 페이지   |
+| 홈 페이지  |  동아리 목록 페이지   |
 | :-------------------------------------------: | :------------: |
-|  <img width="329" src="https://user-images.githubusercontent.com/50205887/208036155-a57900f7-c68a-470d-923c-ff3c296ea635.png"/> |  <img width="329" src="https://user-images.githubusercontent.com/50205887/208036645-a76cf400-85bc-4fa2-af72-86d2abf61366.png"/>|  
-| 강좌 소개 페이지   |  강의 영상 페이지   |  
-| <img width="329" src="https://user-images.githubusercontent.com/50205887/208038737-2b32b7d2-25f4-4949-baf5-83b5c02915a3.png"/>   |  <img width="329" src="https://user-images.githubusercontent.com/50205887/208038965-43a6318a-7b05-44bb-97c8-b08b0495fba7.png"/>     |
-| 강좌 소개 페이지   |  강의 영상 페이지   |  
-| <img width="329" src="https://user-images.githubusercontent.com/50205887/208038737-2b32b7d2-25f4-4949-baf5-83b5c02915a3.png"/>   |  <img width="329" src="https://user-images.githubusercontent.com/50205887/208038965-43a6318a-7b05-44bb-97c8-b08b0495fba7.png"/>     |
--->
+|  <img width="329" src="https://user-images.githubusercontent.com/71253970/232704375-8ac6d62c-5a2a-492b-a339-a3543ee5b1cc.png"/> |  <img width="329" src="https://user-images.githubusercontent.com/71253970/232704320-faaee8c1-ac67-4fdb-a64a-4620db606426.png"/>|  
+| 동아리 모집공고 페이지   |  지원자 관리 페이지   |  
+| <img width="329" src="https://user-images.githubusercontent.com/71253970/232704343-2119b27e-13b5-43cd-a22e-303faf3c19d9.png"/>   |  <img width="329" src="https://user-images.githubusercontent.com/71253970/232704370-d0956aa5-3eee-485c-aa7b-0dcabddefb31.png"/>     |
+| 동아리원 관리 페이지   |  지원 여부 페이지   |  
+| <img width="329" src="https://user-images.githubusercontent.com/71253970/232704333-c9252ebe-8274-4348-9f1b-22ffbc294c1e.png"/>   |  <img width="329" src="https://user-images.githubusercontent.com/71253970/232704368-f7ebcc47-023b-4711-9c46-86be101a5a94.png"/>     |
+
 
 
 
