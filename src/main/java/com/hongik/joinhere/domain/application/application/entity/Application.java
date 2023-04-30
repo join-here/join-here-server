@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.*;
+
 @Entity
 @Getter
 @Builder
@@ -23,11 +25,11 @@ public class Application extends TimeBaseEntity {
     @Column(name = "pass_state", columnDefinition = "varchar(4) default 'HOLD'")
     private PassState passState;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "announcement_id")
     Announcement announcement;
 

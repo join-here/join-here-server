@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+import static javax.persistence.FetchType.*;
+
 @Entity
 @Getter
 @Builder
@@ -38,7 +40,7 @@ public class Announcement extends TimeBaseEntity {
     @Column(name = "inform_state")
     private Boolean informState;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "club_id")
     private Club club;
 

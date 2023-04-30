@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.*;
+
 @Entity
 @Getter
 @Builder
@@ -24,11 +26,11 @@ public class ApplicationAnswer extends TimeBaseEntity {
     @Column(length = 2000)
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "application_id")
     Application application;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "application_question_id")
     AnnouncementQuestion announcementQuestion;
 }

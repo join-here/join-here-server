@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+import static javax.persistence.FetchType.*;
+
 @Entity
 @Getter
 @Builder
@@ -28,11 +30,11 @@ public class QnaAnswer extends TimeBaseEntity {
     @Column(name = "is_manager")
     private Boolean isManager;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "qna_question_id")
     private QnaQuestion qnaQuestion;
 }
