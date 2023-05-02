@@ -44,7 +44,7 @@ public class Member extends TimeBaseEntity {
         this.password = password;
     }
 
-    public void  updatePhone(String phone) {
+    public void updatePhone(String phone) {
         this.phone = phone;
     }
 }

@@ -28,13 +28,13 @@ public class ClubController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<CreateClubResponse> create(@RequestPart(value = "request") CreateClubRequest request,
-                                 @RequestPart(value = "image", required = false) MultipartFile multipartFile) {
+                                                     @RequestPart(value = "image", required = false) MultipartFile multipartFile) {
         return CommonResponse.onSuccess(HttpStatus.CREATED.value(), clubService.register(request, multipartFile));
     }
 
     @PatchMapping
     public CommonResponse<?> update(@RequestPart(value = "request") UpdateClubRequest request,
-                                         @RequestPart(value = "image", required = false) MultipartFile multipartFile) {
+                                    @RequestPart(value = "image", required = false) MultipartFile multipartFile) {
         clubService.updateClubInfo(request, multipartFile);
         return CommonResponse.onSuccess(HttpStatus.OK.value());
     }
