@@ -25,6 +25,7 @@ public class BelongController {
     }
 
     @PostMapping("/clubs/{club-id}/belongs")
+    @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<List<BelongResponse>> createBelongByMemberUsername(@RequestBody CreateBelongRequest request,
                                                                              @PathVariable("club-id") Long clubId) {
         return CommonResponse.onSuccess(HttpStatus.CREATED.value(), belongService.registerBelongByMemberUsername(request, clubId));
@@ -42,13 +43,15 @@ public class BelongController {
         return CommonResponse.onSuccess(HttpStatus.OK.value(), belongService.deleteBelong(request, clubId));
     }
 
-    @PostMapping("/clubs/reviews")
-    public CommonResponse<List<ReviewResponse>> createReview(@RequestBody CreateReviewRequest request) {
-        return CommonResponse.onSuccess(HttpStatus.CREATED.value(), belongService.registerReview(request));
+    @PostMapping("/clubs/{club-id}/reviews")
+    public CommonResponse<List<ReviewResponse>> createReview(@RequestBody CreateReviewRequest request,
+                                                             @PathVariable("club-id") Long clubId) {
+        return CommonResponse.onSuccess(HttpStatus.OK.value(), belongService.registerReview(request, clubId));
     }
 
-    @DeleteMapping("/clubs/reviews")
-    public CommonResponse<List<ReviewResponse>> deleteReview(@RequestBody DeleteReviewRequest request) {
-        return CommonResponse.onSuccess(HttpStatus.CREATED.value(), belongService.deleteReview(request));
+    @DeleteMapping("/clubs/{club-id}/reviews")
+    public CommonResponse<List<ReviewResponse>> deleteReview(@RequestBody DeleteReviewRequest request,
+                                                             @PathVariable("club-id") Long clubId) {
+        return CommonResponse.onSuccess(HttpStatus.OK.value(), belongService.deleteReview(request, clubId));
     }
 }
