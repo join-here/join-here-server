@@ -20,8 +20,6 @@ public class ClubResponse {
     private String imageUrl;
     private String introduction;
     private Long view;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private LocalDate endDate;
 
     public static ClubResponse from(Club club, LocalDate endDate) {
