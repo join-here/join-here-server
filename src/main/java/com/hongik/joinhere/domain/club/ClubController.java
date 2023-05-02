@@ -22,7 +22,7 @@ public class ClubController {
 
     @GetMapping
     public CommonResponse<List<ClubResponse>> showAll() {
-        return CommonResponse.onSuccess(HttpStatus.OK.value(), clubService.findClubs());
+        return CommonResponse.onSuccess(HttpStatus.OK.value(), clubService.findAllClubs());
     }
 
     @PostMapping

@@ -31,6 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URLDecoder;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,20 +50,12 @@ public class ClubService {
     private final S3Service s3Service;
 
     public CreateClubResponse register(CreateClubRequest request, MultipartFile multipartFile) {
-        String imageUrl = null;
         Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId())
                 .orElseThrow(() -> (new BadRequestException(ErrorCode.MEMBER_NOT_FOUND)));
         if (clubRepository.existsByName(request.getName())) {
             throw new BadRequestException(ErrorCode.DUPLICATE_CLUB);
         }
-        try {
-            if (multipartFile != null && !multipartFile.isEmpty()) {
-                imageUrl = s3Service.uploadFiles(multipartFile, "images");
-            }
-        } catch (Exception e) {
-            throw new BadRequestException(ErrorCode.S3_CONNECTION_ERROR);
-        }
-        Club club = request.toEntity(imageUrl);
+        Club club = request.toEntity(uploadImageToS3(multipartFile));
         clubRepository.save(club);
         Belong belong = Belong.builder()
                         .position(Position.PRESIDENT)
@@ -72,7 +66,7 @@ public class ClubService {
         return CreateClubResponse.from(club);
     }
 
-    public List<ClubResponse> findClubs() {
+    public List<ClubResponse> findAllClubs() {
         return mappingShowClubResponse(clubRepository.findAll());
     }
 
@@ -89,28 +83,9 @@ public class ClubService {
                         .orElseThrow(() -> new BadRequestException(ErrorCode.CLUB_NOT_FOUND));
         club.increaseView();
         ClubResponse clubResponse = ClubResponse.from(club, null);
-        List<Announcement> announcements = announcementRepository.findByClub(club);
-        AnnouncementResponse announcementResponse;
-        if (announcements.isEmpty()) {
-            announcementResponse = null;
-        } else {
-            announcementResponse = AnnouncementResponse.from(announcements.get(announcements.size() - 1));
-        }
-        List<Belong> belongs = belongRepository.findByClub(club);
-        List<ReviewResponse> reviewResponses = new ArrayList<>();
-        for (Belong belong : belongs) {
-            if (belong.getReview() != null) {
-                reviewResponses.add(ReviewResponse.from(belong));
-            }
-        }
-        List<QnaQuestion> qnaQuestions = qnaQuestionRepository.findByClub(club);
-        List<QnaResponse> qnaResponses = new ArrayList<>();
-        for (QnaQuestion qnaQuestion : qnaQuestions) {
-            List<QnaAnswer> qnaAnswers = qnaAnswerRepository.findByQnaQuestion(qnaQuestion);
-            QnaResponse response = new QnaResponse();
-            response.from(qnaQuestion, qnaAnswers);
-            qnaResponses.add(response);
-        }
+        AnnouncementResponse announcementResponse = mappingAnnouncementResponse(club);
+        List<ReviewResponse> reviewResponses = mappingReviewResponse(club);
+        List<QnaResponse> qnaResponses = mappingQnaResponse(club);
         return ShowClubInfoResponse.from(clubResponse, announcementResponse, reviewResponses, qnaResponses);
     }
 
@@ -121,16 +96,7 @@ public class ClubService {
             throw new BadRequestException(ErrorCode.DUPLICATE_CLUB);
         }
         if (request.getIsImageChanged()) {
-            String imageUrl = null;
-            try {
-                if (multipartFile != null && !multipartFile.isEmpty())
-                    imageUrl = s3Service.uploadFiles(multipartFile, "images");
-                if (club.getImageUrl() != null)
-                    s3Service.deleteS3(URLDecoder.decode(club.getImageUrl().substring(50), "UTF-8"));
-            } catch (Exception e) {
-                throw new BadRequestException(ErrorCode.S3_CONNECTION_ERROR);
-            }
-            club.updateImageUrl(imageUrl);
+            club.updateImageUrl(changeImageToS3(multipartFile, club.getImageUrl()));
         }
         club.updateName(request.getName());
         club.updateCategory(request.getCategory());
@@ -142,13 +108,85 @@ public class ClubService {
         List<ClubResponse> responses = new ArrayList<>();
 
         for (Club club : clubs) {
+            Boolean hasAnnouncement = false;
             List<Announcement> announcements = announcementRepository.findByClub(club);
-            if (announcements.isEmpty()) {
-                responses.add(ClubResponse.from(club, null));
-            } else {
+
+            if (!announcements.isEmpty()) {
+                Announcement announcement = announcements.get(announcements.size() - 1);
+                LocalDate localDate = LocalDate.now(ZoneId.of("Asia/Seoul"));
+                if (!announcement.getInformState() && !localDate.isAfter(announcement.getEndDate())) {
+                    hasAnnouncement = true;
+                }
+            }
+
+            if (hasAnnouncement) {
                 responses.add(ClubResponse.from(club, announcements.get(announcements.size() - 1).getEndDate()));
+            } else {
+                responses.add(ClubResponse.from(club, null));
             }
         }
         return responses;
+    }
+
+    private AnnouncementResponse mappingAnnouncementResponse(Club club) {
+        List<Announcement> announcements = announcementRepository.findByClub(club);
+        AnnouncementResponse announcementResponse;
+        if (announcements.isEmpty()) {
+            announcementResponse = null;
+        } else {
+            announcementResponse = AnnouncementResponse.from(announcements.get(announcements.size() - 1));
+        }
+        return announcementResponse;
+    }
+
+    private List<ReviewResponse> mappingReviewResponse(Club club) {
+        List<Belong> belongs = belongRepository.findByClub(club);
+        List<ReviewResponse> reviewResponses = new ArrayList<>();
+        for (Belong belong : belongs) {
+            if (belong.getReview() != null) {
+                reviewResponses.add(ReviewResponse.from(belong));
+            }
+        }
+        return reviewResponses;
+    }
+
+    private List<QnaResponse> mappingQnaResponse(Club club) {
+        List<QnaQuestion> qnaQuestions = qnaQuestionRepository.findByClub(club);
+        List<QnaResponse> qnaResponses = new ArrayList<>();
+        for (QnaQuestion qnaQuestion : qnaQuestions) {
+            List<QnaAnswer> qnaAnswers = qnaAnswerRepository.findByQnaQuestion(qnaQuestion);
+            QnaResponse response = new QnaResponse();
+            response.from(qnaQuestion, qnaAnswers);
+            qnaResponses.add(response);
+        }
+        return qnaResponses;
+    }
+
+    private String uploadImageToS3(MultipartFile multipartFile) {
+        try {
+            if (multipartFile != null && !multipartFile.isEmpty()) {
+                return s3Service.uploadFiles(multipartFile, "images");
+            }
+        } catch (Exception e) {
+            throw new BadRequestException(ErrorCode.S3_CONNECTION_ERROR);
+        }
+        return null;
+    }
+
+    private void deleteImageInS3(String imageUrl) {
+        try {
+            if (imageUrl != null)
+                s3Service.deleteS3(URLDecoder.decode(imageUrl.substring(50), "UTF-8"));
+        } catch (Exception e) {
+            throw new BadRequestException(ErrorCode.S3_CONNECTION_ERROR);
+        }
+    }
+
+    private String changeImageToS3(MultipartFile multipartFile, String imageUrl) {
+        String newImageUrl = null;
+
+        newImageUrl = uploadImageToS3(multipartFile);
+        deleteImageInS3(imageUrl);
+        return newImageUrl;
     }
 }
