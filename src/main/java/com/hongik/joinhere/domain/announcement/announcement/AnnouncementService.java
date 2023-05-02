@@ -37,8 +37,8 @@ public class AnnouncementService {
     private final AnnouncementQuestionRepository announcementQuestionRepository;
     private final S3Service s3Service;
 
-    public CreateAnnouncementResponse registerAnnouncementAndQuestion(CreateAnnouncementRequest request, MultipartFile multipartFile) {
-        Club club = handleExceptions(request.getClubId());
+    public CreateAnnouncementResponse registerAnnouncementAndQuestion(CreateAnnouncementRequest request, MultipartFile multipartFile, Long clubId) {
+        Club club = handleExceptions(clubId);
         Announcement announcement = request.toAnnouncement(club, uploadImageToS3(multipartFile));
         CreateAnnouncementResponse response = CreateAnnouncementResponse.from(announcementRepository.save(announcement));
         List<AnnouncementQuestion> announcementQuestions = request.toAnnouncementQuestion(announcement);
@@ -49,6 +49,15 @@ public class AnnouncementService {
     }
 
     private Club handleExceptions(Long clubId) {
+        Club club = handleClubManageAuthorityException(clubId);
+        List<Announcement> announcements = announcementRepository.findByClub(club);
+        if (!announcements.isEmpty() && !announcements.get(announcements.size() - 1).getInformState()) {
+            throw new BadRequestException(ErrorCode.ANNOUNCEMENT_NOT_INFORM);
+        }
+        return club;
+    }
+
+    private Club handleClubManageAuthorityException(Long clubId) {
         Club club = clubRepository.findById(clubId)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.CLUB_NOT_FOUND));
         Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId())
@@ -57,10 +66,6 @@ public class AnnouncementService {
                 .orElseThrow(() -> new BadRequestException(ErrorCode.BELONG_NOT_FOUND));
         if (belong.getPosition() == Position.NORMAL) {
             throw new ForbiddenException(ErrorCode.BELONG_FORBIDDEN_MEMBER);
-        }
-        List<Announcement> announcements = announcementRepository.findByClub(club);
-        if (!announcements.isEmpty() && !announcements.get(announcements.size() - 1).getInformState()) {
-            throw new BadRequestException(ErrorCode.ANNOUNCEMENT_NOT_INFORM);
         }
         return club;
     }

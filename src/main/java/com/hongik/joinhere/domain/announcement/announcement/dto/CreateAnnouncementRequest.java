@@ -15,7 +15,6 @@ import java.util.List;
 @Setter
 public class CreateAnnouncementRequest {
 
-    private Long clubId;
     private String title;
     private String description;
     private LocalDate startDate;

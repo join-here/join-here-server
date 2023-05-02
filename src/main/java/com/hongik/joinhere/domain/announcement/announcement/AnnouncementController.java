@@ -14,9 +14,10 @@ public class AnnouncementController {
 
     private final AnnouncementService announcementService;
 
-    @PostMapping("/clubs/announcements")
+    @PostMapping("/clubs/{club-id}/announcements")
     public CommonResponse<CreateAnnouncementResponse> create(@RequestPart(value = "request") CreateAnnouncementRequest request,
-                                                             @RequestPart(value = "image", required = false) MultipartFile multipartFile) {
-        return CommonResponse.onSuccess(HttpStatus.CREATED.value(), announcementService.registerAnnouncementAndQuestion(request, multipartFile));
+                                                             @RequestPart(value = "image", required = false) MultipartFile multipartFile,
+                                                             @PathVariable("club-id") Long clubId) {
+        return CommonResponse.onSuccess(HttpStatus.CREATED.value(), announcementService.registerAnnouncementAndQuestion(request, multipartFile, clubId));
     }
 }
