@@ -37,32 +37,43 @@ public class AnnouncementService {
     private final AnnouncementQuestionRepository announcementQuestionRepository;
     private final S3Service s3Service;
 
-    public CreateAnnouncementResponse register(CreateAnnouncementRequest request, MultipartFile multipartFile, Long clubId) {
-        String posterUrl = null;
+    public CreateAnnouncementResponse registerAnnouncementAndQuestion(CreateAnnouncementRequest request, MultipartFile multipartFile) {
+        Club club = handleExceptions(request.getClubId());
+        Announcement announcement = request.toAnnouncement(club, uploadImageToS3(multipartFile));
+        CreateAnnouncementResponse response = CreateAnnouncementResponse.from(announcementRepository.save(announcement));
+        List<AnnouncementQuestion> announcementQuestions = request.toAnnouncementQuestion(announcement);
+        for (AnnouncementQuestion announcementQuestion : announcementQuestions) {
+            announcementQuestionRepository.save(announcementQuestion);
+        }
+        return response;
+    }
 
+    private Club handleExceptions(Long clubId) {
         Club club = clubRepository.findById(clubId)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.CLUB_NOT_FOUND));
         Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId())
                 .orElseThrow(() -> new BadRequestException(ErrorCode.MEMBER_NOT_FOUND));
         Belong belong = belongRepository.findByMemberAndClub(member, club)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.BELONG_NOT_FOUND));
-        if (belong.getPosition() == Position.NORMAL)
+        if (belong.getPosition() == Position.NORMAL) {
             throw new ForbiddenException(ErrorCode.BELONG_FORBIDDEN_MEMBER);
+        }
         List<Announcement> announcements = announcementRepository.findByClub(club);
-        if (!announcements.isEmpty() && !announcements.get(announcements.size() - 1).getInformState())
+        if (!announcements.isEmpty() && !announcements.get(announcements.size() - 1).getInformState()) {
             throw new BadRequestException(ErrorCode.ANNOUNCEMENT_NOT_INFORM);
+        }
+        return club;
+    }
+
+    private String uploadImageToS3(MultipartFile multipartFile) {
         try {
-            if (multipartFile != null && !multipartFile.isEmpty())
-                posterUrl = s3Service.uploadFiles(multipartFile, "images");
+            if (multipartFile != null && !multipartFile.isEmpty()) {
+                return s3Service.uploadFiles(multipartFile, "images");
+            }
         } catch (Exception e) {
             throw new BadRequestException(ErrorCode.S3_CONNECTION_ERROR);
         }
-        Announcement announcement = request.toAnnouncement(club, posterUrl);
-        CreateAnnouncementResponse response = CreateAnnouncementResponse.from(announcementRepository.save(announcement));
-        for (String content : request.getQuestion()) {
-            AnnouncementQuestion announcementQuestion = new AnnouncementQuestion(null, content, announcement);
-            announcementQuestionRepository.save(announcementQuestion);
-        }
-        return response;
+        return null;
     }
+
 }
