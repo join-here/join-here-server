@@ -14,38 +14,41 @@ public class BelongController {
 
     private final BelongService belongService;
 
+    @GetMapping("/belongs/me")
+    public CommonResponse<List<ShowMyBelongResponse>> showMyBelongs() {
+        return CommonResponse.onSuccess(HttpStatus.OK.value(), belongService.findMyBelongs());
+    }
+
     @GetMapping("/clubs/{club-id}/belongs")
     public CommonResponse<List<BelongResponse>> showBelongsByClub(@PathVariable("club-id") Long clubId) {
         return CommonResponse.onSuccess(HttpStatus.OK.value(), belongService.showClubMembers(clubId));
     }
 
     @PostMapping("/clubs/{club-id}/belongs")
-    public CommonResponse<List<BelongResponse>> createByMemberId(@RequestBody  CreateBelongRequest request, @PathVariable("club-id") Long clubId) {
-        return CommonResponse.onSuccess(HttpStatus.CREATED.value(), belongService.registerByMemberId(request, clubId));
+    public CommonResponse<List<BelongResponse>> createBelongByMemberUsername(@RequestBody CreateBelongRequest request,
+                                                                             @PathVariable("club-id") Long clubId) {
+        return CommonResponse.onSuccess(HttpStatus.CREATED.value(), belongService.registerBelongByMemberUsername(request, clubId));
     }
 
-    @GetMapping("/belongs")
-    public CommonResponse<List<ShowMyBelongResponse>> showMyClubs() {
-        return CommonResponse.onSuccess(HttpStatus.OK.value(), belongService.findMyClubs());
-    }
-
-    @PatchMapping("/belongs")
-    public CommonResponse<List<BelongResponse>> update(@RequestBody UpdateBelongRequest request, @PathVariable("club-id") Long clubId) {
+    @PatchMapping("/clubs/{club-id}/belongs")
+    public CommonResponse<List<BelongResponse>> updateBelong(@RequestBody UpdateBelongRequest request,
+                                                             @PathVariable("club-id") Long clubId) {
         return CommonResponse.onSuccess(HttpStatus.OK.value(), belongService.updatePosition(request, clubId));
     }
 
-    @DeleteMapping("/belongs")
-    public CommonResponse<List<BelongResponse>> delete(@RequestBody DeleteBelongRequest request, @PathVariable("club-id") Long clubId) {
-        return CommonResponse.onSuccess(HttpStatus.OK.value(), belongService.delete(request, clubId));
+    @DeleteMapping("/clubs/{club-id}/belongs")
+    public CommonResponse<List<BelongResponse>> deleteBelong(@RequestBody DeleteBelongRequest request,
+                                                             @PathVariable("club-id") Long clubId) {
+        return CommonResponse.onSuccess(HttpStatus.OK.value(), belongService.deleteBelong(request, clubId));
     }
 
-    @PostMapping("/clubs/{club-id}/reviews")
-    public CommonResponse<List<ReviewResponse>> createReview(@RequestBody CreateReviewRequest request, @PathVariable(name = "club-id") Long clubId) {
-        return CommonResponse.onSuccess(HttpStatus.CREATED.value(), belongService.registerReview(request, clubId));
+    @PostMapping("/clubs/reviews")
+    public CommonResponse<List<ReviewResponse>> createReview(@RequestBody CreateReviewRequest request) {
+        return CommonResponse.onSuccess(HttpStatus.CREATED.value(), belongService.registerReview(request));
     }
 
-    @DeleteMapping("/clubs/{club-id}/reviews")
-    public CommonResponse<List<ReviewResponse>> deleteReview(@RequestBody DeleteReviewRequest request, @PathVariable(name = "club-id") Long clubId) {
-        return CommonResponse.onSuccess(HttpStatus.CREATED.value(), belongService.deleteReview(request, clubId));
+    @DeleteMapping("/clubs/reviews")
+    public CommonResponse<List<ReviewResponse>> deleteReview(@RequestBody DeleteReviewRequest request) {
+        return CommonResponse.onSuccess(HttpStatus.CREATED.value(), belongService.deleteReview(request));
     }
 }

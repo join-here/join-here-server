@@ -45,11 +45,8 @@ public class Belong extends TimeBaseEntity {
         this.position = position;
     }
 
-    public void updateReview(String review) {
+    public void updateReview(String review, LocalDateTime reviewCreatedAt) {
         this.review = review;
-    }
-
-    public void updateReviewCreatedAt(LocalDateTime reviewCreatedAt) {
         this.reviewCreatedAt = reviewCreatedAt;
     }
 

@@ -13,6 +13,7 @@ import com.hongik.joinhere.domain.member.entity.Member;
 import com.hongik.joinhere.domain.member.repository.MemberRepository;
 import com.hongik.joinhere.global.error.ErrorCode;
 import com.hongik.joinhere.global.error.exception.BadRequestException;
+import com.hongik.joinhere.global.error.exception.ForbiddenException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,28 +34,27 @@ public class BelongService {
     private final AnnouncementRepository announcementRepository;
 
     public List<BelongResponse> showClubMembers(Long clubId) {
-        Club club = clubRepository.findById(clubId)
-                .orElseThrow(() -> new BadRequestException(ErrorCode.CLUB_NOT_FOUND));
-        List<Belong> belongs = belongRepository.findByClub(club);
-        return sortedByPosition(belongs);
+        Belong belong = handleExceptions(clubId);
+        return sortedByPosition(belongRepository.findByClub(belong.getClub()));
     }
 
-    public List<BelongResponse> registerByMemberId(CreateBelongRequest request, Long clubId) {
-        Member member = memberRepository.findById(request.getMemberId())
+    public List<BelongResponse> registerBelongByMemberUsername(CreateBelongRequest request, Long clubId) {
+        Belong belong = handleClubManageAuthorityException(clubId);
+        Member findMember = memberRepository.findByUsername(request.getMemberUsername())
                 .orElseThrow(() -> new BadRequestException(ErrorCode.MEMBER_NOT_FOUND));
-        Club club = clubRepository.findById(clubId)
-                .orElseThrow(() -> new BadRequestException(ErrorCode.CLUB_NOT_FOUND));
-        Belong belong = Belong.builder()
+        if (belongRepository.existsByMemberAndClub(findMember, belong.getClub())) {
+            throw new BadRequestException(ErrorCode.DUPLICATE_BELONG);
+        }
+        Belong newBelong = Belong.builder()
                         .position(Position.NORMAL)
-                        .member(member)
-                        .club(club)
+                        .member(findMember)
+                        .club(belong.getClub())
                         .build();
-        belongRepository.save(belong);
-        List<Belong> belongs = belongRepository.findByClub(club);
-        return sortedByPosition(belongs);
+        belongRepository.save(newBelong);
+        return sortedByPosition(belongRepository.findByClub(belong.getClub()));
     }
 
-    public List<ShowMyBelongResponse> findMyClubs() {
+    public List<ShowMyBelongResponse> findMyBelongs() {
         Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId())
                 .orElseThrow(() -> new BadRequestException(ErrorCode.MEMBER_NOT_FOUND));
         List<Belong> belongs = belongRepository.findByMember(member);
@@ -73,43 +73,56 @@ public class BelongService {
     }
 
     public List<BelongResponse> updatePosition(UpdateBelongRequest request, Long clubId) {
-        Belong belong = belongRepository.findById(request.getBelongId())
+        Belong belong = handleClubManageAuthorityException(clubId);
+        Belong updatedBelong = belongRepository.findById(request.getBelongId())
                         .orElseThrow(() -> new BadRequestException(ErrorCode.BELONG_NOT_FOUND));
-        belong.updatePosition(request.getPosition());
-        List<Belong> belongs = belongRepository.findByClub(belong.getClub());
-        return sortedByPosition(belongs);
+        updatedBelong.updatePosition(request.getPosition());
+        return sortedByPosition(belongRepository.findByClub(belong.getClub()));
     }
 
-    public List<BelongResponse> delete(DeleteBelongRequest request, Long clubId) {
-        Belong belong = belongRepository.findById(request.getBelongId())
-                        .orElseThrow(() -> new BadRequestException(ErrorCode.BELONG_NOT_FOUND));
-        belongRepository.delete(belong);
-        List<Belong> belongs = belongRepository.findByClub(belong.getClub());
-        return sortedByPosition(belongs);
+    public List<BelongResponse> deleteBelong(DeleteBelongRequest request, Long clubId) {
+        Belong belong = handleClubManageAuthorityException(clubId);
+        Belong willDeleteBelong = belongRepository.findById(request.getBelongId())
+                .orElseThrow(() -> new BadRequestException(ErrorCode.BELONG_NOT_FOUND));
+        belongRepository.delete(willDeleteBelong);
+        return sortedByPosition(belongRepository.findByClub(belong.getClub()));
     }
 
-    public List<ReviewResponse> registerReview(CreateReviewRequest request, Long clubId) {
+    public List<ReviewResponse> registerReview(CreateReviewRequest request) {
+        Belong belong = handleExceptions(request.getClubId());
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        belong.updateReview(request.getReviewContent(), now);
+        List<Belong> belongs = belongRepository.findByClub(belong.getClub());
+        return mappingReviewResponse(belongs);
+    }
+
+    public List<ReviewResponse> deleteReview(DeleteReviewRequest request) {
+        Belong belong = belongRepository.findById(request.getBelongId())
+                .orElseThrow(() -> new BadRequestException(ErrorCode.BELONG_NOT_FOUND));
+        if (belong.getMember().getId() != SecurityUtil.getCurrentMemberId()) {
+            throw new ForbiddenException(ErrorCode.REVIEW_FORBIDDEN_MEMBER);
+        }
+        belong.deleteReview();
+        List<Belong> belongs = belongRepository.findByClub(belong.getClub());
+        return mappingReviewResponse(belongs);
+    }
+
+    private Belong handleExceptions(Long clubId) {
         Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId())
                 .orElseThrow(() -> new BadRequestException(ErrorCode.MEMBER_NOT_FOUND));
         Club club = clubRepository.findById(clubId)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.CLUB_NOT_FOUND));
-        Belong findBelong = belongRepository.findByMemberAndClub(member, club)
+        Belong belong = belongRepository.findByMemberAndClub(member, club)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.BELONG_NOT_FOUND));
-        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-        findBelong.updateReview(request.getReviewContent());
-        findBelong.updateReviewCreatedAt(localDateTime);
-        List<Belong> belongs = belongRepository.findByClub(club);
-        return mappingReviewResponse(belongs);
+        return belong;
     }
 
-    public List<ReviewResponse> deleteReview(DeleteReviewRequest request, Long clubId) {
-        Belong belong = belongRepository.findById(request.getBelongId())
-                .orElseThrow(() -> new BadRequestException(ErrorCode.BELONG_NOT_FOUND));
-        Club club = clubRepository.findById(clubId)
-                .orElseThrow(() -> new BadRequestException(ErrorCode.CLUB_NOT_FOUND));
-        belongRepository.delete(belong);
-        List<Belong> belongs = belongRepository.findByClub(club);
-        return mappingReviewResponse(belongs);
+    private Belong handleClubManageAuthorityException(Long clubId) {
+        Belong belong = handleExceptions(clubId);
+        if (belong.getPosition() == Position.NORMAL) {
+            throw new ForbiddenException(ErrorCode.BELONG_FORBIDDEN_MEMBER);
+        }
+        return belong;
     }
 
     private List<BelongResponse> sortedByPosition(List<Belong> belongs) {

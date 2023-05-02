@@ -42,6 +42,10 @@ public enum ErrorCode {
     /* Belong */
     BELONG_NOT_FOUND(BAD_REQUEST,"BELONG000", "해당 동아리에 소속되어 있지 않습니다."),
     BELONG_FORBIDDEN_MEMBER(FORBIDDEN, "BELONG001", "동아리 관리할 수 있는 권한이 없습니다."),
+    DUPLICATE_BELONG(BAD_REQUEST, "BELONG002", "이미 동아리에 소속되어 있는 회원입니다."),
+
+    /* Review */
+    REVIEW_FORBIDDEN_MEMBER(FORBIDDEN, "REVIEW001", "후기를 지울 권리가 없습니다."),
 
     /* Application */
     APPLICATION_PERIOD_EXPIRED(BAD_REQUEST, "APPLICATION000", "지원기간이 지났습니다."),

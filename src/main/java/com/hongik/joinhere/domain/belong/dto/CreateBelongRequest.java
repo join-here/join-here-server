@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class CreateBelongRequest {
 
-    private Long memberId;
+    private String memberUsername;
 }
