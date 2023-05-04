@@ -19,6 +19,7 @@ public class QnaController {
     private final QnaService qnaService;
 
     @PostMapping("/clubs/{club-id}/qnas/questions")
+    @ResponseStatus(HttpStatus.CREATED)
     CommonResponse<List<QnaResponse>> createQnaQuestion(@RequestBody CreateQnaQuestionRequest request,
                                                         @PathVariable("club-id") Long clubId) {
         return CommonResponse.onSuccess(HttpStatus.CREATED.value(), qnaService.registerQnaQuestion(request, clubId));
@@ -31,6 +32,7 @@ public class QnaController {
     }
 
     @PostMapping("/clubs/{club-id}/qnas/answers")
+    @ResponseStatus(HttpStatus.CREATED)
     CommonResponse<List<QnaResponse>> createQnaAnswer(@RequestBody CreateQnaAnswerRequest request,
                                                       @PathVariable("club-id") Long clubId) {
         return CommonResponse.onSuccess(HttpStatus.CREATED.value(), qnaService.registerQnaAnswer(request));

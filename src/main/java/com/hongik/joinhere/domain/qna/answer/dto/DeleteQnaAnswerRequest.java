@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class DeleteQnaAnswerRequest {
 
-    private Long answerId;
+    private Long qnaAnswerId;
 }

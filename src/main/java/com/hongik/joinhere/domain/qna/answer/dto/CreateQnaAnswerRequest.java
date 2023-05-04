@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class CreateQnaAnswerRequest {
 
-    private Long questionId;
-    private String answerContent;
+    private Long qnaQuestionId;
+    private String qnaAnswerContent;
 }

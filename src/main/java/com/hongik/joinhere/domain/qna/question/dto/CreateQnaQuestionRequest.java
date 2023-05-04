@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class CreateQnaQuestionRequest {
 
-    private String questionContent;
+    private String qnaQuestionContent;
 }

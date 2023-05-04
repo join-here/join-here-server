@@ -47,7 +47,7 @@ public class QnaResponse {
         private LocalDateTime createdAt;
         private Long memberId;
         private String memberUsername;
-        private Long questionId;
+        private Long qnaQuestionId;
     }
 
     public void from(QnaQuestion qnaQuestion, List<QnaAnswer> qnaAnswers) {
@@ -81,7 +81,7 @@ public class QnaResponse {
                                 .createdAt(qnaAnswer.getCreatedAt())
                                 .memberId(qnaAnswer.getMember().getId())
                                 .memberUsername(qnaAnswer.getMember().getUsername())
-                                .questionId(qnaAnswer.getQnaQuestion().getId())
+                                .qnaQuestionId(qnaAnswer.getQnaQuestion().getId())
                                 .build();
             answers.add(answer);
         }

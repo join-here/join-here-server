@@ -44,48 +44,49 @@ public class QnaService {
         Club club = clubRepository.findById(clubId)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.CLUB_NOT_FOUND));
         QnaQuestion qnaQuestion = QnaQuestion.builder()
-                                .content(request.getQuestionContent())
+                                .content(request.getQnaQuestionContent())
                                 .member(member)
                                 .club(club)
                                 .build();
         qnaQuestionRepository.save(qnaQuestion);
-        return mappingResponse(club);
+        return mappingQnaResponse(club);
     }
 
     public List<QnaResponse> deleteQnaQuestion(DeleteQnaQuestionRequest request) {
-        QnaQuestion qnaQuestion = qnaQuestionRepository.findById(request.getQuestionId())
+        QnaQuestion qnaQuestion = qnaQuestionRepository.findById(request.getQnaQuestionId())
                 .orElseThrow(() -> new BadRequestException(ErrorCode.QnA_QUESTION_NOT_FOUND));
         List<QnaAnswer> qnaAnswers = qnaAnswerRepository.findByQnaQuestion(qnaQuestion);
-        for (QnaAnswer qnaAnswer : qnaAnswers)
+        for (QnaAnswer qnaAnswer : qnaAnswers) {
             qnaAnswerRepository.delete(qnaAnswer);
+        }
         qnaQuestionRepository.delete(qnaQuestion);
-        return mappingResponse(qnaQuestion.getClub());
+        return mappingQnaResponse(qnaQuestion.getClub());
     }
 
     public List<QnaResponse> registerQnaAnswer(CreateQnaAnswerRequest request) {
         Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId())
                 .orElseThrow(() -> new BadRequestException(ErrorCode.MEMBER_NOT_FOUND));
-        QnaQuestion qnaQuestion = qnaQuestionRepository.findById(request.getQuestionId())
+        QnaQuestion qnaQuestion = qnaQuestionRepository.findById(request.getQnaQuestionId())
                 .orElseThrow(() -> new BadRequestException(ErrorCode.QnA_QUESTION_NOT_FOUND));
 
         QnaAnswer qnaAnswer = QnaAnswer.builder()
-                .content(request.getAnswerContent())
+                .content(request.getQnaAnswerContent())
                 .isManager(isManager(belongRepository.findByMemberAndClub(member, qnaQuestion.getClub())))
                 .member(member)
                 .qnaQuestion(qnaQuestion)
                 .build();
         qnaAnswerRepository.save(qnaAnswer);
-        return mappingResponse(qnaQuestion.getClub());
+        return mappingQnaResponse(qnaQuestion.getClub());
     }
 
     public List<QnaResponse> deleteQnaAnswer(DeleteQnaAnswerRequest request) {
-        QnaAnswer qnaAnswer = qnaAnswerRepository.findById(request.getAnswerId()).
+        QnaAnswer qnaAnswer = qnaAnswerRepository.findById(request.getQnaAnswerId()).
                 orElseThrow(() -> new BadRequestException(ErrorCode.QnA_ANSWER_NOT_FOUND));
         qnaAnswerRepository.delete(qnaAnswer);
-        return mappingResponse(qnaAnswer.getQnaQuestion().getClub());
+        return mappingQnaResponse(qnaAnswer.getQnaQuestion().getClub());
     }
 
-    private List<QnaResponse> mappingResponse(Club club) {
+    private List<QnaResponse> mappingQnaResponse(Club club) {
         List<QnaQuestion> qnaQuestions = qnaQuestionRepository.findByClub(club);
         List<QnaResponse> responses = new ArrayList<>();
 
@@ -99,10 +100,12 @@ public class QnaService {
     }
 
     private Boolean isManager(Optional<Belong> belong) {
-        if (belong.isEmpty())
+        if (belong.isEmpty()) {
             return false;
-        if (belong.get().getPosition() == Position.NORMAL)
+        }
+        if (belong.get().getPosition() == Position.NORMAL) {
             return false;
+        }
         return true;
     }
 }
