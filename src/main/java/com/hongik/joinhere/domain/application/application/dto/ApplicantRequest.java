@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UpdateApplicantRequest {
+public class ApplicantRequest {
 
     private Long applicationId;
     private PassState passState;

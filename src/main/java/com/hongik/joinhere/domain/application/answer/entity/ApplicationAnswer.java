@@ -31,6 +31,6 @@ public class ApplicationAnswer extends TimeBaseEntity {
     Application application;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "application_question_id")
+    @JoinColumn(name = "announcement_question_id")
     AnnouncementQuestion announcementQuestion;
 }

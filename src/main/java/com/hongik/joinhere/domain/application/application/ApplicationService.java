@@ -42,20 +42,20 @@ public class ApplicationService {
     private final ApplicationAnswerRepository applicationAnswerRepository;
 
     public List<ShowApplicantResponse> findApplicants(Long clubId) {
-        Club club = checkClubManageAuthority(clubId);
+        Club club = handleClubManageAuthorityException(clubId);
         List<Announcement> announcements = announcementRepository.findByClub(club);
-        Announcement announcement = announcements.get(announcements.size() - 1);
-        List<Application> applications = applicationRepository.findByAnnouncement(announcement);
+        List<Application> applications = applicationRepository.findByAnnouncement(announcements.get(announcements.size() - 1));
         List<ShowApplicantResponse> responses = new ArrayList<>();
-        for (Application application : applications)
+        for (Application application : applications) {
             responses.add(ShowApplicantResponse.from(application));
+        }
         return responses;
     }
 
-    public List<ShowApplicantResponse> updateApplicantsPassState(Long clubId, List<UpdateApplicantRequest> requests) {
-        checkClubManageAuthority(clubId);
+    public List<ShowApplicantResponse> updateApplicantsPassState(List<ApplicantRequest> requests, Long clubId) {
+        handleClubManageAuthorityException(clubId);
         List<ShowApplicantResponse> responses = new ArrayList<>();
-        for (UpdateApplicantRequest request : requests) {
+        for (ApplicantRequest request : requests) {
             Application application = applicationRepository.findById(request.getApplicationId())
                             .orElseThrow(() -> new BadRequestException(ErrorCode.APPLICATION_NOT_FOUND));
             application.updatePassState(request.getPassState());
@@ -64,20 +64,18 @@ public class ApplicationService {
         return responses;
     }
 
-    public void publishApplications(List<PublishApplicationRequest> requests, Long clubId) {
-        Club club = checkClubManageAuthority(clubId);
+    public void publishApplications(List<ApplicantRequest> requests, Long clubId) {
+        Club club = handleClubManageAuthorityException(clubId);
         List<Announcement> announcements = announcementRepository.findByClub(club);
         announcements.get(announcements.size() - 1).updateInformState(true);
-        for (PublishApplicationRequest request : requests) {
+        for (ApplicantRequest request : requests) {
             Application application = applicationRepository.findById(request.getApplicationId())
                             .orElseThrow(() -> new BadRequestException(ErrorCode.APPLICATION_NOT_FOUND));
             if (request.getPassState() == PassState.PASS) {
                 application.updatePassState(request.getPassState());
-                Member member = memberRepository.findById(request.getMemberId())
-                        .orElseThrow(() -> new BadRequestException(ErrorCode.MEMBER_NOT_FOUND));
                 Belong belong = Belong.builder()
                         .position(Position.NORMAL)
-                        .member(member)
+                        .member(application.getMember())
                         .club(club)
                         .build();
                 belongRepository.save(belong);
@@ -102,7 +100,7 @@ public class ApplicationService {
     public List<ShowApplicationContentResponse> findApplications(Long applicationId) {
         Application application = applicationRepository.findById(applicationId).
                 orElseThrow(() -> new BadRequestException(ErrorCode.APPLICATION_NOT_FOUND));
-        checkClubManageAuthority(application.getAnnouncement().getClub().getId());
+        handleClubManageAuthorityException(application.getAnnouncement().getClub().getId());
         Announcement announcement = application.getAnnouncement();
         List<AnnouncementQuestion> announcementQuestions = announcementQuestionRepository.findByAnnouncement(announcement);
         List<ShowApplicationContentResponse> responses = new ArrayList<>();
@@ -114,7 +112,7 @@ public class ApplicationService {
         return responses;
     }
 
-    private Club checkClubManageAuthority(Long clubId) {
+    private Club handleClubManageAuthorityException(Long clubId) {
         Club club = clubRepository.findById(clubId)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.CLUB_NOT_FOUND));
         Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId())

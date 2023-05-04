@@ -23,6 +23,7 @@ public class Application extends TimeBaseEntity {
     private Long id;
 
     @Column(name = "pass_state", columnDefinition = "varchar(4) default 'HOLD'")
+    @Enumerated(EnumType.STRING)
     private PassState passState;
 
     @ManyToOne(fetch = LAZY)

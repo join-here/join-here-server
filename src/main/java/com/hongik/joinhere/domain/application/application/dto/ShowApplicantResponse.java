@@ -14,17 +14,19 @@ import java.time.LocalDateTime;
 public class ShowApplicantResponse {
 
     private Long memberId;
+    private String memberUsername;
     private String memberName;
     private Long applicationId;
-    private LocalDateTime applicationTime;
+    private LocalDateTime applicationCreatedAt;
     private PassState passState;
 
     public static ShowApplicantResponse from(Application application) {
         return ShowApplicantResponse.builder()
                 .memberId(application.getMember().getId())
+                .memberUsername(application.getMember().getUsername())
                 .memberName(application.getMember().getName())
                 .applicationId(application.getId())
-                .applicationTime(application.getCreatedAt())
+                .applicationCreatedAt(application.getCreatedAt())
                 .passState(application.getPassState())
                 .build();
     }

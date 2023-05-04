@@ -19,18 +19,20 @@ public class ApplicationController {
         return CommonResponse.onSuccess(HttpStatus.OK.value(), applicationService.findApplicants(clubId));
     }
 
-    @PatchMapping("/clubs/{club-id}/applications")
-    public CommonResponse<List<ShowApplicantResponse>> updateApplicantsInfo(@RequestBody List<UpdateApplicantRequest> requests, @PathVariable(name = "club-id") Long clubId) {
-        return CommonResponse.onSuccess(HttpStatus.OK.value(), applicationService.updateApplicantsPassState(clubId, requests));
-    }
-
-    @PostMapping("clubs/{club-id}/applications/publish")
-    public CommonResponse<?> publishApplications(@RequestBody List<PublishApplicationRequest> requests, @PathVariable(name = "club-id") Long clubId) {
+    @PostMapping("clubs/{club-id}/applications")
+    public CommonResponse<?> publishApplications(@RequestBody List<ApplicantRequest> requests,
+                                                 @PathVariable(name = "club-id") Long clubId) {
         applicationService.publishApplications(requests, clubId);
         return CommonResponse.onSuccess(HttpStatus.OK.value());
     }
 
-    @GetMapping("/applications")
+    @PatchMapping("/clubs/{club-id}/applications")
+    public CommonResponse<List<ShowApplicantResponse>> updateApplicantsPassState(@RequestBody List<ApplicantRequest> requests,
+                                                                                 @PathVariable(name = "club-id") Long clubId) {
+        return CommonResponse.onSuccess(HttpStatus.OK.value(), applicationService.updateApplicantsPassState(requests, clubId));
+    }
+
+    @GetMapping("/applications/me")
     public CommonResponse<List<ShowMyApplicationResponse>> showMyApplications() {
         return CommonResponse.onSuccess(HttpStatus.OK.value(), applicationService.findMyApplications());
     }

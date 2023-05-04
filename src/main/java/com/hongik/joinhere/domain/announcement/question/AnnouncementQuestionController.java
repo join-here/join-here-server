@@ -17,7 +17,7 @@ public class AnnouncementQuestionController {
     private final AnnouncementQuestionService announcementQuestionService;
 
     @GetMapping("/announcements/{announcement-id}/questions")
-    public CommonResponse<List<ShowAnnouncementQuestionResponse>> showQuestions(@PathVariable("announcement-id") Long announcementId) {
-        return CommonResponse.onSuccess(HttpStatus.OK.value(), announcementQuestionService.findApplicationQuestionsByAnnouncement(announcementId));
+    public CommonResponse<List<ShowAnnouncementQuestionResponse>> showAnnouncementQuestions(@PathVariable("announcement-id") Long announcementId) {
+        return CommonResponse.onSuccess(HttpStatus.OK.value(), announcementQuestionService.findQuestionsByAnnouncement(announcementId));
     }
 }

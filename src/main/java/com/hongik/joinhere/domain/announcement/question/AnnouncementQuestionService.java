@@ -24,7 +24,7 @@ public class AnnouncementQuestionService {
     private final AnnouncementQuestionRepository announcementQuestionRepository;
     private final AnnouncementRepository announcementRepository;
 
-    public List<ShowAnnouncementQuestionResponse> findApplicationQuestionsByAnnouncement(Long announcementId) {
+    public List<ShowAnnouncementQuestionResponse> findQuestionsByAnnouncement(Long announcementId) {
         Announcement announcement = announcementRepository.findById(announcementId)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.ANNOUNCEMENT_NOT_FOUND));
         LocalDate localDate = LocalDate.now(ZoneId.of("Asia/Seoul"));

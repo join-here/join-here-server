@@ -14,9 +14,9 @@ public class ApplicationAnswerController {
 
     private final ApplicationAnswerService applicationAnswerService;
 
-    @PostMapping("/announcements/{announcement-id}/answers")
+    @PostMapping("/announcements/{announcement-id}/applications")
     public CommonResponse<?> create(@RequestBody List<CreateApplicationAnswerRequest> requests, @PathVariable("announcement-id") Long announcementId) {
         applicationAnswerService.register(requests, announcementId);
-        return CommonResponse.onSuccess(HttpStatus.CREATED.value());
+        return CommonResponse.onSuccess(HttpStatus.OK.value());
     }
 }

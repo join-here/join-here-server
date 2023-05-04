@@ -19,7 +19,7 @@ public class ShowMyApplicationResponse {
     private Long applicationId;
     private PassState passState;
     private Boolean informState;
-    private LocalDateTime applicationTime;
+    private LocalDateTime applicationCreatedAt;
 
     public static ShowMyApplicationResponse from(Club club, Application application) {
         PassState passState;
@@ -35,7 +35,7 @@ public class ShowMyApplicationResponse {
                 .applicationId(application.getId())
                 .passState(passState)
                 .informState(application.getAnnouncement().getInformState())
-                .applicationTime(application.getCreatedAt())
+                .applicationCreatedAt(application.getCreatedAt())
                 .build();
     }
 }
