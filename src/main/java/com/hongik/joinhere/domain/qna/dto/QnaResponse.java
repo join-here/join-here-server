@@ -1,9 +1,10 @@
-package com.hongik.joinhere.domain.qna.qna.dto;
+package com.hongik.joinhere.domain.qna.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hongik.joinhere.domain.qna.answer.entity.QnaAnswer;
 import com.hongik.joinhere.domain.qna.question.entity.QnaQuestion;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ public class QnaResponse {
     }
 
     @Getter
+    @Builder
     @AllArgsConstructor
     static class Question {
 
@@ -31,9 +33,11 @@ public class QnaResponse {
         private String content;
         private LocalDateTime createdAt;
         private Long memberId;
+        private String memberUsername;
     }
 
     @Getter
+    @Builder
     @AllArgsConstructor
     static class Answer {
 
@@ -42,6 +46,7 @@ public class QnaResponse {
         private Boolean isManager;
         private LocalDateTime createdAt;
         private Long memberId;
+        private String memberUsername;
         private Long questionId;
     }
 
@@ -51,7 +56,13 @@ public class QnaResponse {
     }
 
     private Question mappingQuestion(QnaQuestion qnaQuestion) {
-        return new Question(qnaQuestion.getId(), qnaQuestion.getContent(), qnaQuestion.getCreatedAt(), qnaQuestion.getMember().getId());
+        return Question.builder()
+                .id(qnaQuestion.getId())
+                .content(qnaQuestion.getContent())
+                .createdAt(qnaQuestion.getCreatedAt())
+                .memberId(qnaQuestion.getMember().getId())
+                .memberUsername(qnaQuestion.getMember().getUsername())
+                .build();
     }
 
     private List<Answer> mappingAnswer(List<QnaAnswer> qnaAnswers) {
@@ -63,7 +74,15 @@ public class QnaResponse {
                 isManager = true;
             else
                 isManager = false;
-            Answer answer = new Answer(qnaAnswer.getId(), qnaAnswer.getContent(), isManager, qnaAnswer.getCreatedAt(), qnaAnswer.getMember().getId(), qnaAnswer.getQnaQuestion().getId());
+            Answer answer = Answer.builder()
+                                .id(qnaAnswer.getId())
+                                .content(qnaAnswer.getContent())
+                                .isManager(isManager)
+                                .createdAt(qnaAnswer.getCreatedAt())
+                                .memberId(qnaAnswer.getMember().getId())
+                                .memberUsername(qnaAnswer.getMember().getUsername())
+                                .questionId(qnaAnswer.getQnaQuestion().getId())
+                                .build();
             answers.add(answer);
         }
         return answers;

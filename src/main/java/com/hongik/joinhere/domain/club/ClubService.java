@@ -15,7 +15,7 @@ import com.hongik.joinhere.domain.club.dto.ShowClubInfoResponse;
 import com.hongik.joinhere.domain.club.dto.ClubResponse;
 import com.hongik.joinhere.domain.club.dto.UpdateClubRequest;
 import com.hongik.joinhere.domain.qna.answer.repository.QnaAnswerRepository;
-import com.hongik.joinhere.domain.qna.qna.dto.QnaResponse;
+import com.hongik.joinhere.domain.qna.dto.QnaResponse;
 import com.hongik.joinhere.domain.belong.dto.ReviewResponse;
 import com.hongik.joinhere.domain.member.entity.Member;
 import com.hongik.joinhere.domain.member.repository.MemberRepository;

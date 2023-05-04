@@ -1,7 +1,7 @@
 package com.hongik.joinhere.domain.club.dto;
 
 import com.hongik.joinhere.domain.announcement.announcement.dto.AnnouncementResponse;
-import com.hongik.joinhere.domain.qna.qna.dto.QnaResponse;
+import com.hongik.joinhere.domain.qna.dto.QnaResponse;
 import com.hongik.joinhere.domain.belong.dto.ReviewResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
