@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ShowClubInfoResponse {
 
-    private ClubResponse clubResponse;
+    private ClubResponse club;
     private AnnouncementResponse announcement;
     private List<ReviewResponse> reviews;
     private List<QnaResponse> qnas;
