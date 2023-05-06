@@ -1,20 +1,21 @@
 # Join Here
 <img width="852" alt="Introduction" src="https://user-images.githubusercontent.com/71253970/232383263-30f78922-b106-40c5-85b8-08e9c0f5b7f4.png">
 
-## Link
-📌 **Youtube.** https://www.youtube.com/watch?v=c5HwQb6akeI
-<!--📌 **Notion.** -->
+## ✨ Link
+📌 **Youtube.** https://www.youtube.com/watch?v=c5HwQb6akeI  
+📌 **API Document.** https://legendary-sink-372.notion.site/API-Document-4e64fc417d86463b90ff14e51980b900
 <!--📌 **Blog.** -->
 
-## Project Overview
-**_Join Here_** 는 사용자에게 동아리 정보, 모집 공고를 쉽게 확인할 수 있는 기능을 제공하고, 동아리 운영진에게 신규 동아리원 모집을 편리하게 도와주는 웹 서비스 입니다. 
+## 📝 Project Overview
+**_Join Here_** 는 사용자에게 동아리 지원을 간편하게 도와주고, 동아리 운영진에게 신규 동아리원 모집을 편리하게 도와주는 웹 서비스 입니다. 
 <br><br>
-기존의 동아리 모집 플랫폼에서는 동아리 공고 글이 중복 게시되어 있고, 여러가지 분야가 섞여있어 가독성 떨어집니다. 지원시에는 구글폼을 작성하거나 개인적으로 연락을 통해서 지원해야하므로 불편함을 느껴 이를 개선하고자 하였습니다. 
+기존의 동아리 모집 플랫폼에서는 동아리 공고 글이 중복 게시되어 있고, 여러가지 분야가 섞여있어 가독성 떨어집니다.  
+지원시에는 구글폼을 작성하거나 개인적으로 연락을 통해서 지원해야하므로 불편함을 느껴 이를 개선하고자 하였습니다. 
 <br><br>
-서비스를 통해서 사용자에게는 카테고리 분류로 인한 가독성 증가, 동아리 정보 확인, 지원의 편리성을 제공하고, 동아리 운영진에게는 동아리 홍보 효과 극대화 및 신규 동아리원 모집 편리성을 제공하고자 하였습니다.
+서비스를 통해서 사용자에게는 카테고리 분류로 인한 가독성 증가, 동아리 정보 확인과 지원의 편리성을 제공하고, 동아리 운영진에게는 동아리 홍보 효과 극대화 및 신규 동아리원 모집 편리성을 제공하고자 하였습니다.
 
 
-## Main Features
+## 🚀 Main Features
 <img width="809" alt="Main Feature" src="https://user-images.githubusercontent.com/71253970/232682766-760bb751-6ec8-4535-aed4-ae183624846d.png">
 
 <!-- 
@@ -31,7 +32,7 @@
 - 동아리원 관리
 -->
 
-## Web Page
+## 💻 Web Page
 | 홈 페이지  |  동아리 목록 페이지   |
 | :-------------------------------------------: | :------------: |
 |  <img width="329" src="https://user-images.githubusercontent.com/71253970/232704375-8ac6d62c-5a2a-492b-a339-a3543ee5b1cc.png"/> |  <img width="329" src="https://user-images.githubusercontent.com/71253970/232704320-faaee8c1-ac67-4fdb-a64a-4620db606426.png"/>|  
@@ -41,7 +42,7 @@
 | <img width="329" src="https://user-images.githubusercontent.com/71253970/232704333-c9252ebe-8274-4348-9f1b-22ffbc294c1e.png"/>   |  <img width="329" src="https://user-images.githubusercontent.com/71253970/232704368-f7ebcc47-023b-4711-9c46-86be101a5a94.png"/>     |
 
 
-## Skills
+## 🛠 Skills
 ### Backend
 <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white"> <img src="https://img.shields.io/badge/spring%20boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"> <img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white"> <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> <img src="https://img.shields.io/badge/ec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white"> <img src="https://img.shields.io/badge/rds-527FFF?style=for-the-badge&logo=amazonrds&logoColor=white"> <img src="https://img.shields.io/badge/s3-569A31?style=for-the-badge&logo=amazons3&logoColor=white"> <img src="https://img.shields.io/badge/ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white"> 
 
@@ -54,8 +55,8 @@
 
 <!-- ## System Architecture -->
 
-## Database Schema
+## 📃 Database Schema
 ![Database Schema](https://user-images.githubusercontent.com/71253970/232386186-c18bad69-7e06-480f-8d13-5e5ba06c9469.png)
 
-## Information Architecture
+## ⚙️ Information Architecture
 ![Information Architecture](https://user-images.githubusercontent.com/71253970/232497544-883b6697-d08d-4662-9e92-d0e3c958ce20.png)
